@@ -1,0 +1,24 @@
+# ESP-IDF / esp-matter
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+dependencies.lock
+
+# Credenciales y datos de fábrica — nunca versionar
+secrets.h
+credentials/
+factory_data/
+*.wifi.json
+
+# Modelos 3D pesados
+*.stl
+*.3mf
+*.blend
+*.blend1
+
+# Sistema
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
