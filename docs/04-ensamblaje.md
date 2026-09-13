@@ -64,7 +64,7 @@ Por módulo:
 - [ ] Enchufar USB-C → ambos ojos encienden en ámbar sin intervención
 - [ ] Toque corto en el botón → apaga y enciende
 - [ ] Doble toque → cambia de preset
-- [ ] Mantener pulsado → varía el brillo
+- [ ] Mantener pulsado el botón 1 → varía el brillo (alterna sentido)
 - [ ] Emparejar con un asistente de voz y confirmar respuesta
 - [ ] Dejar encendida 2 horas y verificar que no hay parpadeo ni calentamiento
 - [ ] Desconectar y reconectar → vuelve sola al preset guardado

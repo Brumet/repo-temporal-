@@ -25,6 +25,7 @@ Apple Home y SmartThings de forma nativa, sin nube propietaria).
 | [`docs/04-ensamblaje.md`](docs/04-ensamblaje.md) | Proceso de armado de una unidad |
 | [`docs/05-produccion.md`](docs/05-produccion.md) | Clonado, empaque, experiencia del cliente |
 | [`docs/06-wled-fork.md`](docs/06-wled-fork.md) | Análisis del código de WLED: licencia, flash, viabilidad |
+| [`docs/07-botones-y-red.md`](docs/07-botones-y-red.md) | Comportamiento real de los botones y acceso a la interfaz |
 
 ## Decisión pendiente más importante
 

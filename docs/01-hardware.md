@@ -27,7 +27,8 @@ Sobre un precio de venta objetivo de 320.000, la electrónica es el **4,5%**.
 ```
 ESP32-C3 SuperMini
 ├── GPIO 4  → DIN del primer LED (ojo derecho)
-├── GPIO 3  → Switch mecánico → GND
+├── GPIO 3  → Switch mecánico 0 (encender/apagar) → GND
+├── GPIO 5  → Switch mecánico 1 (brillo) → GND
 ├── 3V3     → alimentación de los dos LEDs
 └── GND     → común
 ```
