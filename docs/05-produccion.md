@@ -99,6 +99,7 @@ Registrar por unidad:
 
 ```
 Serie:            01/05
+Nombre mDNS:      cuervo-01.local
 Nombre:           El Cuervo Guardián
 Fecha de armado:
 Versión firmware:

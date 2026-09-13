@@ -53,8 +53,13 @@ Mantener el botón 0:
   ámbar, vela, parpadeo, el CSS con la marca. Todo.
 
 Cinco segundos de margen es poco para alguien que no sabe qué está haciendo.
-Evaluar subir `WLED_LONG_FACTORY_RESET` en el fork, o no mencionar el gesto de
-5 s en las instrucciones y resolver esos casos por soporte.
+
+**Decidido: se elimina la puerta en el fork**, no se alarga. Ver
+[`../firmware/patches/0001-eliminar-reset-de-fabrica.md`](../firmware/patches/0001-eliminar-reset-de-fabrica.md).
+
+Alargarla a 30 s solo haría el accidente más raro, y por tanto más difícil de
+diagnosticar cuando ocurra. La recuperación destructiva sigue disponible por
+USB-C en el taller, que es donde corresponde.
 
 ## Asignación de pines propuesta
 
@@ -96,6 +101,46 @@ funcionando con normalidad.
 ### Autorreparación
 Si el WiFi de la casa desaparece, WLED vuelve a levantar su red por su cuenta.
 La pieza nunca queda inaccesible.
+
+## La dirección de acceso: qué cambia y qué no
+
+| | ¿Estable? |
+|---|---|
+| **IP** (`192.168.1.47`) | ❌ La asigna el router por DHCP. Cambia al reiniciarlo o al vencer la concesión |
+| **Nombre mDNS** (`cuervo-01.local`) | ✅ Valor guardado en la configuración de la pieza |
+
+```cpp
+MDNS.begin(cmDNS);
+MDNS.addService("http", "tcp", 80);
+```
+
+El nombre es el mismo en cualquier red: otra casa, otro router, otro operador.
+**Es lo que va grabado en el NFC. Nunca una IP** — funcionaría unos días y luego
+dejaría de abrir sin explicación aparente.
+
+### Un nombre por unidad
+
+Si todas las piezas se llaman `cuervo`, dos unidades en la misma casa chocan.
+
+```
+Pieza 01 → http://cuervo-01.local
+Pieza 02 → http://cuervo-02.local
+```
+
+Cada tag NFC lleva su propia URL. El nombre de red pasa a ser parte de la
+identidad de la pieza numerada.
+
+> Si el campo se deja vacío, WLED genera el nombre con los últimos dígitos de la
+> MAC (`wled-a4f2c1`). Nunca chocan, pero es feo para un producto.
+
+### Android y las direcciones `.local`
+
+El soporte de mDNS en Android es irregular. En iOS funciona bien; algunos
+Android no resuelven `.local`.
+
+Plan B: la **app oficial de WLED** (iOS y Android) escanea la red y encuentra la
+pieza sin escribir dirección alguna. No es obligatoria — va en la tarjeta en
+letra pequeña, para no dar la impresión de que hay que instalar algo.
 
 ### Límite honesto
 El control es **solo dentro de la casa**. Desde fuera no es posible sin montar
