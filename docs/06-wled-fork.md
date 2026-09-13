@@ -102,8 +102,31 @@ WLED solo ya consume los 4 MB completos. Una aplicación Matter añade del orden
 **Conclusión: WLED + Matter no cabe en 4 MB.** Ni con OTA ni, con mucha
 estrechez, sin él.
 
-**Se necesitan módulos de 8 MB, y 16 MB da margen cómodo.** WLED ya trae tablas
-de particiones para ambos (`WLED_ESP32_8MB.csv`, `WLED_ESP32_16MB.csv`).
+### Confirmado con los esquemas de partición del propio WLED
+
+WLED define seis esquemas. El tamaño de `app0` es el firmware máximo que admite
+cada uno:
+
+| Esquema | Flash | app0 | Comentario del propio WLED |
+|---|---|---:|---|
+| `tiny` | 2 MB | — | sin OTA |
+| `default` | 4 MB | **1536 KB** | el que se usa hoy |
+| `big` | 4 MB | **1856 KB** | *"1.8MB firmware, 256KB filesystem"* |
+| `large` | 8 MB | **2048 KB** | |
+| `extreme` | 16 MB | **3072 KB** | |
+
+WLED declara que su firmware pesa del orden de **1,5 a 1,8 MB**. Sumarle una
+aplicación Matter (~1,5 MB) da del orden de **3 MB**.
+
+Mirando la tabla: 3 MB solo entra en `extreme`, el esquema de **16 MB**. Con
+8 MB (2048 KB de app0) queda muy justo y probablemente no entra.
+
+**Recomendación de hardware para la versión Matter: ESP32 con 16 MB de flash.**
+Los 8 MB que se mencionaban antes en este documento son insuficientes con
+holgura; 16 MB es el objetivo correcto.
+
+**Se necesitan 16 MB.** WLED ya trae las tablas de particiones
+(`WLED_ESP32_8MB.csv`, `WLED_ESP32_16MB_9MB_FS.csv`).
 
 Las 5 placas compradas probablemente son de 4 MB. **Confirmarlo apenas lleguen**
 y no pedir las siguientes 20 hasta tener esto resuelto.
@@ -161,3 +184,28 @@ voz.
 
 Cuando el fork funcione, se actualiza el firmware. **El hardware no cambia** — es
 la misma ESP32-C3, los mismos LEDs, el mismo cableado.
+
+## Nota sobre la compilación
+
+Se intentó compilar WLED para `esp32c3dev` en el entorno de desarrollo remoto
+para medir el binario directamente. El toolchain de Espressif se instaló
+completo, pero **el registro de paquetes de PlatformIO está bloqueado por la
+política de red de ese entorno** (`api.registry.platformio.org` y
+`dl.registry.platformio.org` inalcanzables), lo que impide resolver las
+librerías de WLED.
+
+Es una limitación del entorno remoto, no del proyecto. **En una máquina normal
+el build funciona sin intervención:**
+
+```bash
+pip install platformio
+git clone https://github.com/wled/WLED.git
+cd WLED
+pio run -e esp32c3dev
+```
+
+Al final imprime el uso real de RAM y Flash.
+
+La conclusión sobre el tamaño no depende de esa medición: los esquemas de
+partición que WLED define y documenta en su propio `platformio.ini` ya dan la
+respuesta.
