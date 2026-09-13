@@ -28,8 +28,14 @@ Placa nueva: instalar firmware → subir los tres archivos → **30 segundos**.
 | 2 | Vela | Efecto Candle, parpadeo orgánico |
 | 3 | Sangre | Rojo profundo |
 | 4 | Espectro | Azul frío |
-| 5 | Apagado | Brillo 0 |
-| 6 | Parpadeo | Playlist: preset 1 durante 8,0 s → preset 5 durante 0,2 s → repetir |
+| 5 | Parpadeo | Playlist: ámbar 8,0 s → oscuro 0,2 s → repetir |
+
+**Ningún preset apagado dentro del ciclo.** El doble toque del botón recorre los
+presets en orden; si uno de ellos apaga la pieza, el cliente cree que se dañó a
+mitad del recorrido. El apagado lo maneja el toque corto.
+
+Esa secuencia de cinco estados es el producto completo para quien nunca abra el
+celular — se cura con el mismo cuidado que la pintura.
 
 **El brillo bajo no es un error.** 50 de 255 parece poquísimo en la mesa, pero
 dentro de una cabeza oscura es el brillo de un ojo vivo. A brillo alto parecen
@@ -37,6 +43,18 @@ faros de auto.
 
 **Preset al arrancar = 1.** Garantiza que la escultura siempre encienda en ámbar,
 aunque se vaya la luz.
+
+## Los tres niveles de control
+
+| Nivel | Requiere | Alcance |
+|---|---|---|
+| **Botón** | nada | encender, apagar, cambiar preset, brillo |
+| **Celular** | WiFi de casa, 2 min una vez | color completo, efectos, brillo fino |
+| **Voz** | Alexa hoy; Matter después | encender, apagar, color, brillo |
+
+La mayoría de los compradores se queda en el primer nivel, y el producto tiene
+que estar completo ahí. No hay app que instalar en ningún nivel: la interfaz de
+WLED es una página web.
 
 ## Empaque
 
