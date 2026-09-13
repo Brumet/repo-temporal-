@@ -24,11 +24,16 @@ Apple Home y SmartThings de forma nativa, sin nube propietaria).
 | [`docs/03-matter.md`](docs/03-matter.md) | Matter en detalle: certificación, flash, emparejamiento |
 | [`docs/04-ensamblaje.md`](docs/04-ensamblaje.md) | Proceso de armado de una unidad |
 | [`docs/05-produccion.md`](docs/05-produccion.md) | Clonado, empaque, experiencia del cliente |
+| [`docs/06-wled-fork.md`](docs/06-wled-fork.md) | Análisis del código de WLED: licencia, flash, viabilidad |
 
 ## Decisión pendiente más importante
 
-Adoptar Matter significa **renunciar a WLED**, que hoy resuelve gratis la
-interfaz web, los efectos, los presets y el manejo del botón. Antes de escribir
-firmware propio hay que decidir sobre qué base se construye.
+WLED es software libre (EUPL v1.2) y **se puede bifurcar en lugar de recrear**.
+El análisis del código arroja tres restricciones duras:
 
-Ver [`docs/02-arquitectura-firmware.md`](docs/02-arquitectura-firmware.md).
+1. La licencia obliga a **publicar el fork** — se puede vender, no se puede cerrar
+2. WLED usa framework Arduino; esp-matter usa ESP-IDF puro. Unirlos es el trabajo real
+3. **WLED + Matter no cabe en 4 MB de flash.** Se necesitan 8 MB mínimo
+
+Ver [`docs/06-wled-fork.md`](docs/06-wled-fork.md) y
+[`docs/02-arquitectura-firmware.md`](docs/02-arquitectura-firmware.md).

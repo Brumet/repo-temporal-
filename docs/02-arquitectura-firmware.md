@@ -22,7 +22,11 @@ enciende y apaga. Todo lo demás hay que escribirlo.
 Esa es la magnitud real de la decisión. No es "agregar Google", es reconstruir el
 producto sobre otra base.
 
-## Las tres opciones
+> **Actualizado:** el análisis del código de WLED cambió el panorama. WLED es
+> software libre y se puede bifurcar, lo que abre una cuarta opción que no estaba
+> contemplada aquí. Ver [`06-wled-fork.md`](06-wled-fork.md) antes de decidir.
+
+## Las opciones
 
 ### A · esp-matter puro
 
@@ -51,6 +55,21 @@ control de WS2812, manejo de botones, OTA y scripting Berry para lógica propia.
 | ❌ | Interfaz web con estética de ingeniería, menos personalizable que WLED |
 | ⏱ | Días |
 
+### D · Fork de WLED con Matter integrado
+
+Bifurcar WLED y añadirle Matter. Conserva todo lo que WLED ya resuelve.
+
+| | |
+|---|---|
+| ✅ | No se pierde nada: efectos, presets, interfaz, botón, OTA |
+| ✅ | ESP32-C3 ya está soportado; el sistema de usermods es maduro |
+| ❌ | WLED usa framework Arduino y esp-matter usa ESP-IDF puro: hay que compilar Arduino como componente de IDF |
+| ❌ | **Requiere 8 MB de flash como mínimo** — en 4 MB no cabe |
+| ❌ | Obligación de publicar el fork: licencia EUPL v1.2, copyleft |
+| ⏱ | Semanas, con riesgo real de que el paso de integración no salga |
+
+Análisis completo con datos en [`06-wled-fork.md`](06-wled-fork.md).
+
 ### C · WLED + puente externo
 
 Mantener WLED y exponerlo a Google mediante Home Assistant o similar.
@@ -62,7 +81,14 @@ Mantener WLED y exponerlo a Google mediante Home Assistant o similar.
 
 **Descartada.**
 
-## Recomendación: spike de Tasmota antes de escribir nada
+## Recomendación
+
+Ver la sección final de [`06-wled-fork.md`](06-wled-fork.md): enviar la Serie
+Cero con WLED de fábrica y trabajar Matter en paralelo, sin bloquear el envío.
+
+Si se descarta el fork, el siguiente candidato es Tasmota:
+
+### Spike de Tasmota
 
 Un día de trabajo, en este orden:
 
