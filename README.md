@@ -4,6 +4,9 @@ Escultura impresa en 3D con ojos LED direccionables, controlables por app,
 botón físico y asistentes de voz mediante **Matter** (Google Home, Alexa,
 Apple Home y SmartThings de forma nativa, sin nube propietaria).
 
+> **¿Sesión nueva? Empieza por [`ESTADO.md`](ESTADO.md)** — dónde está todo hoy,
+> qué sigue, y qué decisiones ya están cerradas.
+
 ## Estado del proyecto
 
 | Área | Estado |
