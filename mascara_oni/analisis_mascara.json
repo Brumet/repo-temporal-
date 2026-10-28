@@ -1,0 +1,151 @@
+{
+  "referencia": {
+    "titulo": "kuro Furisaki",
+    "autor": "MC Studios (Pinterest, marcado como 'Modificado por IA')",
+    "tecnica_original": "Tinta y gouache blanco sobre papel kraft; rayado fino que sigue el flujo de la forma (estilo grabado / manga de tinta)",
+    "vista": "3/4 frontal, cabeza girada hacia la izquierda del espectador e inclinada hacia abajo unos 15-20 grados",
+    "nota_uso": "Obra ajena: el modelo es un estudio / fan-art. Para vender réplicas habría que pedir permiso al autor."
+  },
+  "concepto": {
+    "tipo": "Máscara demoníaca tipo oni / hannya fusionada con un cráneo, en la línea de las máscaras 'hollow'",
+    "lectura_general": "Cráneo alargado y anguloso, de aspecto óseo y tallado, con cejas agresivas, cuencas vacías, nariz en forma de pico, mejillas en capas escalonadas y una sonrisa de dientes irregulares. De la frente salen cuernos curvos en forma de media luna.",
+    "simetria": "Casi simétrica en la cara; claramente ASIMÉTRICA en los cuernos (hay más cuerno a la izquierda del espectador)",
+    "estado_animo": "amenazante, contenido, mirada hacia abajo"
+  },
+  "dimensiones_propuestas_mm": {
+    "nota": "No hay escala en el dibujo; se propone tamaño real de máscara portable",
+    "alto_cara_frente_a_menton": 230,
+    "ancho_maximo_pomulos": 150,
+    "profundidad_cascara": 110,
+    "alto_total_con_cuernos": 420,
+    "grosor_pared": 4,
+    "proporcion_cara_alto_ancho": 1.55
+  },
+  "sistema_de_coordenadas_modelo": {
+    "unidades": "mm",
+    "x": "+x = izquierda del personaje (derecha del espectador)",
+    "y": "-y = hacia delante (la cara mira a -Y, vista frontal de Blender)",
+    "z": "+z = arriba",
+    "origen": "centro de la cabeza a la altura de los ojos"
+  },
+  "partes": [
+    {
+      "id": "craneo_frente",
+      "descripcion": "Frente alta y abombada que sube hasta la base de los cuernos. Tiene una cresta central suave que baja desde la frente hasta el puente de la nariz.",
+      "forma": "elipsoide alargado, aplanado de frente",
+      "detalles": ["cresta media en relieve de 3-4 mm", "transición suave a las sienes", "laterales que se curvan hacia atrás como una celada"],
+      "prioridad": 1
+    },
+    {
+      "id": "cejas",
+      "descripcion": "Arco superciliar muy marcado en forma de V invertida: cada ceja baja hacia el centro (gesto de enfado) y sobresale como una visera sobre los ojos.",
+      "forma": "dos lóbulos inclinados unos 20-25 grados, unidos en el entrecejo",
+      "voladizo_mm": 14,
+      "detalles": ["el borde inferior es cortante y hace sombra sobre la cuenca", "remate en punta hacia las sienes"],
+      "prioridad": 1
+    },
+    {
+      "id": "cuencas_ojos",
+      "descripcion": "Cuencas profundas y vacías, totalmente negras en el dibujo. Son alargadas y rasgadas, inclinadas hacia abajo en el centro.",
+      "forma": "almendra/rasgadura hundida",
+      "ancho_mm": 40,
+      "alto_mm": 22,
+      "profundidad": "atraviesan la máscara (el portador ve por ellas)",
+      "inclinacion_grados": 18,
+      "prioridad": 1
+    },
+    {
+      "id": "nariz",
+      "descripcion": "Nariz en pico: puente recto y estrecho con una arista frontal, que termina en una punta ganchuda sobresaliente. Las fosas son cortes oscuros pequeños bajo la punta.",
+      "forma": "cuña / prisma triangular que se estrecha hacia abajo",
+      "largo_mm": 55,
+      "proyeccion_frontal_mm": 22,
+      "detalles": ["arista superior plana con bisel", "aletas laterales escalonadas", "dos fosas en forma de gota"],
+      "prioridad": 1
+    },
+    {
+      "id": "pomulos_capas",
+      "descripcion": "Mejillas formadas por 2-3 placas óseas superpuestas que bajan en escalones, como láminas talladas. Es el rasgo más 'escultórico'.",
+      "forma": "placas curvas escalonadas, cada una 3-5 mm por encima de la siguiente",
+      "numero_capas": 3,
+      "detalles": ["bordes con ondulaciones irregulares", "la capa superior nace bajo la cuenca", "la inferior se funde con la mandíbula"],
+      "prioridad": 2
+    },
+    {
+      "id": "boca_dientes",
+      "descripcion": "Sonrisa ancha de dientes rectangulares e irregulares, sin labios, como un cráneo. La fila superior y la inferior encajan; detrás hay un hueco negro.",
+      "forma": "ranura horizontal ligeramente curvada hacia arriba en los extremos",
+      "ancho_boca_mm": 75,
+      "dientes": {
+        "superior": 8,
+        "inferior": 8,
+        "ancho_medio_mm": 7,
+        "alto_medio_mm": 10,
+        "variacion": "alturas y anchos irregulares +-30 %, alguna inclinación"
+      },
+      "prioridad": 2
+    },
+    {
+      "id": "mandibula_menton",
+      "descripcion": "Mandíbula larga y estrecha que termina en un mentón de varias capas onduladas, casi como una barba de hueso tallado.",
+      "forma": "cuña redondeada orientada hacia abajo y algo adelante",
+      "detalles": ["3-4 ondulaciones horizontales", "mentón algo partido en el centro"],
+      "prioridad": 2
+    },
+    {
+      "id": "aletas_sien",
+      "descripcion": "En las sienes, unas orejeras/aletas curvadas hacia atrás que enrollan el borde de la máscara (visibles a la derecha del espectador como un rizo grande).",
+      "forma": "lámina curva enrollada, tipo voluta",
+      "prioridad": 3
+    },
+    {
+      "id": "cuerno_A_izquierdo_largo",
+      "descripcion": "Cuerno en media luna, fino y afilado, que sale del lado izquierdo (del espectador) de la frente, se abre hacia fuera y sube muy alto. Tiene una púa/muesca hacia el interior a media altura.",
+      "seccion": "lámina aplanada (como una cuchilla) más que tubo",
+      "largo_mm": 230,
+      "radio_base_mm": 13,
+      "radio_punta_mm": 0.6,
+      "curvatura": "arco en C con la parte cóncava hacia el centro",
+      "extras": ["púa secundaria a 45 % de la longitud", "corte escalonado en la base"],
+      "prioridad": 1
+    },
+    {
+      "id": "cuerno_B_central_alto",
+      "descripcion": "Cuerno fino y muy alto que sale de la parte superior de la frente y se curva ligeramente hacia la izquierda del espectador, casi vertical.",
+      "seccion": "lámina aplanada",
+      "largo_mm": 260,
+      "radio_base_mm": 11,
+      "radio_punta_mm": 0.6,
+      "prioridad": 1
+    },
+    {
+      "id": "cuerno_C_grueso",
+      "descripcion": "Cuerno grueso y robusto que nace del lado derecho (del espectador) de la frente, sube en curva y vuelve la punta hacia dentro y hacia atrás. Es el más voluminoso.",
+      "seccion": "redondeada-ovalada",
+      "largo_mm": 170,
+      "radio_base_mm": 20,
+      "radio_punta_mm": 1,
+      "prioridad": 1
+    },
+    {
+      "id": "pelo_y_cintas",
+      "descripcion": "Pelo en punta del personaje detrás de la máscara y cintas de humo/tela que flotan. No son parte de la máscara.",
+      "prioridad": "opcional (fase final o pieza aparte)"
+    }
+  ],
+  "superficie": {
+    "material": "hueso / laca blanca envejecida",
+    "color_base_rgb": [0.86, 0.84, 0.78],
+    "sombras_cavidades_rgb": [0.05, 0.04, 0.04],
+    "acabado": "mate, con brillo suave en las aristas",
+    "tallado": "Líneas finas y paralelas que siguen el flujo de cada forma (como vetas de madera o capas de hueso). En 3D se pueden hacer como relieve de 0,2-0,4 mm siguiendo las curvaturas.",
+    "envejecimiento": "suciedad en las cavidades, bordes algo gastados"
+  },
+  "plan_de_modelado": [
+    {"fase": "v1", "objetivo": "Volúmenes principales: cráneo, cejas, cuencas, nariz, mejillas, boca con dientes, mentón, 3 cuernos; cáscara hueca abierta por detrás", "tecnica": "campos de distancia (SDF) con uniones suaves -> marching cubes -> Blender"},
+    {"fase": "v2", "objetivo": "Afinar proporciones frente a la referencia, cuernos tipo cuchilla, púa del cuerno A, aletas de las sienes"},
+    {"fase": "v3", "objetivo": "Capas escalonadas de mejillas y mentón con bordes ondulados, dientes irregulares, fosas nasales"},
+    {"fase": "v4", "objetivo": "Relieve de líneas de flujo talladas, material de hueso, desgaste"},
+    {"fase": "v5", "objetivo": "Preparación para impresión: grosor de pared, soporte de cuernos, división en piezas, STL"}
+  ]
+}
