@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maniquí de medidas · Armadura Din</title>
+<style>
+  :root{
+    --bg:#14171c; --panel:#1d222a; --panel2:#252b35; --line:#353d4a;
+    --txt:#e8ebef; --muted:#9aa4b2; --acc:#c9d3dd; --hi:#ffb547; --ok:#5fd38d; --warn:#ff7a6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45}
+  header{padding:18px 20px 8px;max-width:1150px;margin:auto}
+  h1{margin:0;font-size:1.45rem;letter-spacing:.3px}
+  header p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+  .tabs{display:flex;gap:6px;max-width:1150px;margin:12px auto 0;padding:0 20px;flex-wrap:wrap}
+  .tab{background:var(--panel);border:1px solid var(--line);color:var(--muted);padding:9px 16px;border-radius:10px 10px 0 0;cursor:pointer;font-size:.95rem}
+  .tab.active{background:var(--panel2);color:var(--txt);border-bottom-color:var(--panel2)}
+  main{max-width:1150px;margin:0 auto 40px;padding:0 20px}
+  .view{display:none;background:var(--panel2);border:1px solid var(--line);border-radius:0 12px 12px 12px;padding:18px}
+  .view.active{display:block}
+  .grid{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:20px}
+  @media (max-width:780px){.grid{grid-template-columns:1fr}.figure-wrap{max-width:330px;margin:auto}}
+  .figure-wrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;position:sticky;top:8px;align-self:start}
+  svg{width:100%;height:auto;display:block}
+  .body-part{fill:#3a4452;stroke:#5c6878;stroke-width:1.2}
+  .m-mark{stroke:#6f7b8b;stroke-width:1.4;fill:none;opacity:.35;cursor:pointer;transition:opacity .2s}
+  .m-mark.done{stroke:var(--ok);opacity:.6}
+  .m-mark.cur{stroke:var(--hi);stroke-width:3;opacity:1;filter:drop-shadow(0 0 4px rgba(255,181,71,.8))}
+  .m-mark.back{stroke-dasharray:5 4}
+  .m-hit{stroke:transparent;stroke-width:14;fill:none;cursor:pointer}
+  .svg-label{fill:var(--muted);font-size:10px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .step-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .badge{font-size:.78rem;background:#3b3220;color:var(--hi);padding:3px 9px;border-radius:99px;border:1px solid #6b5426}
+  .step-title{font-size:1.35rem;margin:6px 0 2px}
+  .piece{color:var(--muted);font-size:.9rem}
+  .how{margin:12px 0;padding-left:20px}
+  .how li{margin:5px 0}
+  .tip{background:#1a2a22;border:1px solid #2f5440;color:#bfe9cf;border-radius:8px;padding:9px 12px;font-size:.92rem}
+  .input-row{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+  input[type=number],input[type=text],textarea{background:#11151a;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:10px 12px;font-size:1.05rem}
+  input[type=number]{width:130px}
+  input.small{width:80px;font-size:.92rem;padding:6px 8px}
+  textarea{width:100%;min-height:120px;font-size:.88rem;font-family:ui-monospace,Consolas,monospace}
+  button{background:#3a4555;color:var(--txt);border:1px solid #4d5a6d;border-radius:8px;padding:9px 14px;font-size:.95rem;cursor:pointer}
+  button:hover{background:#465366}
+  button.primary{background:#b7832b;border-color:#d39b3c;color:#1a1408;font-weight:600}
+  button.primary:hover{background:#cc9333}
+  .nav{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .progress{height:8px;background:#11151a;border-radius:99px;overflow:hidden;margin:10px 0 4px}
+  .progress > div{height:100%;background:linear-gradient(90deg,#b7832b,#ffb547);width:0;transition:width .3s}
+  .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+  .li{display:flex;justify-content:space-between;gap:6px;background:#181c22;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.88rem;cursor:pointer}
+  .li.cur{border-color:var(--hi)}
+  .li .v{color:var(--muted)}
+  .li.done .v{color:var(--ok)}
+  .muted{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:.92rem}
+  th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:middle}
+  th{color:var(--muted);font-weight:500}
+  .pct{font-weight:700;color:var(--hi);font-size:1.05rem}
+  .warn{color:var(--warn);font-size:.85rem}
+  .okc{color:var(--ok)}
+  .pieces{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .result{margin-top:10px;padding:10px;background:#181c22;border-radius:8px;border:1px solid var(--line)}
+  label.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  h2{font-size:1.15rem;margin:0 0 8px}
+  h3{font-size:1.02rem;margin:0 0 6px}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#2f5440;color:#e4fff0;padding:10px 16px;border-radius:8px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+  .toast.show{opacity:1}
+  .mode-chooser{display:flex;gap:6px;margin-top:8px}
+  .mode-chooser button.on{background:#b7832b;color:#1a1408;border-color:#d39b3c}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🛡️ Maniquí de medidas · Armadura Din</h1>
+  <p>Guía paso a paso para que la persona se mida a distancia, y calculadora para escalar cada pieza del archivo de impresión 3D.</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-view="medir">1 · Medir (para quien llevará la armadura)</button>
+  <button class="tab" data-view="enviar">2 · Enviar / recibir medidas</button>
+  <button class="tab" data-view="escalar">3 · Escalar piezas (para quien imprime)</button>
+</div>
+
+<main>
+<!-- ==================== MEDIR ==================== -->
+<section class="view active" id="view-medir">
+  <div class="grid">
+    <div class="figure-wrap">
+      <svg id="mannequin" viewBox="0 0 300 600" aria-label="Maniquí">
+        <defs>
+          <g id="limbs">
+            <!-- brazo superior -->
+            <path class="body-part" d="M96,122 Q72,122 70,150 L62,252 Q61,264 74,264 L84,262 Q92,256 92,244 L101,168 Z"/>
+            <!-- antebrazo -->
+            <path class="body-part" d="M62,250 L52,348 Q51,358 61,358 L70,358 Q77,357 78,348 L90,256 Z"/>
+            <!-- mano -->
+            <ellipse class="body-part" cx="63" cy="378" rx="11" ry="19"/>
+            <!-- muslo -->
+            <path class="body-part" d="M106,352 Q102,405 114,456 L146,456 Q151,410 151,368 Z"/>
+            <!-- pierna -->
+            <path class="body-part" d="M114,452 Q108,505 120,562 L140,562 Q150,505 146,452 Z"/>
+            <!-- rodilla -->
+            <ellipse class="body-part" cx="130" cy="458" rx="15" ry="11"/>
+            <!-- pie -->
+            <ellipse class="body-part" cx="128" cy="571" rx="17" ry="8"/>
+          </g>
+        </defs>
+        <use href="#limbs"/>
+        <use href="#limbs" transform="matrix(-1 0 0 1 300 0)"/>
+        <!-- torso -->
+        <path class="body-part" d="M92,124 Q150,106 208,124 Q216,132 212,146 Q204,200 192,240 Q186,282 192,334 L108,334 Q114,282 108,240 Q96,200 88,146 Q84,132 92,124 Z"/>
+        <!-- pelvis -->
+        <path class="body-part" d="M108,326 L192,326 Q200,350 193,372 L152,378 L148,378 L107,372 Q100,350 108,326 Z"/>
+        <!-- cuello -->
+        <path class="body-part" d="M137,92 L163,92 L165,118 L135,118 Z"/>
+        <!-- cabeza -->
+        <ellipse class="body-part" cx="150" cy="60" rx="31" ry="40"/>
+        <!-- vista lateral cabeza -->
+        <g transform="translate(0,0)">
+          <ellipse class="body-part" cx="252" cy="60" rx="30" ry="36"/>
+          <path class="body-part" d="M222,58 L214,70 L223,74 Z"/>
+          <text x="232" y="112" class="svg-label">vista lateral</text>
+        </g>
+        <text x="8" y="596" class="svg-label">Línea discontinua = se mide por la espalda</text>
+        <g id="marks"></g>
+      </svg>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between">
+          <label class="inline">Nombre de la persona:
+            <input type="text" id="personName" placeholder="Ej. Carlos" style="width:200px">
+          </label>
+          <span class="muted" id="progressText"></span>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+
+      <div class="card" id="stepCard">
+        <div class="step-head">
+          <span class="badge" id="stepNum"></span>
+          <span class="piece" id="stepPiece"></span>
+        </div>
+        <div class="step-title" id="stepTitle"></div>
+        <ol class="how" id="stepHow"></ol>
+        <div class="tip" id="stepTip"></div>
+        <div class="input-row">
+          <label for="stepInput"><b>Medida:</b></label>
+          <input type="number" id="stepInput" step="0.1" min="0" inputmode="decimal" placeholder="0.0">
+          <span id="unitLabel">cm</span>
+          <div class="mode-chooser">
+            <button id="unitCm" class="on" type="button">cm</button>
+            <button id="unitIn" type="button">pulgadas</button>
+          </div>
+        </div>
+        <div class="nav">
+          <button id="prevBtn" type="button">◀ Anterior</button>
+          <button id="nextBtn" class="primary" type="button">Guardar y siguiente ▶</button>
+          <button id="skipBtn" type="button">Saltar (no aplica)</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Antes de empezar</h3>
+        <ul class="muted" style="margin:0;padding-left:18px">
+          <li>Usa una <b>cinta métrica flexible</b> de costura. Si no tienes, usa un cordón y luego mídelo con una regla.</li>
+          <li>Ponte ropa ajustada (o la ropa que irá <b>debajo</b> de la armadura: traje, chaleco acolchado, etc.).</li>
+          <li>Pide ayuda a otra persona: medirse uno mismo la espalda y los hombros es casi imposible.</li>
+          <li>Cinta <b>pegada a la piel pero sin apretar</b>. Respira normal.</li>
+          <li>Mide siempre el <b>brazo y la pierna derechos</b> (o el dominante, suele ser más grueso).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Todas las medidas</h3>
+        <div class="list" id="allList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ENVIAR ==================== -->
+<section class="view" id="view-enviar">
+  <div class="card">
+    <h2>Enviar mis medidas</h2>
+    <p class="muted">Cuando termines de medirte, envía esto a quien va a imprimir la armadura. Incluye un código que se puede pegar en esta misma página para cargar todo automáticamente.</p>
+    <textarea id="summaryText" readonly></textarea>
+    <div class="nav">
+      <button class="primary" id="copySummary" type="button">📋 Copiar texto</button>
+      <a id="waLink" target="_blank" rel="noopener"><button type="button">💬 Enviar por WhatsApp</button></a>
+      <button id="copyLink" type="button">🔗 Copiar enlace con medidas</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Recibir medidas</h2>
+    <p class="muted">Pega aquí el texto o el código (empieza por <code>ARM1:</code>) que te mandó la persona.</p>
+    <textarea id="importText" placeholder="Pega aquí el mensaje recibido..."></textarea>
+    <div class="nav">
+      <button class="primary" id="importBtn" type="button">⬇️ Cargar medidas</button>
+      <button id="resetBtn" type="button">🗑️ Borrar todas las medidas</button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ESCALAR ==================== -->
+<section class="view" id="view-escalar">
+  <div class="card">
+    <h2>Cómo escalar</h2>
+    <ol class="muted" style="margin:0;padding-left:18px">
+      <li>Abre cada pieza del archivo en tu slicer (Cura, PrusaSlicer, Bambu Studio…) <b>al 100 %</b>.</li>
+      <li>Mide en el slicer la dimensión que se pide abajo (en <b>milímetros</b>) y escríbela.</li>
+      <li>La calculadora compara con el cuerpo + holgura y te da el <b>% de escala</b>.</li>
+      <li>Si los % de los ejes difieren mucho, usa escala <b>no uniforme</b> (desbloquea el candado de escala en el slicer).</li>
+    </ol>
+    <p class="muted" style="margin-bottom:0">La holgura (cm) es el espacio extra para la ropa, el acolchado/espuma y las correas. Valores negativos = la pieza debe ser más corta que el cuerpo (p. ej. el brazal, para poder doblar muñeca y codo).</p>
+  </div>
+
+  <div class="card">
+    <h3>Atajo: escala por estatura (aproximada)</h3>
+    <div class="row">
+      <label class="inline">Estatura para la que está diseñado el archivo:
+        <input type="number" class="small" id="designHeight" value="180" step="0.5"> cm
+      </label>
+      <span>→ Estatura de la persona: <b id="hPerson">—</b></span>
+      <span>→ Escala general: <span class="pct" id="hScale">—</span></span>
+    </div>
+    <p class="muted" style="margin:6px 0 0;font-size:.88rem">Útil solo como punto de partida. La complexión cambia mucho entre personas de la misma altura: mejor usa el cálculo por pieza.</p>
+  </div>
+
+  <div class="pieces" id="pieces"></div>
+
+  <div class="card" style="margin-top:14px">
+    <h3>Resumen de escalas</h3>
+    <textarea id="scaleSummary" readonly style="min-height:160px"></textarea>
+    <div class="nav"><button id="copyScale" type="button">📋 Copiar resumen</button></div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   MEDIDAS
+   type: 'c' = contorno (elipse) | 'l' = longitud (línea)
+   back: se mide por la espalda (línea discontinua)
+   ============================================================ */
+const M = [
+  {id:'altura', piece:'General', name:'Estatura', type:'l', g:{x1:22,y1:20,x2:22,y2:579},
+   how:['Descalzo, de espaldas a una pared, talones juntos.','Pon un libro plano sobre la cabeza tocando la pared.','Marca la pared bajo el libro y mide desde el suelo hasta la marca.'],
+   tip:'Sirve para el cálculo rápido de escala general.'},
+
+  {id:'cabezaCont', piece:'Casco', name:'Contorno de cabeza', type:'c', g:{cx:150,cy:50,rx:33,ry:7},
+   how:['Rodea la cabeza con la cinta justo por encima de las cejas y de las orejas.','Por detrás, pasa por la parte más saliente de la nuca.','Lee la medida sin apretar.'],
+   tip:'Si llevas el pelo largo o recogido, mídete como lo llevarás puesto con el casco.'},
+  {id:'cabezaAlto', piece:'Casco', name:'Alto de cabeza (barbilla → coronilla)', type:'l', g:{x1:192,y1:20,x2:192,y2:100},
+   how:['Ponte de lado a una pared, mirando al frente.','Coloca un libro sobre la cabeza (tocando la coronilla) y otro bajo la barbilla, ambos paralelos al suelo.','Mide la distancia entre los dos libros.'],
+   tip:'Es la medida más importante para que el casco no quede corto en la barbilla.'},
+  {id:'cabezaAncho', piece:'Casco', name:'Ancho de cabeza (lado a lado)', type:'l', g:{x1:117,y1:62,x2:183,y2:62},
+   how:['Pon dos libros (o dos cajas) a los lados de la cabeza, a la altura de las orejas, tocando la parte más ancha.','Mide la distancia entre los libros.'],
+   tip:'Incluye las orejas: el casco tiene que pasar por ellas al ponértelo.'},
+  {id:'cabezaFondo', piece:'Casco', name:'Fondo de cabeza (frente/nariz → nuca)', type:'l', g:{x1:214,y1:62,x2:283,y2:62},
+   how:['De perfil: un libro en la punta de la nariz y otro en la parte más saliente de la nuca.','Mide entre los dos libros.'],
+   tip:'Mira el dibujo pequeño de la derecha (vista lateral).'},
+
+  {id:'hombros', piece:'Hombreras / Espalda', name:'Ancho de hombros', type:'l', back:true, g:{x1:80,y1:128,x2:220,y2:128},
+   how:['Por la espalda: busca el hueso de la punta de cada hombro (donde el hombro "cae" hacia el brazo).','Mide en línea recta de una punta a la otra, pasando por la base del cuello.'],
+   tip:'Necesitas que te lo mida otra persona.'},
+  {id:'deltoide', piece:'Hombreras', name:'Largo del hombro (deltoides)', type:'l', g:{x1:79,y1:126,x2:72,y2:196},
+   how:['Desde la punta del hombro, baja por la parte de fuera del brazo.','Termina donde acaba el músculo del hombro (más o menos a mitad del brazo superior).'],
+   tip:'Define el largo de la hombrera.'},
+
+  {id:'pechoCont', piece:'Pecho', name:'Contorno de pecho', type:'c', g:{cx:150,cy:172,rx:63,ry:8},
+   how:['Brazos relajados. Pasa la cinta por debajo de las axilas y por la parte más ancha del pecho.','Que quede horizontal también por la espalda.','Toma la medida con el aire normal (ni inflando ni vaciando).'],
+   tip:'Si llevarás un chaleco acolchado debajo, mídete con él puesto.'},
+  {id:'pechoAncho', piece:'Pecho', name:'Ancho de pecho (axila → axila por delante)', type:'l', g:{x1:100,y1:176,x2:200,y2:176},
+   how:['Por delante, de un pliegue de la axila al otro.','Cinta recta y horizontal, por encima del pecho.'],
+   tip:'Las dos placas del pecho juntas deben ocupar más o menos este ancho.'},
+  {id:'esternon', piece:'Pecho', name:'Largo del pecho (clavícula → fin del esternón)', type:'l', g:{x1:150,y1:118,x2:150,y2:228},
+   how:['Empieza en el hueco que hay entre las dos clavículas (base del cuello).','Baja en línea recta hasta donde termina el hueso del esternón (la "boca del estómago").'],
+   tip:'Define el alto de las placas del pecho.'},
+
+  {id:'abdomenAlto', piece:'Abdomen', name:'Alto del abdomen (fin esternón → ombligo)', type:'l', g:{x1:160,y1:228,x2:160,y2:292},
+   how:['Desde donde terminó la medida anterior (fin del esternón) baja hasta el ombligo.'],
+   tip:'Es el alto de la placa abdominal.'},
+  {id:'cintura', piece:'Abdomen', name:'Contorno de cintura (ombligo)', type:'c', g:{cx:150,cy:292,rx:42,ry:7},
+   how:['Rodea la cintura a la altura del ombligo.','Sin meter la barriga.'],
+   tip:'Sirve para el cinturón y como comprobación.'},
+  {id:'abdomenAncho', piece:'Abdomen', name:'Ancho del abdomen (costado a costado)', type:'l', g:{x1:111,y1:270,x2:189,y2:270},
+   how:['Por delante, entre el ombligo y el esternón.','Mide de costado a costado (donde el cuerpo empieza a girar hacia los lados).'],
+   tip:'Ancho que debe cubrir la placa abdominal.'},
+
+  {id:'espaldaAncho', piece:'Espalda', name:'Ancho de espalda (omoplatos)', type:'l', back:true, g:{x1:104,y1:160,x2:196,y2:160},
+   how:['Por la espalda, a la altura de los omoplatos.','De un pliegue de la axila al otro.'],
+   tip:'Ancho de la placa de la espalda.'},
+  {id:'espaldaLargo', piece:'Espalda', name:'Largo de espalda (nuca → cintura)', type:'l', back:true, g:{x1:140,y1:112,x2:140,y2:300},
+   how:['Inclina la cabeza: el hueso que más sobresale en la base del cuello es el inicio.','Baja por la columna hasta la altura de la cintura (ombligo).'],
+   tip:'Alto de la placa de espalda.'},
+
+  {id:'bicepsCont', piece:'Bíceps', name:'Contorno de bíceps (flexionado)', type:'c', g:{cx:81,cy:192,rx:15,ry:5},
+   how:['Dobla el brazo y aprieta el bíceps.','Mide la parte más gruesa.'],
+   tip:'Solo si tu archivo trae placas de bíceps. Si no, pulsa "Saltar".'},
+  {id:'brazoLargo', piece:'Bíceps', name:'Largo del brazo (hombro → codo)', type:'l', g:{x1:72,y1:126,x2:66,y2:258},
+   how:['Brazo doblado a 90°.','Desde la punta del hombro hasta la punta del codo, por fuera.'],
+   tip:'Solo si tu archivo trae placas de bíceps.'},
+
+  {id:'antebrazoCont', piece:'Brazales (antebrazo)', name:'Contorno de antebrazo', type:'c', g:{cx:72,cy:278,rx:14,ry:5},
+   how:['Cierra el puño y aprieta (el antebrazo se hincha).','Mide la parte más gruesa, unos 5 cm por debajo del codo.'],
+   tip:'El brazal tiene que entrar por aquí: mide con el músculo apretado.'},
+  {id:'muneca', piece:'Brazales (antebrazo)', name:'Contorno de muñeca', type:'c', g:{cx:64,cy:352,rx:11,ry:4},
+   how:['Rodea la muñeca justo por encima del huesito que sobresale (lado de la mano).'],
+   tip:'Si el brazal se mete por la mano, mide también la mano cerrada (ver siguiente medida).'},
+  {id:'mano', piece:'Brazales (antebrazo)', name:'Contorno de mano (puño cerrado)', type:'c', g:{cx:63,cy:378,rx:13,ry:5},
+   how:['Cierra la mano con el pulgar pegado.','Rodea los nudillos y el pulgar con la cinta.'],
+   tip:'Si el brazal es cerrado (tubo), tiene que pasar por aquí. Si se abre con bisagra o velcro, puedes saltar esta medida.'},
+  {id:'antebrazoLargo', piece:'Brazales (antebrazo)', name:'Largo del antebrazo (codo → muñeca)', type:'l', g:{x1:75,y1:262,x2:64,y2:352},
+   how:['Brazo doblado a 90°, palma hacia ti.','Desde el pliegue interior del codo hasta el pliegue de la muñeca.'],
+   tip:'El brazal debe ser un poco más corto para poder doblar el codo y la muñeca.'},
+
+  {id:'musloCont', piece:'Muslos', name:'Contorno de muslo', type:'c', g:{cx:128,cy:385,rx:22,ry:6},
+   how:['De pie, peso repartido en ambas piernas.','Mide la parte más gruesa del muslo, justo debajo de la ingle.'],
+   tip:''},
+  {id:'musloLargo', piece:'Muslos', name:'Largo de muslo (ingle → rodilla)', type:'l', g:{x1:128,y1:372,x2:128,y2:448},
+   how:['Desde el pliegue de la ingle (por delante) hasta encima de la rótula.'],
+   tip:'Alto de la placa del muslo.'},
+  {id:'rodillaCont', piece:'Rodilleras', name:'Contorno de rodilla', type:'c', g:{cx:130,cy:458,rx:17,ry:5},
+   how:['Pierna estirada.','Rodea la rodilla pasando por el centro de la rótula.'],
+   tip:''},
+  {id:'gemeloCont', piece:'Espinilleras', name:'Contorno de gemelo (pantorrilla)', type:'c', g:{cx:131,cy:497,rx:15,ry:5},
+   how:['Mide la parte más gruesa de la pantorrilla.'],
+   tip:'Si llevarás botas por encima, ten en cuenta su grosor.'},
+  {id:'espinillaLargo', piece:'Espinilleras', name:'Largo de espinilla (rodilla → tobillo)', type:'l', g:{x1:131,y1:468,x2:131,y2:558},
+   how:['Desde debajo de la rótula hasta el hueso del tobillo (o hasta donde empiece la bota).'],
+   tip:''},
+];
+
+/* ============================================================
+   PIEZAS  (cuerpo en cm, modelo en mm del slicer)
+   kind: 'len' = longitud directa | 'diam' = diámetro interior (se compara con contorno)
+   ============================================================ */
+const P = [
+  {id:'casco', name:'Casco', dims:[
+    {axis:'X', label:'Ancho interior (lado a lado)', from:'cabezaAncho', kind:'len', clr:2},
+    {axis:'Y', label:'Fondo interior (frente → nuca)', from:'cabezaFondo', kind:'len', clr:2},
+    {axis:'Z', label:'Alto interior (abertura cuello → techo)', from:'cabezaAlto', kind:'len', clr:1.5},
+  ], note:'El casco debe poder pasar por la cabeza: manda el valor más grande de X/Y. Se suele poner espuma de 1 cm por dentro.'},
+  {id:'hombreras', name:'Hombreras', dims:[
+    {axis:'Z', label:'Largo de la hombrera', from:'deltoide', kind:'len', clr:0},
+  ], note:'Pieza de una sola dimensión: usa escala uniforme.'},
+  {id:'pecho', name:'Placas de pecho', dims:[
+    {axis:'X', label:'Ancho total de las 2 placas juntas', from:'pechoAncho', kind:'len', clr:0},
+    {axis:'Z', label:'Alto de la placa', from:'esternon', kind:'len', clr:-1},
+  ], note:'El pecho no debe pasar del pliegue de la axila o no podrás mover los brazos.'},
+  {id:'abdomen', name:'Placa abdominal', dims:[
+    {axis:'X', label:'Ancho de la placa', from:'abdomenAncho', kind:'len', clr:-2},
+    {axis:'Z', label:'Alto de la placa', from:'abdomenAlto', kind:'len', clr:-1},
+  ], note:'Un poco más pequeña que el cuerpo para poder sentarse y agacharse.'},
+  {id:'espalda', name:'Placa de espalda', dims:[
+    {axis:'X', label:'Ancho de la placa', from:'espaldaAncho', kind:'len', clr:0},
+    {axis:'Z', label:'Alto de la placa', from:'espaldaLargo', kind:'len', clr:-4},
+  ], note:''},
+  {id:'brazal', name:'Brazales (vambraces)', dims:[
+    {axis:'XY', label:'Diámetro interior en el lado del codo', from:'antebrazoCont', kind:'diam', clr:2},
+    {axis:'XY', label:'Diámetro interior en el lado de la muñeca', from:'muneca', kind:'diam', clr:1.5},
+    {axis:'Z', label:'Largo del brazal', from:'antebrazoLargo', kind:'len', clr:-1.5},
+  ], note:'Si el brazal es un tubo cerrado, comprueba también que pase por la mano (contorno de mano).'},
+  {id:'biceps', name:'Placas de bíceps (si el archivo las trae)', dims:[
+    {axis:'XY', label:'Diámetro interior', from:'bicepsCont', kind:'diam', clr:2},
+    {axis:'Z', label:'Largo de la placa (≈ 60 % del brazo)', from:'brazoLargo', kind:'len', clr:0, factor:0.6},
+  ], note:''},
+  {id:'muslos', name:'Placas de muslo', dims:[
+    {axis:'Z', label:'Alto de la placa', from:'musloLargo', kind:'len', clr:-2},
+    {axis:'X', label:'Ancho de la placa (≈ 1/3 del contorno)', from:'musloCont', kind:'len', clr:0, factor:1/3},
+  ], note:''},
+  {id:'rodilleras', name:'Rodilleras', dims:[
+    {axis:'X', label:'Ancho de la rodillera (≈ 1/3 del contorno)', from:'rodillaCont', kind:'len', clr:1, factor:1/3},
+  ], note:''},
+  {id:'espinilleras', name:'Espinilleras', dims:[
+    {axis:'XY', label:'Diámetro interior (parte del gemelo)', from:'gemeloCont', kind:'diam', clr:2},
+    {axis:'Z', label:'Largo', from:'espinillaLargo', kind:'len', clr:-1},
+  ], note:''},
+];
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const KEY = 'maniquiArmaduraDin.v1';
+let state = {name:'', m:{}, model:{}, clr:{}, designHeight:180};
+let cur = 0;
+let unit = 'cm';
+
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s) state = Object.assign(state, s); }catch(e){}
+  // datos en el enlace (#d=...)
+  const h = location.hash.match(/#d=([^&]+)/);
+  if(h){ const d = decodeCode(h[1]); if(d){ state.m = Object.assign(state.m, d.m||{}); if(d.n) state.name = d.n; toast('Medidas cargadas desde el enlace'); } }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+function encodeCode(){
+  const json = JSON.stringify({n:state.name, m:state.m});
+  return btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function decodeCode(c){
+  try{
+    c = c.replace(/-/g,'+').replace(/_/g,'/'); while(c.length%4) c+='=';
+    return JSON.parse(decodeURIComponent(escape(atob(c))));
+  }catch(e){ return null; }
+}
+
+const $ = s => document.querySelector(s);
+const fmt = v => (Math.round(v*10)/10).toString().replace('.', ',');
+const toast = msg => { const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); };
+
+/* ============================================================
+   MANIQUÍ (SVG)
+   ============================================================ */
+const NS = 'http://www.w3.org/2000/svg';
+function buildMarks(){
+  const g = $('#marks');
+  M.forEach((m,i)=>{
+    const make = (cls)=>{
+      let el;
+      if(m.type==='c'){ el=document.createElementNS(NS,'ellipse'); el.setAttribute('cx',m.g.cx); el.setAttribute('cy',m.g.cy); el.setAttribute('rx',m.g.rx); el.setAttribute('ry',m.g.ry); }
+      else { el=document.createElementNS(NS,'line'); ['x1','y1','x2','y2'].forEach(k=>el.setAttribute(k,m.g[k])); el.setAttribute('stroke-linecap','round'); }
+      el.setAttribute('class',cls);
+      return el;
+    };
+    const vis = make('m-mark'+(m.back?' back':'')); vis.id='mk-'+m.id;
+    const hit = make('m-hit');
+    const title = document.createElementNS(NS,'title'); title.textContent = m.name; hit.appendChild(title);
+    hit.addEventListener('click',()=>{ go(i); });
+    g.appendChild(vis); g.appendChild(hit);
+  });
+}
+
+function refreshMarks(){
+  M.forEach((m,i)=>{
+    const el = document.getElementById('mk-'+m.id);
+    let c = 'm-mark'+(m.back?' back':'');
+    if(state.m[m.id]>0) c+=' done';
+    if(i===cur) c+=' cur';
+    el.setAttribute('class',c);
+  });
+  // traer la marca actual al frente
+  const curEl = document.getElementById('mk-'+M[cur].id);
+  curEl.parentNode.appendChild(curEl);
+}
+
+/* ============================================================
+   PASOS
+   ============================================================ */
+function render(){
+  const m = M[cur];
+  $('#stepNum').textContent = `Paso ${cur+1} de ${M.length}`;
+  $('#stepPiece').textContent = 'Pieza: ' + m.piece + (m.back ? ' · se mide por la espalda' : '');
+  $('#stepTitle').textContent = m.name;
+  $('#stepHow').innerHTML = m.how.map(h=>`<li>${h}</li>`).join('');
+  $('#stepTip').style.display = m.tip ? '' : 'none';
+  $('#stepTip').textContent = m.tip ? '💡 ' + m.tip : '';
+  const v = state.m[m.id];
+  $('#stepInput').value = v>0 ? (unit==='in' ? (v/2.54).toFixed(2) : v) : '';
+  $('#prevBtn').disabled = cur===0;
+  $('#nextBtn').textContent = cur===M.length-1 ? 'Guardar y terminar ✔' : 'Guardar y siguiente ▶';
+  $('#personName').value = state.name || '';
+  refreshMarks(); renderList(); renderProgress();
+}
+function renderList(){
+  $('#allList').innerHTML = M.map((m,i)=>{
+    const v = state.m[m.id];
+    return `<div class="li ${v>0?'done':''} ${i===cur?'cur':''}" data-i="${i}"><span>${i+1}. ${m.name.split(' (')[0]}</span><span class="v">${v>0?fmt(v)+' cm':(v===0?'n/a':'—')}</span></div>`;
+  }).join('');
+  document.querySelectorAll('#allList .li').forEach(el=>el.onclick=()=>go(+el.dataset.i));
+}
+function renderProgress(){
+  const n = M.filter(m=>state.m[m.id]!==undefined).length;
+  $('#progressBar').style.width = (n/M.length*100)+'%';
+  $('#progressText').textContent = `${n} / ${M.length} medidas`;
+}
+function readInput(){
+  const raw = $('#stepInput').value.replace(',','.');
+  let v = parseFloat(raw);
+  if(isNaN(v) || v<=0) return null;
+  if(unit==='in') v = v*2.54;
+  return Math.round(v*10)/10;
+}
+function go(i){ cur = Math.max(0, Math.min(M.length-1, i)); render(); $('#stepInput').focus({preventScroll:true}); }
+
+$('#nextBtn').onclick = ()=>{
+  const v = readInput();
+  if(v===null){ toast('Escribe la medida o pulsa "Saltar"'); return; }
+  state.m[M[cur].id] = v; save(); refreshAll();
+  if(cur===M.length-1){ toast('¡Listo! Ve a la pestaña 2 para enviar'); render(); showView('enviar'); }
+  else go(cur+1);
+};
+$('#skipBtn').onclick = ()=>{ state.m[M[cur].id] = 0; save(); refreshAll(); if(cur<M.length-1) go(cur+1); else render(); };
+$('#prevBtn').onclick = ()=> go(cur-1);
+$('#stepInput').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#nextBtn').click(); });
+$('#personName').addEventListener('input', e=>{ state.name = e.target.value; save(); refreshSummary(); });
+$('#unitCm').onclick = ()=>{ unit='cm'; $('#unitCm').classList.add('on'); $('#unitIn').classList.remove('on'); $('#unitLabel').textContent='cm'; render(); };
+$('#unitIn').onclick = ()=>{ unit='in'; $('#unitIn').classList.add('on'); $('#unitCm').classList.remove('on'); $('#unitLabel').textContent='pulgadas (se guarda en cm)'; render(); };
+
+/* ============================================================
+   ENVIAR / RECIBIR
+   ============================================================ */
+function shareUrl(){ return location.href.split('#')[0] + '#d=' + encodeCode(); }
+function refreshSummary(){
+  let groups = {};
+  M.forEach(m=>{ (groups[m.piece] = groups[m.piece]||[]).push(m); });
+  let t = `MEDIDAS PARA ARMADURA${state.name? ' – ' + state.name : ''}\n(todas en cm)\n`;
+  for(const g in groups){
+    t += `\n▸ ${g}\n`;
+    groups[g].forEach(m=>{ const v=state.m[m.id]; t += `  • ${m.name}: ${v>0?fmt(v):(v===0?'no aplica':'—')}\n`; });
+  }
+  t += `\nCódigo para cargar en el maniquí:\nARM1:${encodeCode()}`;
+  $('#summaryText').value = t;
+  $('#waLink').href = 'https://wa.me/?text=' + encodeURIComponent(t);
+}
+async function copy(text){
+  try{ await navigator.clipboard.writeText(text); toast('Copiado'); }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('Copiado'); }catch(_){ toast('No se pudo copiar: selecciónalo a mano'); }
+    ta.remove();
+  }
+}
+$('#copySummary').onclick = ()=> copy($('#summaryText').value);
+$('#copyLink').onclick = ()=> copy(shareUrl());
+$('#importBtn').onclick = ()=>{
+  const txt = $('#importText').value;
+  const mm = txt.match(/ARM1:([A-Za-z0-9_\-]+)/) || txt.match(/#d=([A-Za-z0-9_\-]+)/);
+  const d = mm ? decodeCode(mm[1]) : null;
+  if(!d){ toast('No encontré un código válido (ARM1:...)'); return; }
+  state.m = d.m || {}; state.name = d.n || ''; save(); refreshAll(); render();
+  toast('Medidas cargadas ✔'); showView('escalar');
+};
+$('#resetBtn').onclick = ()=>{
+  if(!confirm('¿Borrar todas las medidas del cuerpo?')) return;
+  state.m = {}; state.name=''; save(); cur=0; refreshAll(); render(); toast('Medidas borradas');
+};
+
+/* ============================================================
+   ESCALAR
+   ============================================================ */
+function buildPieces(){
+  $('#pieces').innerHTML = P.map(p=>`
+    <div class="card" id="pc-${p.id}">
+      <h3>${p.name}</h3>
+      <table>
+        <tr><th>Eje</th><th>Medida en el modelo (mm, al 100 %)</th><th>Holgura</th><th>Escala</th></tr>
+        ${p.dims.map((d,j)=>`
+          <tr>
+            <td><b>${d.axis}</b></td>
+            <td>${d.label}<br><input type="number" class="small mdl" data-k="${p.id}.${j}" step="0.1" placeholder="mm">
+              <span class="muted" style="font-size:.8rem" id="need-${p.id}-${j}"></span></td>
+            <td><input type="number" class="small clr" data-k="${p.id}.${j}" step="0.5" style="width:62px"> cm</td>
+            <td class="pct" id="pct-${p.id}-${j}">—</td>
+          </tr>`).join('')}
+      </table>
+      <div class="result" id="res-${p.id}"><span class="muted">Introduce las medidas del modelo.</span></div>
+      ${p.note?`<p class="muted" style="font-size:.85rem;margin:8px 0 0">ℹ️ ${p.note}</p>`:''}
+    </div>`).join('');
+  document.querySelectorAll('.mdl').forEach(el=>{
+    el.value = state.model[el.dataset.k] ?? '';
+    el.oninput = ()=>{ state.model[el.dataset.k] = el.value; save(); calc(); };
+  });
+  document.querySelectorAll('.clr').forEach(el=>{
+    const [pid,j] = el.dataset.k.split('.');
+    el.value = state.clr[el.dataset.k] ?? P.find(p=>p.id===pid).dims[j].clr;
+    el.oninput = ()=>{ state.clr[el.dataset.k] = el.value; save(); calc(); };
+  });
+  $('#designHeight').value = state.designHeight;
+  $('#designHeight').oninput = e=>{ state.designHeight = parseFloat(e.target.value)||0; save(); calc(); };
+}
+
+function calc(){
+  const num = v => { const n=parseFloat(String(v??'').replace(',','.')); return isNaN(n)?null:n; };
+  // escala por estatura
+  const h = state.m.altura;
+  $('#hPerson').textContent = h>0 ? fmt(h)+' cm' : '—';
+  $('#hScale').textContent = (h>0 && state.designHeight>0) ? fmt(h/state.designHeight*100)+' %' : '—';
+
+  let sum = `ESCALAS DE IMPRESIÓN${state.name?' – '+state.name:''}\n`;
+  if(h>0 && state.designHeight>0) sum += `Escala general por estatura: ${fmt(h/state.designHeight*100)} %\n`;
+
+  P.forEach(p=>{
+    const res = {}; let any=false;
+    p.dims.forEach((d,j)=>{
+      const k = p.id+'.'+j;
+      const body = state.m[d.from];
+      const clr = num(state.clr[k] ?? d.clr) ?? 0;
+      const model = num(state.model[k]);
+      const needEl = $(`#need-${p.id}-${j}`), pctEl = $(`#pct-${p.id}-${j}`);
+      if(!(body>0)){ needEl.textContent = '· falta medida del cuerpo'; pctEl.textContent='—'; return; }
+      const needCm = body*(d.factor||1) + clr;          // tamaño interior necesario en cm
+      if(d.kind==='diam'){
+        const needDiam = needCm*10/Math.PI;             // mm
+        needEl.textContent = `· necesita Ø ≈ ${fmt(needDiam)} mm (contorno ${fmt(needCm)} cm)`;
+        if(model>0){ const s = needDiam/model*100; pctEl.textContent = fmt(s)+' %'; (res[d.axis]=res[d.axis]||[]).push(s); any=true; }
+        else pctEl.textContent='—';
+      } else {
+        const needMm = needCm*10;
+        needEl.textContent = `· necesita ≈ ${fmt(needMm)} mm`;
+        if(model>0){ const s = needMm/model*100; pctEl.textContent = fmt(s)+' %'; (res[d.axis]=res[d.axis]||[]).push(s); any=true; }
+        else pctEl.textContent='—';
+      }
+    });
+    const box = $('#res-'+p.id);
+    if(!any){ box.innerHTML = '<span class="muted">Introduce las medidas del modelo.</span>'; return; }
+    // por eje, la mayor (para que quepa)
+    const ax = {}; for(const a in res) ax[a] = Math.max(...res[a]);
+    const all = Object.values(ax);
+    const uni = Math.max(...all), mn = Math.min(...all);
+    const spread = (uni-mn)/uni*100;
+    let html = `<div>Escala uniforme recomendada: <span class="pct">${fmt(uni)} %</span></div>`;
+    let line = `\n▸ ${p.name}: uniforme ${fmt(uni)} %`;
+    if(all.length>1){
+      const x = ax.X ?? ax.XY, y = ax.Y ?? ax.XY ?? ax.X, z = ax.Z;
+      const parts = [];
+      if(x!=null) parts.push('X '+fmt(x)+' %');
+      if(y!=null) parts.push('Y '+fmt(y)+' %');
+      if(z!=null) parts.push('Z '+fmt(z)+' %');
+      html += `<div>Escala no uniforme: <b>${parts.join(' · ')}</b></div>`;
+      line += ` | no uniforme: ${parts.join(', ')}`;
+      if(spread>8) html += `<div class="warn">⚠️ Los ejes difieren un ${fmt(spread)} %: con escala uniforme la pieza quedará grande en algún eje. Considera la no uniforme.</div>`;
+      else html += `<div class="okc" style="font-size:.85rem">✔ Los ejes son parecidos: la escala uniforme irá bien.</div>`;
+    }
+    html += `<div class="muted" style="font-size:.8rem;margin-top:4px">Comprueba que el eje del slicer coincide con la orientación de la pieza (Z = alto tal como la imprimes).</div>`;
+    box.innerHTML = html; sum += line;
+  });
+  // comprobación mano/brazal
+  const mano = state.m.mano, mk = 'brazal.0', md = num(state.model[mk]);
+  if(mano>0 && md>0){
+    const s = Math.max(...['brazal.0','brazal.1'].map(k=>{ const d=P.find(p=>p.id==='brazal').dims[+k.split('.')[1]]; const b=state.m[d.from]; const c=num(state.clr[k]??d.clr)??0; const m=num(state.model[k]); return (b>0&&m>0)?(b+c)*10/Math.PI/m:0; }));
+    const innerCirc = md*s*Math.PI/10;
+    const ok = innerCirc >= mano;
+    $('#res-brazal').innerHTML += `<div class="${ok?'okc':'warn'}" style="font-size:.85rem;margin-top:4px">${ok?'✔':'⚠️'} Contorno interior en el codo ≈ ${fmt(innerCirc)} cm vs. mano ${fmt(mano)} cm ${ok?'(pasa la mano)':'(si es tubo cerrado NO pasará la mano: necesita apertura o más escala)'}</div>`;
+  }
+  $('#scaleSummary').value = sum;
+}
+$('#copyScale').onclick = ()=> copy($('#scaleSummary').value);
+
+/* ============================================================
+   PESTAÑAS
+   ============================================================ */
+function showView(v){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.view===v));
+  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active', s.id==='view-'+v));
+  if(v==='enviar') refreshSummary();
+  if(v==='escalar') calc();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showView(t.dataset.view));
+
+function refreshAll(){ refreshSummary(); calc(); }
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+load();
+buildMarks();
+buildPieces();
+// empezar en la primera medida pendiente
+const firstPending = M.findIndex(m=>state.m[m.id]===undefined);
+cur = firstPending<0 ? 0 : firstPending;
+render(); refreshAll();
+</script>
+</body>
+</html>
