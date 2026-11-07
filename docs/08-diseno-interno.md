@@ -69,7 +69,27 @@ ojos (z ≈ 268, adelante) quedan del lado de la cabeza.
 | **Imanes** | Muy fácil de abrir | Con 500 g de lastre, al levantar la pieza la tapa se puede caer |
 | **2 tornillos ocultos** bajo patitas de goma | El más robusto y barato | Hace falta un destornillador |
 
-### Ojos: insertos de resina transparente (hecho, 7/11/2026)
+### Paso 1 · Ahuecado (hecho, 7/11/2026)
+
+`hardware/modelado/ahuecar.py`: paredes de **3 mm**, superficie exterior intacta.
+
+| | |
+|---|---|
+| Resina maciza | 2.326 cm³ |
+| Resina hueca | **551 cm³ (−76 %)** |
+| Cavidad | una sola, conectada: cabeza ↔ cuerpo ↔ **patas** ↔ calavera ↔ roca |
+
+- **Las dos patas quedan huecas de punta a punta**: conducto mínimo de 4,5 mm (z ≈ 160).
+  Los cables (mazo de ~2,2 mm) pasan por ahí: no hace falta canal aparte.
+- Pico, plumas sueltas y punta de la cola quedan macizos (no admiten hueco de 5 mm).
+- Al estar todo conectado, la resina sin curar escurre por la abertura de la tapa inferior.
+
+![Cortes del ahuecado](img/hueco_cortes.png)
+
+### Ojos: primera versión (se rehace después del corte de la cabeza)
+
+> La primera versión tenía el iris por fuera. Se cambia: **liso por fuera**, iris en relieve
+> **por dentro** (más resina = más oscuro). Se rehace después de cortar la cabeza.
 
 ![Insertos](img/ojos_insertos.png)
 

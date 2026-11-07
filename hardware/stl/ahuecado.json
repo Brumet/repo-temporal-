@@ -1,0 +1,11 @@
+{
+  "pared_mm": 3.0,
+  "cuello_min_mm": 5.0,
+  "macizo_cm3": 2326.0,
+  "hueco_cm3": 550.6,
+  "cavidad_cm3": 1775.4,
+  "ahorro_%": 76.3,
+  "cavidades_cm3": [
+    1776.2
+  ]
+}
