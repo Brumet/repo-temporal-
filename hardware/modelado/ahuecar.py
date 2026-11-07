@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw
 from scipy import ndimage
 from skimage import measure
 
-PARED = 3.0        # grosor de pared (mm)
+PARED = float(sys.argv[3]) if len(sys.argv) > 3 else 3.0   # grosor de pared (mm)
 VOX = 0.5          # tamaño de vóxel (mm)
 CUELLO_MIN = 5.0   # cavidades más angostas que esto se rellenan (patas, pico, cola)
 

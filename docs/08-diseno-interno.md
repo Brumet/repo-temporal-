@@ -86,6 +86,42 @@ ojos (z ≈ 268, adelante) quedan del lado de la cabeza.
 
 ![Cortes del ahuecado](img/hueco_cortes.png)
 
+### ¿3 mm o 5 mm de pared?
+
+| Pared | Resina | Peso aprox. (1,15 g/cm³) |
+|---|---|---|
+| **3 mm** | 551 cm³ | ~630 g |
+| 4 mm | 701 cm³ | ~805 g |
+| 5 mm | 849 cm³ | ~975 g |
+
+**Decisión: 3 mm, con refuerzos locales.** Razones:
+- Lo que se rompe en una escultura de resina no es el cascarón sino lo que sobresale:
+  plumas sueltas, pico, cola y patas. Esas partes ya son macizas, así que pasar a 5 mm no las
+  protege; solo agrega 300 cm³ (+54 % de resina) y peso.
+- La carga real es mínima: cabeza + cuerpo sobre las patas son ~0,02 MPa de compresión.
+- Refuerzos donde sí importa: **5 mm en la franja del corte de la cabeza** (12 mm a cada lado),
+  y después en la roca donde asienta la tapa y van los tornillos.
+- Para resistencia a golpes rinde más una resina tipo ABS/tough que más espesor.
+- Pata sin cables: se puede meter una varilla de acero de 2 mm con epóxico por su conducto hueco.
+
+### Paso 2 · Corte de la cabeza (hecho, 7/11/2026)
+
+El corte **no es un plano**: sigue el canto real del collar, donde termina la correa y empieza
+el plumaje (`borde_collar.py` mide ese canto alrededor de todo el cuello).
+
+![Línea de corte](img/cabeza_linea.png)
+
+- **Cabeza**: 29,7 cm³. **Cuerpo**: 530,4 cm³. Una pieza cada uno.
+- **Unión para pegar** (`cortar_cabeza.py`): el cuerpo lleva un **labio de 5 mm** de alto por
+  dentro del cuello; la cabeza lleva su ranura. Holgura 0,15 mm para el pegamento. El labio sigue
+  la forma irregular del cuello: la cabeza **solo entra en una posición**.
+- Pared de 5 mm en la franja de la unión: el borde de la cabeza no queda frágil antes de pegar,
+  y el pegamento tiene canto + las dos caras del labio.
+- Los cables pasan por dentro del labio (cuello hueco).
+
+![Piezas separadas](img/cabeza_explo.png)
+![Corte de la unión](img/cabeza_union.png)
+
 ### Ojos: primera versión (se rehace después del corte de la cabeza)
 
 > La primera versión tenía el iris por fuera. Se cambia: **liso por fuera**, iris en relieve
