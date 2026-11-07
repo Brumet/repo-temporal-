@@ -30,6 +30,11 @@ def parpadeos(col, n=3):
 
 fx = lambda n, col, sx=128, ix=128, bri=90: {"on": True, "bri": bri, "transition": 7,
                                               "seg": [{"fx": n, "sx": sx, "ix": ix, "col": [col, [0, 0, 0]]}]}
+# Señal para la cámara: parpadeo blanco y 10 s de oscuridad antes de empezar
+print(f"Señal (parpadeo blanco) {datetime.now():%H:%M:%S} — la secuencia empieza en 10 s", flush=True)
+parpadeos([255, 255, 255], 3)
+post({"on": False, "transition": 0}); time.sleep(10 - 2.1)
+inicio = time.time()
 print(f"Grabación iniciada {datetime.now():%H:%M:%S}", flush=True)
 
 escena("Oscuridad", {"on": False, "transition": 0}, 4)
