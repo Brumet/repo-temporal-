@@ -98,6 +98,25 @@ en ámbar al arrancar. Soldado sin multímetro, con revisión visual por foto.
 Cada placa necesita: `POST /json/cfg {"hw":{"led":{"maxpwr":250,"ins":[{...,"pin":[4],"len":2,"maxpwr":250}]}}}`
 + reinicio. Hecho en la placa 3; **pendiente en 1, 2 y 4**.
 
+### ✅ Firmware propio en la placa 3 (7/11/2026)
+WLED 16.0.1 + `Cuervo_Estado` (avisos de configuración en los ojos) + temperatura
+del chip. Instalado por OTA, conserva interfaz y escenas. Chip a 45,5 °C en uso.
+Ver [`firmware/README.md`](firmware/README.md). Preset al arrancar = 1 fijado.
+
+### ✅ Prueba total en la placa 3
+Colores, brillo, escenas, efectos y temporizador correctos (confirmado a la vista).
+400 órdenes seguidas sin un fallo, sin reinicios; con blanco al 100 % el límite deja
+232 mA y los LEDs no calientan. 13 de 20 min de resistencia estables (se detuvo
+para grabar). Script: [`firmware/pruebas/prueba_total.py`](firmware/pruebas/prueba_total.py).
+
+### ✅ Instructivo para el cliente
+[`docs/instructivo/Instructivo-Cuervo.pdf`](docs/instructivo/Instructivo-Cuervo.pdf), 2 páginas A4.
+⚠️ Antes de imprimir: resolver `.local` en iPhone y confirmar los botones (aún sin soldar).
+
+### Pendiente de probar con el celular
+El flujo real de configuración con los avisos nuevos: borrar la WiFi de una placa
+y configurarla desde el celular (azul → blanco → verde, y una vez con clave mala → rojo).
+
 ## Lo siguiente, en orden
 
 ### 1. ✅ Confirmar que WLED arranca
@@ -151,7 +170,7 @@ con brillo ~50/255.
 | Acceso por **nombre mDNS**, nunca por IP | La IP la asigna DHCP y cambia; el nombre viaja con la pieza |
 | **Un nombre por unidad** (`cuervo-01.local`) | Dos piezas en la misma casa chocarían |
 | **Eliminar** el reset de fábrica del botón | 10 s de pulsación formatea y borra todos los presets |
-| Serie Cero sale con **WLED de fábrica** | Matter es I+D en paralelo; no puede bloquear 5 entregas |
+| ~~Serie Cero sale con WLED de fábrica~~ → **WLED 16.0.1 + módulos propios** (7/11/2026) | Los ojos deben avisar el paso de la configuración; WLED no lo trae. Matter sigue aparte |
 | Serie Cero = **4 cuervos** (cuervo-01 a 04) | Decisión del 7/11/2026 |
 | **WiFi sleep activo** en todas | Se calienta claramente menos; +90 ms de respuesta, imperceptible |
 

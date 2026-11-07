@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cuervo · Instructivo</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --tx:#141214; --tx2:#5b565c; --line:#e7e2dc; --red:#e3262f; --paper:#fbf9f6; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #d9d4cc; color: var(--tx);
+    font-family: "Segoe UI Variable", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; margin: 10mm auto; background: var(--paper); position: relative;
+    padding: 13mm 16mm 26mm; overflow: hidden; page-break-after: always; box-shadow: 0 4px 30px rgba(0,0,0,.15); }
+  @media print { html, body { background: none; } .page { margin: 0; box-shadow: none; } }
+  .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6mm; border-bottom: 1.2px solid var(--tx); }
+  .top img { height: 13mm; }
+  .top .serie { text-align: right; font-size: 8.5pt; letter-spacing: .14em; text-transform: uppercase; color: var(--tx2); line-height: 1.6; }
+  .top .serie b { color: var(--tx); letter-spacing: .1em; }
+  .num { display: inline-block; min-width: 14mm; border-bottom: 1px solid var(--tx); text-align: center; color: var(--tx); }
+  h1 { font-size: 28pt; font-weight: 700; letter-spacing: -.02em; margin: 7mm 0 2mm; line-height: 1; }
+  h1 span { color: var(--red); }
+  .lead { font-size: 10.5pt; line-height: 1.5; color: var(--tx2); max-width: 105mm; margin: 0; }
+  .hero { position: absolute; right: 10mm; top: 27mm; width: 72mm; opacity: .96; }
+  h2 { font-size: 12.5pt; margin: 0 0 2.2mm; display: flex; align-items: center; gap: 3mm; }
+  h2 i { font-style: normal; width: 7mm; height: 7mm; border-radius: 50%; background: var(--tx); color: #fff;
+    font-size: 9.5pt; display: grid; place-items: center; flex: none; }
+  section { margin-top: 5.5mm; }
+  p, li { font-size: 9.6pt; line-height: 1.48; }
+  p { margin: 0 0 2mm; }
+  ol { margin: 0; padding-left: 5mm; }
+  li { margin-bottom: 1mm; }
+  li b, p b { font-weight: 650; }
+  .box { background: #fff; border: 1px solid var(--line); border-radius: 4mm; padding: 3mm 4.5mm; }
+  .note { font-size: 8.8pt; color: var(--tx2); margin-top: 2.5mm; }
+  .note b { color: var(--tx); }
+  code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 9.5pt; background: #f1ece6; padding: .4mm 1.5mm; border-radius: 1.2mm; }
+  .wide { width: 105mm; }
+  table.ojos { width: 100%; border-collapse: collapse; }
+  table.ojos td { padding: 1.7mm 2mm; border-bottom: 1px solid var(--line); font-size: 9.8pt; vertical-align: middle; }
+  table.ojos tr:last-child td { border-bottom: 0; }
+  .eye { display: inline-flex; gap: 2.2mm; vertical-align: middle; }
+  .eye span { width: 5.5mm; height: 3.6mm; border-radius: 50%; display: inline-block; }
+  .b span { background: #1d4fff; box-shadow: 0 0 6px #4d78ff; }
+  .bf span { background: #1d4fff; }
+  .w span { background: #fff; border: 1px solid #c8c2bb; box-shadow: 0 0 5px #bbb; }
+  .r span { background: #e3262f; box-shadow: 0 0 6px #ff5a5a; }
+  .g span { background: #12c447; box-shadow: 0 0 6px #4be37a; }
+  .a span { background: #ff6a00; box-shadow: 0 0 6px #ff9a4a; }
+  .eyecol { width: 18mm; }
+  .what { font-weight: 650; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .foot { position: absolute; left: 16mm; right: 16mm; bottom: 9mm; display: flex; justify-content: space-between;
+    align-items: flex-end; font-size: 7.6pt; color: var(--tx2); border-top: 1px solid var(--line); padding-top: 3mm; line-height: 1.5; }
+  .foot b { color: var(--tx); font-size: 10pt; letter-spacing: .04em; }
+  .foot .web { color: var(--red); font-weight: 700; font-size: 11pt; letter-spacing: .06em; }
+  .tag { display: inline-block; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 1.5mm; }
+  .btn { display: grid; grid-template-columns: 22mm 1fr; gap: 1.2mm 3mm; font-size: 10pt; line-height: 1.45; }
+  .btn dt { font-weight: 650; }
+  .btn dd { margin: 0; color: var(--tx2); }
+</style>
+</head>
+<body>
+
+<!-- ——— Página 1 ——— -->
+<div class="page">
+  <div class="top">
+    <img src="brumet-negro.svg" alt="Brumet">
+    <div class="serie"><b>Cuervo · Serie Cero</b><br>Pieza <span class="num">&nbsp;</span> de 4</div>
+  </div>
+
+  <img class="hero" src="cuervo.png" alt="">
+
+  <h1>Tu cuervo<br>tiene <span>mirada</span>.</h1>
+  <p class="lead">Esculpido, impreso y pintado a mano. Sus ojos se encienden con el color y el efecto que elijas:
+    con un botón, desde tu celular o con la voz. Funciona sin aplicaciones, sin cuentas y sin nube.</p>
+
+  <section class="wide">
+    <h2><i>1</i>Enciéndelo</h2>
+    <p>Conecta el cable <b>USB-C</b> a un cargador de celular (5 V). La primera vez, los ojos
+      <b>respiran en azul</b>: el cuervo está listo para conectarse a tu WiFi.</p>
+    <p class="note"><b>¿Sin WiFi?</b> También funciona: usa el botón de la base (página 2).</p>
+  </section>
+
+  <section class="wide">
+    <h2><i>2</i>Conéctalo a tu WiFi</h2>
+    <ol>
+      <li>En tu celular, abre <b>Ajustes → WiFi</b> y elige la red <code>Cuervo-<span class="num" style="min-width:7mm">&nbsp;</span></code>.
+        Contraseña: <code>wled1234</code>. Los ojos quedan <b>azul fijo</b>.</li>
+      <li>Abre el navegador y entra a <code>4.3.2.1</code>.</li>
+      <li>Toca <b>⚙ Ajustes → WiFi y red</b>. Escribe el nombre de tu red en <b>Network name (SSID)</b>
+        y su clave en <b>Network password</b>.</li>
+      <li>Toca <b>Save &amp; Connect</b>. Los ojos destellan en blanco mientras se conecta…</li>
+      <li>…y parpadean <b>3 veces en verde</b>: ¡listo! Vuelve tu celular a tu WiFi de siempre.</li>
+    </ol>
+    <p class="note"><b>Importante:</b> el cuervo usa redes de <b>2,4 GHz</b>. Si tu router tiene dos redes
+      (por ejemplo “Casa” y “Casa-5G”), elige la que <b>no</b> dice 5G.</p>
+  </section>
+
+  <section>
+    <h2><i>3</i>Qué te dicen sus ojos</h2>
+    <div class="box">
+      <table class="ojos">
+        <tr><td class="eyecol"><span class="eye b"><span></span><span></span></span></td>
+            <td class="what">Azul respirando</td><td>Esperando que lo conectes a tu WiFi.</td></tr>
+        <tr><td class="eyecol"><span class="eye bf"><span></span><span></span></span></td>
+            <td class="what">Azul fijo</td><td>Tu celular está conectado a la red del cuervo.</td></tr>
+        <tr><td class="eyecol"><span class="eye w"><span></span><span></span></span></td>
+            <td class="what">Destellos blancos</td><td>Se está conectando a tu WiFi.</td></tr>
+        <tr><td class="eyecol"><span class="eye r"><span></span><span></span></span></td>
+            <td class="what">3 parpadeos rojos</td><td>No pudo conectarse. Revisa el nombre y la clave, e inténtalo de nuevo.</td></tr>
+        <tr><td class="eyecol"><span class="eye g"><span></span><span></span></span></td>
+            <td class="what">3 parpadeos verdes</td><td>¡Conectado! A partir de aquí, tus colores.</td></tr>
+        <tr><td class="eyecol"><span class="eye a"><span></span><span></span></span></td>
+            <td class="what">Ámbar</td><td>Su mirada de siempre. Así enciende cada vez.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div><b>Brumet</b><br>Hecho a mano en Colombia</div>
+    <div class="web">brumet.co</div>
+  </div>
+</div>
+
+<!-- ——— Página 2 ——— -->
+<div class="page">
+  <div class="top">
+    <img src="brumet-negro.svg" alt="Brumet">
+    <div class="serie"><b>Cuervo · Serie Cero</b><br>Instructivo</div>
+  </div>
+
+  <section>
+    <h2><i>4</i>Contrólalo desde tu celular</h2>
+    <p>Con tu celular en tu WiFi de siempre, abre el navegador y entra a:</p>
+    <p style="font-size:14pt;font-weight:700;margin:1mm 0 2.5mm">http://cuervo-<span class="num">&nbsp;</span>.local</p>
+    <div class="grid2">
+      <div class="box">
+        <span class="tag">Qué puedes hacer</span>
+        <p><b>Escenas:</b> Ámbar, Vela, Sangre y Espectro, o guarda las tuyas.<br>
+          <b>Color</b> con la rueda, <b>brillo</b>, <b>efectos</b> (vela, fuego, latido…) y
+          <b>temporizador</b> para que se apague solo.</p>
+      </div>
+      <div class="box">
+        <span class="tag">Tenlo a un toque</span>
+        <p>En el navegador, toca <b>Compartir → Agregar a pantalla de inicio</b>. Quedará como una app,
+          con el logo de Brumet.</p>
+      </div>
+    </div>
+    <p class="note"><b>iPhone con Chrome:</b> si la página no abre, ve a <b>Ajustes → Chrome</b> y activa
+      <b>Red local</b>. En Safari no hace falta.</p>
+  </section>
+
+  <section>
+    <h2><i>5</i>Los botones de la base</h2>
+    <div class="box">
+      <dl class="btn">
+        <dt>Botón principal</dt><dd><b>Un toque:</b> enciende o apaga los ojos.<br>
+          <b>Mantener 5 segundos:</b> vuelve a abrir la red <code>Cuervo-…</code> para conectarlo a otro WiFi (paso 2).</dd>
+        <dt>Botón de brillo</dt><dd><b>Mantener:</b> sube el brillo. Suelta y vuelve a mantener para bajarlo.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <h2><i>6</i>Si algo no funciona</h2>
+    <div class="box">
+      <table class="ojos">
+        <tr><td class="what" style="width:52mm">Los ojos no encienden</td><td>Revisa el cable y prueba otro cargador de celular.</td></tr>
+        <tr><td class="what">No aparece la red Cuervo</td><td>Desconéctalo, espera 5 segundos y vuelve a conectarlo. Aparece a los pocos segundos.</td></tr>
+        <tr><td class="what">3 parpadeos rojos</td><td>La clave o el nombre de la red no coinciden. Recuerda: red de 2,4 GHz.</td></tr>
+        <tr><td class="what">Cambiaste de router</td><td>Mantén el botón principal 5 segundos y repite el paso 2.</td></tr>
+        <tr><td class="what">La página no abre</td><td>Tu celular debe estar en la misma WiFi que el cuervo.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><i>7</i>Cuidados</h2>
+    <p>Es una pieza para interiores. No la mojes ni la expongas al sol directo. Límpiala con un pincel suave y seco:
+      la pintura es a mano. No tapes la base: por ahí respira la electrónica.</p>
+  </section>
+
+  <div class="foot">
+    <div><b>Brumet</b><br>Firmware abierto: WLED (licencia EUPL v1.2) con módulos propios de Brumet.<br>
+      Código fuente: github.com/Brumet/repo-temporal-</div>
+    <div class="web">brumet.co</div>
+  </div>
+</div>
+
+</body>
+</html>
