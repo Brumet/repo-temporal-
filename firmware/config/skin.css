@@ -1,0 +1,90 @@
+/*
+ * Cuervo — piel de la interfaz de WLED
+ *
+ * WLED carga /skin.css automáticamente en cualquier navegador (opción
+ * "custom CSS" activa por defecto). Se sube a la placa por /edit o con:
+ *   curl -F "data=@skin.css;filename=skin.css" http://cuervo-01.local/upload
+ * (sin barra inicial en filename: con "/skin.css" WLED responde
+ * "File Uploaded!" pero no guarda nada)
+ *
+ * Obra derivada de la interfaz de WLED (EUPL v1.2). Ver docs/06-wled-fork.md.
+ */
+
+:root {
+  /* Fondos: negro pluma con un tinte violeta apenas visible */
+  --c-1: #0b0a0e;
+  --c-2: #141219;
+  --c-3: #1d1a24;
+  --c-4: #282431;
+  --c-5: #353042;
+  --c-6: #463f57;
+  --c-8: #8a8199;
+
+  /* Textos: blanco hueso, cálido, nunca blanco puro */
+  --c-b: #c9c0b4;
+  --c-c: #d8d0c4;
+  --c-d: #e4ddd2;
+  --c-e: #ede7dd;
+  --c-f: #f6f1e8;
+
+  /* Acentos: el ámbar de los ojos */
+  --c-y: #ff7a1a;
+  --c-r: #c8341f;
+  --c-g: #6fae4a;
+  --c-l: #6f6ab8;
+
+  --c-o: rgba(20, 18, 25, .92);
+  --c-tb: rgba(20, 18, 25, var(--t-b));
+  --c-tba: rgba(255, 122, 26, .16);
+  --c-tbh: rgba(70, 63, 87, var(--t-b));
+}
+
+/* Reflejo iridiscente de las plumas detrás de todo */
+body {
+  background:
+    radial-gradient(ellipse at 15% -10%, rgba(76, 60, 140, .22), transparent 55%),
+    radial-gradient(ellipse at 110% 110%, rgba(30, 70, 110, .18), transparent 50%),
+    var(--c-1);
+  background-attachment: fixed;
+}
+
+/* Pestaña activa y botones encendidos: brillo ámbar */
+.tab button.active {
+  color: var(--c-y);
+  box-shadow: inset 0 -2px 0 var(--c-y);
+}
+.active {
+  background-color: rgba(255, 122, 26, .22) !important;
+  color: #ffd9b8;
+}
+.selected {
+  background: var(--c-4);
+  box-shadow: inset 3px 0 0 var(--c-y);
+}
+
+/* Sliders: la parte llena en ámbar, el botón como un ojo encendido */
+.sliderdisplay {
+  --bg: var(--c-y);
+}
+input[type=range]::-webkit-slider-thumb {
+  background: #ffb066;
+  box-shadow: 0 0 8px rgba(255, 122, 26, .8);
+}
+input[type=range]::-moz-range-thumb {
+  background: #ffb066;
+  box-shadow: 0 0 8px rgba(255, 122, 26, .8);
+}
+
+/* Nombre de la pieza en el borde: discreto, en ámbar tenue */
+#namelabel {
+  color: rgba(255, 150, 70, .75);
+  letter-spacing: 2px;
+}
+
+/* Tarjetas de presets y efectos: bordes suaves */
+.lstI {
+  border-radius: 14px;
+}
+.lstI.selected {
+  box-shadow: inset 3px 0 0 var(--c-y), 0 0 12px rgba(255, 122, 26, .12);
+}

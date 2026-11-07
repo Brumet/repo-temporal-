@@ -11,14 +11,59 @@ Archivos a versionar en `firmware/config/`:
 |---|---|
 | `presets.json` | Presets y playlists |
 | `cfg.json` | GPIO, cantidad de LEDs, botón, nombres |
-| `style.css` | Interfaz web con la marca propia |
+| `skin.css` | Colores de marca para la interfaz WLED clásica (WLED lo carga solo; el nombre tiene que ser exactamente este) |
 
-Placa nueva: instalar firmware → subir los tres archivos → **30 segundos**.
+Además, la interfaz propia (`firmware/ui/`):
+
+| Archivo en la placa | Origen | Contenido |
+|---|---|---|
+| `index.htm` | `firmware/ui/index.htm` | Interfaz Brumet. WLED la sirve en `/` en lugar de la suya |
+| `wled.htm` | La página `/` de WLED, guardada **antes** de subir `index.htm` | Interfaz clásica, enlazada desde Ajustes → Avanzado |
+| `cuervo.png` | `firmware/ui/cuervo.png` | Render del modelo, transparente (WebP con nombre .png) |
+| `fondo.jpg` | `firmware/ui/fondo.jpg` | Fondo de plumas |
+| `luz.png` | `firmware/ui/luz.png` | Luz de los ojos; la página la tiñe con el color real |
+| `icon.png` | `firmware/ui/icon.png` | Ícono para "Agregar a pantalla de inicio" |
+
+Borrar un archivo: `curl "http://cuervo-01.local/edit?func=delete&path=/archivo"`
+
+Subir siempre sin barra inicial en el nombre:
+`curl -F "data=@index.htm;filename=index.htm" http://cuervo-01.local/upload`
+
+Placa nueva: instalar firmware → guardar `wled.htm` → subir los archivos → **1 minuto**.
 
 > ⚠️ **Antes de empacar cada unidad, borrar el SSID y la contraseña de WiFi.**
 > De lo contrario se está enviando la clave de la casa dentro de la escultura.
 > Además, al borrarlas la pieza arranca en modo de configuración, que es
 > justamente lo que se necesita.
+
+## Clonado por USB (probado el 7/11/2026)
+
+Más rápido que subir archivos: copiar la memoria completa de una placa terminada.
+
+```bash
+# 1. Leer la placa modelo (una sola vez). Contiene la WiFi: NO versionar.
+python -m esptool --port COM3 -b 921600 read-flash 0 ALL cuervo01_full.bin
+# 2. Grabar cada placa nueva (verifica el hash al final)
+python -m esptool --port COM7 -b 921600 write-flash 0 cuervo01_full.bin
+# 3. Arrancarla. El reinicio normal por RTS la deja en modo descarga;
+#    el de watchdog sí arranca WLED (el error de pySerial es normal: el puerto se cae al reiniciar)
+python -m esptool --port COM7 --before no-reset --after watchdog-reset read-mac
+```
+
+4. Preguntarle la IP por Improv y renombrarla: `POST /json/cfg`
+   `{"id":{"mdns":"cuervo-0N","name":"Cuervo 0N"},"ap":{"ssid":"Cuervo-0N"}}`
+   y reiniciar con `{"rb":true}`.
+
+| Placa | MAC | Nombre |
+|---|---|---|
+| 1 | `84:fc:e6:fc:fa:34` | cuervo-01 |
+| 2 | `cc:8d:a2:c0:5a:38` | cuervo-02 |
+| 3 | `cc:8d:a2:c1:66:24` | cuervo-03 |
+| 4 | `f0:f5:bd:a2:a9:a8` | cuervo-04 |
+
+> La imagen de la placa 1 tiene WiFi sleep **apagado** y los LEDs en el **pin 2 con 30 LEDs**
+> (valores de fábrica de WLED). Al clonar, en el paso 4: `"wifi":{"sleep":true}` y
+> `"hw":{"led":{"maxpwr":250,"ins":[{"pin":[4],"len":2,"maxpwr":250,...}]}}`.
 
 ## Presets de catálogo
 

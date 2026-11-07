@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a090d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cuervo">
+<title>Cuervo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-80 -293 1115 1115'%3E%3Crect x='-80' y='-293' width='1115' height='1115' rx='240' fill='%23000'/%3E%3Cg fill='%23fff'%3E%3Cpath d=%22M302.12,329.37h-69.18v193.95h-58.33v-193.84h-69.04c0,5.27.04,9.93,0,14.58-.33,34.39.48,68.84-1.3,103.16-2.34,45.28-31,73.98-76.19,79.01-9.02,1-18.07,1.7-28,2.62v-54.04c7.03-1.15,14.18-1.98,21.18-3.54,15.1-3.36,24.73-12.63,25.06-27.9.83-37.62.27-75.27.27-114.3H0v-50.01h359.2v244.63h-57.08v-194.31Z%22/%3E%3Cpath d=%22M305.29,5.24c.77,35.15-7.35,66.75-28.01,96.72h28.02c.61,38.55-7.52,72.98-32.09,101.79-37.49,43.95-88.51,48.24-142.36,46.46v-48.93c17.58-1.14,35.08-1.44,52.35-3.57,34.62-4.25,59.7-31.56,60.32-64.4-13.21,4.65-26.1,11.47-39.69,13.45-23.38,3.41-47.18,4.3-70.85,5.15-7.58.28-10.79,2.67-13.28,9.46-10.2,27.82-24.32,53.2-48.14,71.95-18.5,14.56-39.8,20.76-63.88,21.13v-57.99c33.05-2.91,48.6-26.19,57.35-54.03,8.69-27.67,13.82-56.46,20.97-86.72H7.88V5.24h297.41ZM136.42,101.48c46.32,4.89,93.97-6.22,104.79-46.32-31.19,0-62.13-.14-93.07.28-2.3.03-6.14,3.79-6.56,6.28-2.17,12.88-3.46,25.91-5.16,39.76Z%22/%3E%3Cpath d=%22M331.04,255.67v-59.37c28.47-2.34,43.42-20.74,53.81-44.35,13.37-30.38,18.06-62.67,21.73-96.4h-75.23V5.33h291.6c6.08,39.97-7.96,112.66-76.44,143.97,14.11,34.15,42.3,44.98,77.21,46.78v58.38c-36.19-.69-69.22-9.33-96.99-33.52-16.31-14.21-28.33-31.53-35.33-51.97-2.2-6.4-5.55-7.34-11.72-8.23-24.6-3.54-39.97,2.69-50.1,28.72-11.54,29.63-35.07,51.09-66.96,60.42-9.68,2.83-19.92,3.72-31.57,5.8ZM466.08,55.76c-2.78,18.69-5.38,36.19-7.98,53.68,53.86,8.45,103.78-17.36,104.75-53.68h-96.77Z%22/%3E%3Cpath d=%22M852.22,5.08h58.54v244.88h-58.11v-54.74c-5.08,4.39-8.27,7.14-11.45,9.91-33.97,29.53-74.07,43.37-118.47,45.09-23.68.92-47.43.16-72.02.16v-49.88h45.29c.24-4.19.6-7.66.6-11.12.04-30.36.07-60.72.01-91.08-.06-30.48-9.68-40.77-39.92-42.9-1.79-.13-3.58-.32-6.1-.55V2.42c43.65-12.06,96.67,22.63,102.15,68.79,3.04,25.64,2.18,51.77,2.77,77.68.34,14.59.06,29.2.06,44.98,3.47-.57,6.24-.66,8.77-1.5,50.76-16.89,85.58-63.39,87.72-118.26.88-22.57.15-45.2.15-69.01Z%22/%3E%3Cpath d=%22M394.48,528.45v-53.82c5.51-1.11,10.49-1.99,15.42-3.13,12.42-2.87,19.81-10.86,21.58-23.27,1.23-8.64,1.48-17.47,1.53-26.22.17-30.64.07-61.27.07-93.12h-38.52v-49.87h248.49v49.45h-150.98v39.85h124.71v49.98h-125.24c-.06,35.45-1.53,69.78-32.79,92.77-18.79,13.82-40.81,16.48-64.27,17.37Z%22/%3E%3Cpath d=%22M955.45,527.8c-97.3.08-199.96-45.32-237.92-168.28h-45.48v-49.97h36.04c-.61-10.91-1.13-20.23-1.7-30.47h57.9c.95,9.27,1.94,18.93,3.05,29.72h161.91v50.01h-147.83c10.54,58.64,81.58,103.74,174.03,111v58Z%22/%3E%3Cpath d=%22M491.72,522.21v-48.51c20.25,0,39.89,0,59.53,0,5.49,0,10.98.1,16.46-.06,19.66-.57,26.53-6.6,29.91-26.07.3-1.75.75-3.47,1.18-5.4h55.82c4.92,39.01-23.02,76.63-61.91,79.53-33.04,2.46-66.4.51-100.99.51Z%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/icon.png">
+<style>
+/*
+ * Cuervo — interfaz propia de Brumet para la escultura con ojos LED.
+ * Habla con el firmware solo por la API pública de WLED (/json, /ws).
+ */
+:root{
+  --bg:#0a090d;
+  --card:rgba(14,12,18,.38);
+  --card-hi:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.07);
+  --tx:#f5f2ec;
+  --tx2:rgba(245,242,236,.62);
+  --tx3:rgba(245,242,236,.38);
+  --acc:#e3262f;
+  --hi:#f5f2ec;
+  --eye:#ff6400;
+  --glow:.8;
+  --r:24px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable","Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--font);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:#07060a}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+input{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom))}
+
+/* ——— Barra superior ——— */
+.top{display:flex;align-items:center;gap:12px;padding:6px 2px 18px}
+.logo{width:58px;height:32px;flex:none;color:#fff}
+.ttl{flex:1;min-width:0}
+.ttl h1{margin:0;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl small{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--tx2);margin-top:2px}
+.dot{width:7px;height:7px;border-radius:50%;background:#46c46b;box-shadow:0 0 8px #46c46b}
+.dot.off{background:#d6584a;box-shadow:0 0 8px #d6584a}
+.round{width:40px;height:40px;border-radius:50%;background:var(--card-hi);display:grid;place-items:center;flex:none;transition:transform .15s,background .2s}
+.round:active{transform:scale(.92)}
+.round svg{width:21px;height:21px}
+
+/* ——— Rejilla ——— */
+.grid{display:grid;gap:14px}
+@media(min-width:900px){
+  .grid{grid-template-columns:1fr 1fr;align-items:start}
+  .col{display:grid;gap:14px}
+}
+@media(max-width:899px){.col{display:contents}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.hd{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 12px}
+.hd h2{margin:0;font-size:20px;font-weight:650;letter-spacing:-.01em}
+.hd span{font-size:14px;color:var(--tx2);font-variant-numeric:tabular-nums}
+
+/* ——— Escena fija: fondo de plumas + cuervo real; los paneles pasan por encima ——— */
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.scene .bgi{position:absolute;inset:-2%;background:#07060a url(/fondo.jpg) center/cover no-repeat;opacity:.95}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 45% at 50% 30%,color-mix(in srgb,var(--eye) calc(var(--glow)*16%),transparent),transparent 70%),linear-gradient(180deg,rgba(7,6,10,.15),rgba(7,6,10,.55) 85%)}
+.stage{position:absolute;left:50%;top:calc(58px + env(safe-area-inset-top));height:min(74vh,150vw);aspect-ratio:4/5;transform:translateX(-50%) translateY(calc(var(--scr,0)*-6vh));transition:transform .12s linear}
+.stage img{position:absolute;inset:0;width:100%;height:100%;display:block;transition:filter .6s}
+.glow,.bloom i{position:absolute;inset:0;background:var(--eye);-webkit-mask:url(/luz.png) center/100% 100% no-repeat;mask:url(/luz.png) center/100% 100% no-repeat;mix-blend-mode:screen;transition:opacity .5s,background-color .4s}
+.glow{opacity:var(--glow)}
+.bloom{position:absolute;inset:0;filter:blur(9px);opacity:calc(var(--glow)*1.1);mix-blend-mode:screen;transition:opacity .5s}
+.bloom i{mix-blend-mode:normal}
+.dim .stage img{filter:brightness(.7)}
+.wrap{position:relative;z-index:1}
+.hero{position:relative;text-align:center;user-select:none;-webkit-user-select:none;height:calc(min(74vh,150vw) - 10px);display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:10px}
+.state{font-size:15px;color:var(--tx2);margin:0 0 12px;text-shadow:0 1px 8px #000}
+.state b{color:var(--tx);font-weight:600}
+.pwr{width:68px;height:68px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:var(--acc);color:#fff;box-shadow:0 10px 30px rgba(227,38,47,.45);transition:all .3s}
+.pwr svg{width:30px;height:30px}
+.off .pwr{background:rgba(255,255,255,.14);color:var(--tx);box-shadow:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.pwr:active{transform:scale(.92)}
+@media(min-width:900px){
+  .stage{left:25%;top:50%;height:min(92vh,62vw);transform:translate(-50%,-50%)}
+  .wrap{margin-left:50%;max-width:620px;padding-left:8px}
+  .grid{grid-template-columns:1fr}
+  .hero{height:auto;padding:4px 0 18px}
+}
+
+/* ——— Slider estilo Centro de Control ——— */
+.sl{position:relative;height:54px;border-radius:17px;background:rgba(255,255,255,.08);overflow:hidden;touch-action:none;cursor:pointer;outline:none}
+.sl:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 60%,transparent)}
+.sl i{position:absolute;inset:0 auto 0 0;width:50%;background:var(--hi);border-radius:inherit;border-top-right-radius:6px;border-bottom-right-radius:6px}
+.sl svg{position:absolute;left:16px;top:50%;width:22px;height:22px;transform:translateY(-50%);color:#1a1208;mix-blend-mode:normal;pointer-events:none}
+.sl.thin{height:36px;border-radius:12px}
+.sl.thin i{background:rgba(255,255,255,.75)}
+.sl.thin svg{display:none}
+.lbl{display:flex;justify-content:space-between;font-size:13px;color:var(--tx2);margin:14px 2px 7px}
+
+/* ——— Escenas ——— */
+.scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+.sc{position:relative;text-align:left;padding:14px;border-radius:18px;background:var(--card-hi);min-height:92px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s,background .2s;user-select:none;-webkit-user-select:none}
+.sc:active{transform:scale(.96)}
+.sc .sw{width:30px;height:30px;border-radius:50%;box-shadow:0 0 14px var(--c)}
+.sc b{font-size:15px;font-weight:600;margin-top:12px}
+.sc small{font-size:12px;color:var(--tx3)}
+.sc.on{background:#f5f2ec;color:#16130f}
+.sc.on small{color:rgba(22,19,15,.55)}
+.sc.add{border:1.5px dashed rgba(255,255,255,.18);background:transparent;align-items:center;justify-content:center;color:var(--tx2);font-size:14px;gap:6px}
+.sc.add svg{width:24px;height:24px}
+.empty{color:var(--tx3);font-size:14px;padding:6px 2px 12px}
+
+/* ——— Color ——— */
+.wheel{position:relative;width:min(240px,70vw);aspect-ratio:1;margin:4px auto 18px;border-radius:50%;background:radial-gradient(closest-side,#fff,rgba(255,255,255,0)),conic-gradient(from 90deg,red,#ff0,lime,cyan,blue,#f0f,red);touch-action:none;cursor:crosshair;box-shadow:0 0 0 1px var(--line),0 18px 50px rgba(0,0,0,.45)}
+.wheel::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(closest-side,transparent 96%,rgba(0,0,0,.25))}
+.knob{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.5);pointer-events:none;z-index:1;background:var(--eye)}
+.sws{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:10px;justify-items:center}
+.sws button{width:38px;height:38px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:transform .15s}
+.sws button:active{transform:scale(.88)}
+.sws button.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--tx)}
+
+/* ——— Efectos ——— */
+.fx{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.fx button{padding:12px 10px;border-radius:14px;background:var(--card-hi);font-size:14px;font-weight:500;transition:background .2s,transform .15s}
+.fx button:active{transform:scale(.95)}
+.fx button.on{background:var(--hi);color:#16130f;font-weight:650}
+
+/* ——— Control segmentado ——— */
+.seg{display:flex;background:rgba(255,255,255,.08);border-radius:12px;padding:3px;gap:2px}
+.seg button{flex:1;min-width:0;padding:9px 2px;border-radius:9px;font-size:13px;font-weight:500;color:var(--tx2);transition:all .2s;white-space:nowrap}
+.seg button.on{background:rgba(255,255,255,.2);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.note{font-size:13px;color:var(--tx2);margin:10px 2px 0;min-height:1em}
+
+/* ——— Hoja de ajustes ——— */
+.veil{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:9}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:88vh;overflow:auto;background:#17151c;border-radius:26px 26px 0 0;padding:10px 16px calc(24px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.9,.25,1);z-index:10;box-shadow:0 -10px 40px rgba(0,0,0,.5)}
+.open .veil{opacity:1;pointer-events:auto}
+.open .sheet{transform:none}
+.grab{width:38px;height:5px;border-radius:3px;background:rgba(255,255,255,.22);margin:0 auto 12px}
+.sheet h3{font-size:22px;margin:4px 4px 16px;display:flex;justify-content:space-between;align-items:center}
+.sheet h3 button{font-size:16px;color:var(--acc);font-weight:600}
+.grp{font-size:13px;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;margin:20px 6px 8px}
+.list{background:rgba(255,255,255,.06);border-radius:14px;overflow:hidden}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;font-size:16px;min-height:48px}
+.row+.row{border-top:1px solid var(--line)}
+.row span:last-child{color:var(--tx2);text-align:right;font-variant-numeric:tabular-nums}
+a.row{color:inherit;text-decoration:none}
+a.row::after{content:"›";color:var(--tx3);font-size:22px;line-height:0}
+.row input{flex:1;min-width:0;background:none;border:0;outline:none;text-align:right;color:var(--tx2);font-size:16px}
+.row .seg{flex:1;max-width:240px}
+.brand{display:flex;flex-direction:column;align-items:center;gap:8px;margin:28px 0 6px;color:var(--tx3);font-size:12px;text-align:center;line-height:1.5}
+.brand svg{width:120px;height:66px;color:#fff}
+.brand a{color:var(--tx2)}
+.brand a.web{color:var(--acc);font-size:14px;font-weight:600;letter-spacing:.04em;text-decoration:none}
+
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-140%);background:rgba(40,37,46,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:10px 18px;border-radius:20px;font-size:14px;z-index:20;transition:transform .35s cubic-bezier(.2,.9,.25,1)}
+.toast.show{transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bm" viewBox="0 0 955.45 528.84"><g fill="currentColor"><path d="M302.12,329.37h-69.18v193.95h-58.33v-193.84h-69.04c0,5.27.04,9.93,0,14.58-.33,34.39.48,68.84-1.3,103.16-2.34,45.28-31,73.98-76.19,79.01-9.02,1-18.07,1.7-28,2.62v-54.04c7.03-1.15,14.18-1.98,21.18-3.54,15.1-3.36,24.73-12.63,25.06-27.9.83-37.62.27-75.27.27-114.3H0v-50.01h359.2v244.63h-57.08v-194.31Z"/><path d="M305.29,5.24c.77,35.15-7.35,66.75-28.01,96.72h28.02c.61,38.55-7.52,72.98-32.09,101.79-37.49,43.95-88.51,48.24-142.36,46.46v-48.93c17.58-1.14,35.08-1.44,52.35-3.57,34.62-4.25,59.7-31.56,60.32-64.4-13.21,4.65-26.1,11.47-39.69,13.45-23.38,3.41-47.18,4.3-70.85,5.15-7.58.28-10.79,2.67-13.28,9.46-10.2,27.82-24.32,53.2-48.14,71.95-18.5,14.56-39.8,20.76-63.88,21.13v-57.99c33.05-2.91,48.6-26.19,57.35-54.03,8.69-27.67,13.82-56.46,20.97-86.72H7.88V5.24h297.41ZM136.42,101.48c46.32,4.89,93.97-6.22,104.79-46.32-31.19,0-62.13-.14-93.07.28-2.3.03-6.14,3.79-6.56,6.28-2.17,12.88-3.46,25.91-5.16,39.76Z"/><path d="M331.04,255.67v-59.37c28.47-2.34,43.42-20.74,53.81-44.35,13.37-30.38,18.06-62.67,21.73-96.4h-75.23V5.33h291.6c6.08,39.97-7.96,112.66-76.44,143.97,14.11,34.15,42.3,44.98,77.21,46.78v58.38c-36.19-.69-69.22-9.33-96.99-33.52-16.31-14.21-28.33-31.53-35.33-51.97-2.2-6.4-5.55-7.34-11.72-8.23-24.6-3.54-39.97,2.69-50.1,28.72-11.54,29.63-35.07,51.09-66.96,60.42-9.68,2.83-19.92,3.72-31.57,5.8ZM466.08,55.76c-2.78,18.69-5.38,36.19-7.98,53.68,53.86,8.45,103.78-17.36,104.75-53.68h-96.77Z"/><path d="M852.22,5.08h58.54v244.88h-58.11v-54.74c-5.08,4.39-8.27,7.14-11.45,9.91-33.97,29.53-74.07,43.37-118.47,45.09-23.68.92-47.43.16-72.02.16v-49.88h45.29c.24-4.19.6-7.66.6-11.12.04-30.36.07-60.72.01-91.08-.06-30.48-9.68-40.77-39.92-42.9-1.79-.13-3.58-.32-6.1-.55V2.42c43.65-12.06,96.67,22.63,102.15,68.79,3.04,25.64,2.18,51.77,2.77,77.68.34,14.59.06,29.2.06,44.98,3.47-.57,6.24-.66,8.77-1.5,50.76-16.89,85.58-63.39,87.72-118.26.88-22.57.15-45.2.15-69.01Z"/><path d="M394.48,528.45v-53.82c5.51-1.11,10.49-1.99,15.42-3.13,12.42-2.87,19.81-10.86,21.58-23.27,1.23-8.64,1.48-17.47,1.53-26.22.17-30.64.07-61.27.07-93.12h-38.52v-49.87h248.49v49.45h-150.98v39.85h124.71v49.98h-125.24c-.06,35.45-1.53,69.78-32.79,92.77-18.79,13.82-40.81,16.48-64.27,17.37Z"/><path d="M955.45,527.8c-97.3.08-199.96-45.32-237.92-168.28h-45.48v-49.97h36.04c-.61-10.91-1.13-20.23-1.7-30.47h57.9c.95,9.27,1.94,18.93,3.05,29.72h161.91v50.01h-147.83c10.54,58.64,81.58,103.74,174.03,111v58Z"/><path d="M491.72,522.21v-48.51c20.25,0,39.89,0,59.53,0,5.49,0,10.98.1,16.46-.06,19.66-.57,26.53-6.6,29.91-26.07.3-1.75.75-3.47,1.18-5.4h55.82c4.92,39.01-23.02,76.63-61.91,79.53-33.04,2.46-66.4.51-100.99.51Z"/></g></symbol>
+  <symbol id="i-pwr" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 3v8M6.3 6.8a8 8 0 1 0 11.4 0"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></g></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<div class="scene" id="scene" aria-hidden="true">
+  <div class="bgi"></div>
+  <div class="stage"><img src="/cuervo.png" alt="" width="720" height="900" decoding="async"><div class="glow"></div><div class="bloom"><i></i></div></div>
+</div>
+
+<div class="wrap" id="app">
+  <header class="top">
+    <svg class="logo"><use href="#bm"/></svg>
+    <div class="ttl">
+      <h1 id="name">Cuervo</h1>
+      <small><i class="dot off" id="dot"></i><span id="conn" data-i="connecting"></span></small>
+    </div>
+    <button class="round" id="openSet" aria-label="Ajustes"><svg><use href="#i-gear"/></svg></button>
+  </header>
+
+  <main class="grid">
+    <div class="col">
+      <section class="hero off" id="hero">
+        <div class="state" id="stateTx"></div>
+        <button class="pwr" id="pwr" aria-label="Encender o apagar"><svg><use href="#i-pwr"/></svg></button>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2 data-i="brightness"></h2><span id="briTx"></span></div>
+        <div class="sl" id="bri" role="slider" tabindex="0" aria-valuemin="1" aria-valuemax="255"><i></i><svg><use href="#i-sun"/></svg></div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2 data-i="scenes"></h2></div>
+        <div class="scenes" id="scenes"></div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2 data-i="timer"></h2></div>
+        <div class="seg" id="timer"></div>
+        <div class="note" id="timerTx"></div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="card">
+        <div class="hd"><h2 data-i="color"></h2></div>
+        <div class="wheel" id="wheel"><div class="knob" id="knob"></div></div>
+        <div class="sws" id="sws"></div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2 data-i="effects"></h2></div>
+        <div class="fx" id="fx"></div>
+        <div id="fxOpts">
+          <div class="lbl"><span data-i="speed"></span><span id="sxTx"></span></div>
+          <div class="sl thin" id="sx" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="255"><i></i></div>
+          <div class="lbl"><span data-i="intensity"></span><span id="ixTx"></span></div>
+          <div class="sl thin" id="ix" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="255"><i></i></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="brand">
+    <svg><use href="#bm"/></svg>
+    <span data-i="madeBy"></span>
+    <a class="web" href="https://brumet.co" target="_blank" rel="noopener">brumet.co</a>
+  </footer>
+</div>
+
+<div class="veil" id="veil"></div>
+<aside class="sheet" id="sheet" aria-modal="true" role="dialog">
+  <div class="grab"></div>
+  <h3><span data-i="settings"></span><button id="closeSet" data-i="done"></button></h3>
+
+  <div class="grp" data-i="general"></div>
+  <div class="list">
+    <div class="row"><span data-i="language"></span><div class="seg" id="langSeg"><button data-l="es">Español</button><button data-l="en">English</button></div></div>
+    <label class="row"><span data-i="pieceName"></span><input id="nameIn" maxlength="32" enterkeyhint="done"></label>
+  </div>
+
+  <div class="grp" data-i="info"></div>
+  <div class="list" id="info"></div>
+
+  <div class="grp" data-i="advanced"></div>
+  <div class="list">
+    <a class="row" href="/settings/wifi"><span data-i="wifi"></span></a>
+    <a class="row" href="/settings/leds"><span data-i="hw"></span></a>
+    <a class="row" href="/wled.htm"><span data-i="classic"></span></a>
+    <a class="row" href="/settings"><span data-i="allSettings"></span></a>
+  </div>
+
+  <div class="brand">
+    <svg><use href="#bm"/></svg>
+    <span><span data-i="madeBy"></span><br><a class="web" href="https://brumet.co" target="_blank" rel="noopener">brumet.co</a><br><span data-i="license"></span> <a href="https://github.com/wled/WLED" target="_blank" rel="noopener">github.com/wled/WLED</a></span>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+
+/* ——— Idiomas ——— */
+const T={
+es:{connecting:"Conectando…",online:"Conectado",offline:"Sin conexión — reintentando",on:"Encendido",off:"Apagado",tapOn:"Toca para encender",
+brightness:"Brillo",scenes:"Escenas",timer:"Temporizador",color:"Color",effects:"Efectos",speed:"Velocidad",intensity:"Intensidad",
+noScenes:"Aún no hay escenas guardadas.",saveScene:"Guardar",sceneName:"Nombre de la escena",sceneSaved:"Escena guardada",
+delScene:"¿Eliminar la escena «%s»?",deleted:"Escena eliminada",tNone:"No",tOff:"Se apaga en %s",min:"min",h:"h",
+settings:"Ajustes",done:"Listo",general:"General",language:"Idioma",pieceName:"Nombre",nameSaved:"Nombre guardado",
+info:"Información",advanced:"Avanzado",wifi:"WiFi y red",hw:"LEDs y botones",classic:"Interfaz WLED clásica",allSettings:"Todos los ajustes",
+version:"Firmware",address:"Dirección",signal:"Señal WiFi",uptime:"Encendido hace",leds:"LEDs",
+madeBy:"Hecho a mano por Brumet · Serie Cero",license:"Firmware WLED, licencia EUPL v1.2 —",
+scene:"Escena",playlist:"Secuencia",custom:"Personalizado",
+fx:{"Solid":"Fijo","Breathe":"Respirar","Candle":"Vela","Candle Multi":"Velas","Fire Flicker":"Fuego","Heartbeat":"Latido","Blink":"Parpadeo","Fade":"Desvanecer","Twinkle":"Destellos","Colorloop":"Ciclo de color","Rainbow":"Arcoíris","Lightning":"Relámpago"},
+sw:["Ámbar","Vela","Cálido","Rojo","Sangre","Violeta","Espectro","Turquesa","Verde","Blanco"]},
+en:{connecting:"Connecting…",online:"Connected",offline:"Offline — retrying",on:"On",off:"Off",tapOn:"Tap to turn on",
+brightness:"Brightness",scenes:"Scenes",timer:"Timer",color:"Color",effects:"Effects",speed:"Speed",intensity:"Intensity",
+noScenes:"No saved scenes yet.",saveScene:"Save",sceneName:"Scene name",sceneSaved:"Scene saved",
+delScene:"Delete scene “%s”?",deleted:"Scene deleted",tNone:"Off",tOff:"Turns off in %s",min:"min",h:"h",
+settings:"Settings",done:"Done",general:"General",language:"Language",pieceName:"Name",nameSaved:"Name saved",
+info:"About",advanced:"Advanced",wifi:"Wi-Fi & network",hw:"LEDs & buttons",classic:"Classic WLED interface",allSettings:"All settings",
+version:"Firmware",address:"Address",signal:"Wi-Fi signal",uptime:"Uptime",leds:"LEDs",
+madeBy:"Handmade by Brumet · Serie Cero",license:"WLED firmware, EUPL v1.2 license —",
+scene:"Scene",playlist:"Sequence",custom:"Custom",
+fx:{"Solid":"Solid","Breathe":"Breathe","Candle":"Candle","Candle Multi":"Candles","Fire Flicker":"Fire","Heartbeat":"Heartbeat","Blink":"Blink","Fade":"Fade","Twinkle":"Twinkle","Colorloop":"Color cycle","Rainbow":"Rainbow","Lightning":"Lightning"},
+sw:["Amber","Candle","Warm","Red","Blood","Violet","Spectre","Teal","Green","White"]}
+};
+let lang="es";
+try{lang=localStorage.getItem("lang")||((navigator.language||"es").startsWith("en")?"en":"es")}catch(e){}
+const t=(k,a)=>{let s=(T[lang]||T.es)[k];if(s==null)s=T.es[k]??k;return a!=null?String(s).replace("%s",a):s};
+
+/* Efectos que tienen sentido con dos LEDs, en orden de catálogo */
+const FX=["Solid","Breathe","Candle","Candle Multi","Fire Flicker","Heartbeat","Blink","Fade","Twinkle","Colorloop","Rainbow","Lightning"];
+const SW=[[255,100,0],[255,140,30],[255,190,120],[255,0,0],[140,0,0],[140,40,255],[40,90,255],[0,200,180],[40,255,60],[255,255,255]];
+const TIMER=[0,15,30,60,120];
+
+/* ——— Estado ——— */
+let S=null,I=null,fxNames=[],fxIdx={},presets={},ws=null,wsOk=false,retry=0,drag=null;
+
+/* ——— Utilidades de color ——— */
+function hsv2rgb(h,s,v){const f=n=>{const k=(n+h/60)%6;return Math.round(255*(v-v*s*Math.max(0,Math.min(k,4-k,1))))};return[f(5),f(3),f(1)]}
+function rgb2hsv(r,g,b){r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),d=M-m;let h=0;if(d){h=M===r?((g-b)/d)%6:M===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}return[h,M?d/M:0,M]}
+const css=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
+/* El LED a brillo bajo se ve saturado: la luz del render usa el tono a plena intensidad */
+function eyeColor(c){const[h,s]=rgb2hsv(...c);return hsv2rgb(h,s,1)}
+
+/* ——— Comunicación ——— */
+function send(o){
+  if(wsOk&&ws.readyState===1){ws.send(JSON.stringify(o));return}
+  fetch("/json/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...o,v:true})})
+    .then(r=>r.json()).then(j=>{if(j&&j.on!=null){S=j;render()}}).catch(()=>{});
+}
+function throttle(fn,ms){let last=0,tm=null,args;return(...a)=>{args=a;const now=Date.now(),wait=ms-(now-last);if(wait<=0){last=now;fn(...args)}else if(!tm){tm=setTimeout(()=>{last=Date.now();tm=null;fn(...args)},wait)}}}
+const sendT=throttle(send,90);
+
+function connect(){
+  try{ws=new WebSocket((location.protocol==="https:"?"wss://":"ws://")+location.host+"/ws")}catch(e){return poll()}
+  ws.onopen=()=>{wsOk=true;retry=0;setConn(true)};
+  ws.onmessage=e=>{if(typeof e.data!=="string")return;try{const j=JSON.parse(e.data);if(j.state)S=j.state;if(j.info)I=j.info;render()}catch(_){}};
+  ws.onclose=()=>{wsOk=false;setConn(false);setTimeout(connect,Math.min(8000,800*2**retry++))};
+  ws.onerror=()=>{try{ws.close()}catch(_){}};
+}
+function poll(){fetch("/json/si").then(r=>r.json()).then(j=>{S=j.state;I=j.info;setConn(true);render()}).catch(()=>setConn(false)).finally(()=>setTimeout(poll,4000))}
+function setConn(ok){$("dot").classList.toggle("off",!ok);$("conn").textContent=t(ok?"online":"offline")}
+function loadPresets(){return fetch("/presets.json",{cache:"no-store"}).then(r=>r.json()).then(j=>{presets=j||{};renderScenes()}).catch(()=>{})}
+
+/* ——— Sliders táctiles ——— */
+function slider(el,min,max,onInput){
+  const set=v=>{el.querySelector("i").style.width=((v-min)/(max-min)*100)+"%";el.setAttribute("aria-valuenow",v)};
+  const at=x=>{const r=el.getBoundingClientRect();return Math.round(min+Math.max(0,Math.min(1,(x-r.left)/r.width))*(max-min))};
+  el.addEventListener("pointerdown",e=>{drag=el;el.setPointerCapture(e.pointerId);const v=at(e.clientX);set(v);onInput(v,false)});
+  el.addEventListener("pointermove",e=>{if(drag!==el)return;const v=at(e.clientX);set(v);onInput(v,false)});
+  const end=e=>{if(drag!==el)return;drag=null;onInput(at(e.clientX),true)};
+  el.addEventListener("pointerup",end);el.addEventListener("pointercancel",()=>{drag=null});
+  el.addEventListener("keydown",e=>{const d={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[e.key];if(!d)return;e.preventDefault();
+    const v=Math.max(min,Math.min(max,(+el.getAttribute("aria-valuenow")||min)+d*Math.ceil((max-min)/20)));set(v);onInput(v,true)});
+  return set;
+}
+const setBri=slider($("bri"),1,255,(v,fin)=>{$("briTx").textContent=Math.round(v/2.55)+" %";(fin?send:sendT)({on:true,bri:v})});
+const setSx=slider($("sx"),0,255,(v,fin)=>{$("sxTx").textContent=Math.round(v/2.55)+" %";(fin?send:sendT)({seg:[{sx:v}]})});
+const setIx=slider($("ix"),0,255,(v,fin)=>{$("ixTx").textContent=Math.round(v/2.55)+" %";(fin?send:sendT)({seg:[{ix:v}]})});
+
+/* ——— Rueda de color ——— */
+const wheel=$("wheel"),knob=$("knob");
+function placeKnob(c){const[h,s]=rgb2hsv(...c),a=h*Math.PI/180,r=s*50;knob.style.left=(50+Math.cos(a)*r)+"%";knob.style.top=(50+Math.sin(a)*r)+"%";knob.style.background=css(hsv2rgb(h,s,1))}
+function wheelAt(e,fin){const r=wheel.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2;
+  let h=Math.atan2(dy,dx)*180/Math.PI;if(h<0)h+=360;const s=Math.min(1,Math.hypot(dx,dy)/(r.width/2)),c=hsv2rgb(h,s,1);
+  placeKnob(c);previewColor(c);(fin?send:sendT)({on:true,seg:[{col:[c]}]})}
+wheel.addEventListener("pointerdown",e=>{drag=wheel;wheel.setPointerCapture(e.pointerId);wheelAt(e,false)});
+wheel.addEventListener("pointermove",e=>{if(drag===wheel)wheelAt(e,false)});
+wheel.addEventListener("pointerup",e=>{if(drag===wheel){drag=null;wheelAt(e,true)}});
+wheel.addEventListener("pointercancel",()=>{drag=null});
+function previewColor(c){document.documentElement.style.setProperty("--eye",css(eyeColor(c)))}
+
+/* ——— Construcción ——— */
+function buildStatic(){
+  $("sws").innerHTML=SW.map((c,i)=>`<button style="--c:${css(c)}" data-i="${i}" aria-label="${t("sw")[i]}" title="${t("sw")[i]}"></button>`).join("");
+  $("timer").innerHTML=TIMER.map(m=>`<button data-m="${m}">${m===0?t("tNone"):m<60?m+" "+t("min"):m/60+" "+t("h")}</button>`).join("");
+  $("fx").innerHTML=FX.filter(n=>n in fxIdx).map(n=>`<button data-fx="${fxIdx[n]}">${t("fx")[n]||n}</button>`).join("");
+}
+$("sws").onclick=e=>{const b=e.target.closest("button");if(!b)return;const c=SW[+b.dataset.i];previewColor(c);placeKnob(c);send({on:true,seg:[{col:[c]}]})};
+$("timer").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=+b.dataset.m;send(m?{on:true,nl:{on:true,dur:m,mode:1,tbri:0}}:{nl:{on:false}})};
+$("fx").onclick=e=>{const b=e.target.closest("button");if(!b)return;send({on:true,seg:[{fx:+b.dataset.fx}]})};
+$("pwr").onclick=()=>{if(S)send({on:!S.on})};
+
+/* Escenas: toque aplica, pulsación larga elimina */
+function renderScenes(){
+  const ids=Object.keys(presets).map(Number).filter(i=>i>0&&presets[i]&&presets[i].n).sort((a,b)=>a-b);
+  const html=ids.map(i=>{const p=presets[i],sg=(p.seg&&p.seg[0])||{},c=(sg.col&&sg.col[0])||[255,100,0];
+    const sub=p.playlist?t("playlist"):(sg.fx!=null&&fxNames[sg.fx]?(t("fx")[fxNames[sg.fx]]||fxNames[sg.fx]):t("scene"));
+    return `<button class="sc${S&&S.ps===i?" on":""}" data-p="${i}"><i class="sw" style="background:${css(c)};--c:${css(c)}"></i><span><b>${esc(p.n)}</b><br><small>${esc(sub)}</small></span></button>`}).join("");
+  $("scenes").innerHTML=(ids.length?"":`<div class="empty" style="grid-column:1/-1">${t("noScenes")}</div>`)+html+
+    `<button class="sc add" id="addSc"><svg><use href="#i-plus"/></svg>${t("saveScene")}</button>`;
+}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let pressT=null,pressed=false;
+$("scenes").addEventListener("pointerdown",e=>{const b=e.target.closest("[data-p]");if(!b)return;pressed=false;
+  pressT=setTimeout(()=>{pressed=true;const id=+b.dataset.p;if(confirm(t("delScene",presets[id].n))){send({pdel:id});delete presets[id];renderScenes();toast(t("deleted"))}},650)});
+["pointerup","pointerleave","pointercancel"].forEach(ev=>$("scenes").addEventListener(ev,()=>clearTimeout(pressT)));
+$("scenes").addEventListener("contextmenu",e=>e.preventDefault());
+$("scenes").addEventListener("click",e=>{
+  if(e.target.closest("#addSc")){const n=prompt(t("sceneName"),"");if(!n)return;let id=1;while(presets[id]&&id<250)id++;
+    send({psave:id,n:n.slice(0,32),ib:true,sb:true});toast(t("sceneSaved"));setTimeout(loadPresets,700);return}
+  const b=e.target.closest("[data-p]");if(!b||pressed)return;send({ps:+b.dataset.p});
+});
+
+/* ——— Pintar estado ——— */
+function fmtDur(s){s=Math.max(0,s|0);const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return d?`${d} d ${h} h`:h?`${h} h ${m} min`:`${m} min`}
+function render(){
+  if(!S)return;
+  const seg=(S.seg&&S.seg[S.mainseg||0])||S.seg[0]||{},c=(seg.col&&seg.col[0])||[255,100,0],on=!!S.on,r=document.documentElement.style;
+  if(I&&I.name){$("name").textContent=I.name;document.title=I.name;if(document.activeElement!==$("nameIn"))$("nameIn").value=I.name}
+  if(drag!==wheel){previewColor(c);placeKnob(c)}
+  r.setProperty("--glow",on?(0.55+0.45*S.bri/255).toFixed(2):0);
+  $("hero").classList.toggle("off",!on);$("scene").classList.toggle("dim",!on);
+  $("stateTx").innerHTML=on?`<b>${t("on")}</b> · ${Math.round(S.bri/2.55)} %`:t("tapOn");
+  if(drag!==$("bri")){setBri(S.bri);$("briTx").textContent=Math.round(S.bri/2.55)+" %"}
+  if(drag!==$("sx")){setSx(seg.sx);$("sxTx").textContent=Math.round(seg.sx/2.55)+" %"}
+  if(drag!==$("ix")){setIx(seg.ix);$("ixTx").textContent=Math.round(seg.ix/2.55)+" %"}
+  $("fxOpts").style.display=seg.fx?"":"none";
+  document.querySelectorAll("#fx button").forEach(b=>b.classList.toggle("on",+b.dataset.fx===seg.fx));
+  document.querySelectorAll("#sws button").forEach((b,i)=>b.classList.toggle("on",SW[i].every((v,k)=>v===c[k])));
+  const nl=S.nl||{},act=nl.on?nl.dur:0;
+  document.querySelectorAll("#timer button").forEach(b=>b.classList.toggle("on",+b.dataset.m===act));
+  $("timerTx").textContent=nl.on&&nl.rem>0?t("tOff",fmtDur(nl.rem+59)):"";
+  document.querySelectorAll(".sc[data-p]").forEach(b=>b.classList.toggle("on",+b.dataset.p===S.ps));
+  if(I)$("info").innerHTML=[
+    [t("address"),location.host],[t("version"),"WLED "+I.ver],
+    [t("signal"),I.wifi?I.wifi.signal+" %":"—"],[t("uptime"),fmtDur(I.uptime)],[t("leds"),I.leds?I.leds.count:"—"]
+  ].map(([k,v])=>`<div class="row"><span>${k}</span><span>${esc(v)}</span></div>`).join("");
+}
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(e=>{const v=t(e.dataset.i);if(typeof v==="string")e.textContent=v});
+  document.querySelectorAll("#langSeg button").forEach(b=>b.classList.toggle("on",b.dataset.l===lang));
+  $("openSet").setAttribute("aria-label",t("settings"));
+  buildStatic();renderScenes();render();
+}
+
+/* ——— Ajustes ——— */
+$("openSet").onclick=()=>document.body.classList.add("open");
+$("closeSet").onclick=$("veil").onclick=()=>document.body.classList.remove("open");
+$("langSeg").onclick=e=>{const b=e.target.closest("button");if(!b)return;lang=b.dataset.l;try{localStorage.setItem("lang",lang)}catch(_){}applyLang()};
+$("nameIn").onchange=()=>{const n=$("nameIn").value.trim().slice(0,32);if(!n)return;
+  fetch("/json/cfg",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:{name:n}})})
+    .then(()=>{if(I)I.name=n;render();toast(t("nameSaved"))}).catch(()=>{})};
+$("nameIn").onkeydown=e=>{if(e.key==="Enter")e.target.blur()};
+
+let toastT;function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("show"),1800)}
+
+/* El cuervo sube un poco al hacer scroll para que la cabeza siga a la vista */
+addEventListener("scroll",()=>document.documentElement.style.setProperty("--scr",Math.min(1,scrollY/innerHeight).toFixed(3)),{passive:true});
+
+/* ——— Arranque ——— */
+applyLang();
+Promise.all([
+  fetch("/json/eff").then(r=>r.json()).then(a=>{fxNames=a;a.forEach((n,i)=>fxIdx[n]=i)}).catch(()=>{}),
+  fetch("/json/si").then(r=>r.json()).then(j=>{S=j.state;I=j.info}).catch(()=>{})
+]).then(()=>{applyLang();loadPresets();connect()});
+</script>
+</body>
+</html>

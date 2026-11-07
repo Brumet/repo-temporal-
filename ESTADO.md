@@ -39,31 +39,84 @@ Es decir, la placa quedó en **modo descarga**, no arrancó WLED. La indicación
 fue desconectar y reconectar el USB sin tocar BOOT, para forzar un arranque
 limpio.
 
-### ⏳ Sin confirmar
-- [ ] ¿La placa arranca en modo normal (`SPI_FAST_FLASH_BOOT`)?
-- [ ] ¿Aparece la red `WLED-AP` en el celular?
-- [ ] ¿Carga la interfaz en `4.3.2.1`?
+### ✅ WLED arranca (confirmado el 10/10/2026, sesión local)
+- Firmware verificado leyendo el flash: bootloader y app con checksum y hash válidos.
+- WLED responde por **Improv serial** en COM3: `WLED 16.0.1/2606300`, `esp32-c3`,
+  nombre `wled-fcfa34`.
+- **No aparece `WLED-AP` porque no hace falta:** el instalador web le pasó la
+  WiFi de casa al terminar. WLED solo abre el AP si no tiene red configurada.
+- En la red de casa: `192.168.40.26` (IP por DHCP, **provisional**), señal 100 %
+  (RSSI −40 dBm, canal 8). `/json/info` responde.
+- La configuración sigue de fábrica: 30 LEDs, 850 mA. Se cambia en el paso 4.
 
-**Nada se ha soldado todavía.**
+### ✅ Personalización aplicada a la placa 1
+- Nombre `Cuervo 01`, mDNS **`cuervo-01.local`** (verificado: responde),
+  red de configuración `Cuervo-01` en vez de `WLED-AP` (contraseña aún `wled1234`).
+- Piel [`firmware/config/skin.css`](firmware/config/skin.css) subida: negro con
+  reflejo violeta y acentos ámbar. WLED la carga sola en cualquier navegador.
+- Copia de la configuración de fábrica guardada fuera del repo (contiene la WiFi).
+
+### ✅ Interfaz propia Brumet (placa 1)
+[`firmware/ui/index.htm`](firmware/ui/index.htm): un solo archivo de 32 KB, sin
+librerías ni internet. Estilo app de Apple, logo BM (del repo `Cortador`),
+**español por defecto con inglés en Ajustes**. WLED la sirve en `/` sin recompilar.
+
+- Ojos que brillan con el color y el brillo reales, encendido, brillo,
+  escenas (tocar = aplicar, mantener = borrar, «Guardar» = nueva),
+  rueda de color, 12 efectos útiles con dos LEDs, temporizador de apagado.
+- Sincronización en vivo por WebSocket: si alguien pulsa el botón físico,
+  la página se actualiza sola.
+- La interfaz clásica sigue en `/wled.htm` (Ajustes → Avanzado).
+- Escenas de catálogo creadas: 1 Ámbar, 2 Vela, 3 Sangre, 4 Espectro.
+  **Falta la 5 (Parpadeo)**, que es una secuencia y depende de cómo cicla el botón.
+- Probado en tamaño de celular y de computador: aplicar escena, cambio de
+  idioma y hoja de Ajustes, sin errores en la consola.
+- **Escena fija detrás de los paneles:** render del modelo `forma preliminar.stl`
+  completo (cabeza a base) con fondo transparente, sobre el fondo de plumas
+  generado. Los paneles son translúcidos: al bajar se sigue viendo el cuervo.
+  Ojos de este modelo: (−11.4, −64, 268) y (16.9, −64, 268) mm.
+  Script: [`firmware/ui/render/hero.py`](firmware/ui/render/hero.py).
+- `cuervo.png` es **WebP con extensión .png**: WLED sirve `.webp` como
+  `text/plain` y `.png` como imagen; el navegador detecta el formato real.
+- Marca: **logo oficial Brumet completo** (de `brumet-contabilidad/icons/brumet-blanco.svg`,
+  "no hay isotipo ni variantes"), rojo `#e3262f` como único color, enlace a **brumet.co**.
+
+> ⚠️ **iPhone: `cuervo-01.local` no abre, `http://192.168.40.26` sí** (Safari y Chrome).
+> La placa anuncia bien su nombre (solo IPv4, verificado), pero desde el PC la
+> primera resolución tardó 2,7 s y una vez falló. Sospecha: el router filtra o
+> retrasa multicast por WiFi. **Resolver antes de vender** — el NFC depende de
+> ese nombre. Mientras tanto: reservar la IP en el router (DHCP fijo).
+
+> El log de arranque **no sale por serie** en el build de lanzamiento: para
+> saber si WLED está vivo, preguntar por Improv o pedir `/json/info`.
+
+### ✅ Primer módulo de ojos funcionando (7/11/2026)
+Placa 3 (cuervo-03): dos WS2812B encadenados, ojo derecho primero. Ambos encienden
+en ámbar al arrancar. Soldado sin multímetro, con revisión visual por foto.
+
+⚠️ **WLED trae los datos en el pin 2 de fábrica** (pin de arranque, prohibido).
+Cada placa necesita: `POST /json/cfg {"hw":{"led":{"maxpwr":250,"ins":[{...,"pin":[4],"len":2,"maxpwr":250}]}}}`
++ reinicio. Hecho en la placa 3; **pendiente en 1, 2 y 4**.
 
 ## Lo siguiente, en orden
 
-### 1. Confirmar que WLED arranca
-Desconectar y reconectar el USB sin tocar BOOT. Buscar la red `WLED-AP`
-(contraseña `wled1234`) y abrir `4.3.2.1`.
+### 1. ✅ Confirmar que WLED arranca
+Hecho. Ver arriba.
 
-### 2. Medir el flash ← decisión de compra pendiente
-```bash
-pip install esptool
-python -m esptool flash_id
+### 2. ✅ Flash medido: 4 MB, integrado en el chip
+Medido el 10/10/2026 con `esptool flash-id` (placa 1, COM3, MAC `84:fc:e6:fc:fa:34`):
+
 ```
-En Windows el puerto es el que aparece como **USB JTAG/serial debug unit**.
+ESP32-C3 (QFN32) rev v0.4 — Embedded Flash 4MB (XMC)
+```
 
-**Por qué importa:** WLED solo ya ocupa las 4 MB completas. Si estas placas son
-de 4 MB, la ruta Matter queda descartada en ellas y hay que comprar ESP32-S3 de
-**16 MB**. Ver [`docs/06-wled-fork.md`](docs/06-wled-fork.md).
+El flash está **dentro del chip**: no se puede ampliar. Consecuencia:
+- **Estas 5 placas sirven para la Serie Cero con WLED de fábrica.**
+- **La ruta Matter queda descartada en ellas.** Para la I+D de Matter hay que
+  comprar ESP32-S3 de **16 MB**. Ver [`docs/06-wled-fork.md`](docs/06-wled-fork.md).
 
-**No pedir más placas hasta tener este dato.**
+Partición grabada por el instalador (WLED estándar de 4 MB): `app0` y `app1`
+de 1,5 MB (OTA), `spiffs` de 960 KB en `0x310000`.
 
 ### 3. Primer módulo de ojos
 Soldar 2 WS2812B encadenados con cable de 30AWG y probarlos en la mesa, **antes**
@@ -99,10 +152,12 @@ con brillo ~50/255.
 | **Un nombre por unidad** (`cuervo-01.local`) | Dos piezas en la misma casa chocarían |
 | **Eliminar** el reset de fábrica del botón | 10 s de pulsación formatea y borra todos los presets |
 | Serie Cero sale con **WLED de fábrica** | Matter es I+D en paralelo; no puede bloquear 5 entregas |
+| Serie Cero = **4 cuervos** (cuervo-01 a 04) | Decisión del 7/11/2026 |
+| **WiFi sleep activo** en todas | Se calienta claramente menos; +90 ms de respuesta, imperceptible |
 
 ## Preguntas abiertas
 
-- [ ] Tamaño de flash real de las placas compradas
+- [x] Tamaño de flash real de las placas compradas → **4 MB integrado**
 - [ ] ¿Compila WLED como componente de ESP-IDF? ← **el filtro de viabilidad de Matter**
 - [ ] ¿Existe build de Tasmota con Matter para ESP32-C3, y expone color RGB?
 - [ ] Costos vigentes de membresía CSA (consultar en csa-iot.org)

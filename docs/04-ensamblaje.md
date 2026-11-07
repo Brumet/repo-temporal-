@@ -59,6 +59,16 @@ Por módulo:
 4. Conectar los 3 cables del cuerpo: `GPIO4`, `3V3`, `GND`
 5. Tapa inferior atornillada
 
+### Calor de la placa
+La ESP32-C3 SuperMini trabaja a 45–55 °C con WiFi (normal; el chip aguanta 105 °C).
+El calor viene del WiFi y del regulador de 3,3 V. Pero el **PLA se ablanda a 55–60 °C**:
+- La placa **no toca el plástico**: separadores de 2–3 mm
+- Ranuras de ventilación en la tapa inferior
+- Si la bahía queda cerrada, imprimir esa pieza en **PETG**
+- **WiFi sleep activo en todas** (probado el 7/11/2026): se calienta claramente menos;
+  respuesta 112 ms frente a 22 ms, 0 fallos en 25 pedidos. Efectos y botón no cambian.
+  Se activa con `POST /json/cfg {"wifi":{"sleep":true}}` + reinicio.
+
 ## 5 · Prueba final
 
 - [ ] Enchufar USB-C → ambos ojos encienden en ámbar sin intervención
