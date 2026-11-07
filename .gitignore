@@ -22,3 +22,6 @@ factory_data/
 Thumbs.db
 .vscode/
 .idea/
+
+# Resultados pesados del análisis del modelo
+hardware/analisis/resultados/*.npy

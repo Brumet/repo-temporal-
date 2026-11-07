@@ -1,0 +1,22 @@
+{
+  "caras": 2708012,
+  "min_mm": [
+    -92.5,
+    -92.4,
+    0.0
+  ],
+  "max_mm": [
+    88.5,
+    119.9,
+    300.0
+  ],
+  "dim_mm": [
+    180.9,
+    212.3,
+    300.0
+  ],
+  "estanco": false,
+  "volumen_macizo_cm3": 2366.6,
+  "volumen_hueco_3mm_cm3": 503.7,
+  "ahorro_%": 78.7
+}
