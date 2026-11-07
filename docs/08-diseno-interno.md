@@ -69,9 +69,28 @@ ojos (z ≈ 268, adelante) quedan del lado de la cabeza.
 | **Imanes** | Muy fácil de abrir | Con 500 g de lastre, al levantar la pieza la tapa se puede caer |
 | **2 tornillos ocultos** bajo patitas de goma | El más robusto y barato | Hace falta un destornillador |
 
+### Ojos: insertos de resina transparente (hecho, 7/11/2026)
+
+![Insertos](img/ojos_insertos.png)
+
+- Cada ojo es una pieza aparte (`hardware/stl/ojo_izq.stl`, `ojo_der.stl`), generada con
+  `hardware/modelado/ojos.py` sobre la malla reparada.
+- **Por fuera** conserva el labrado esculpido (iris y párpado) dentro de Ø 5,6 mm: en resina
+  transparente, más material se ve más oscuro y menos material más claro.
+- **Reborde** Ø 8,8 × 1 mm por dentro: se mete desde el interior de la cabeza y no puede salir.
+- **Encastre del LED**: rebaje cuadrado de 5,1 × 5,1 × 1,2 mm atrás, donde entra el LED 5050
+  (4,8 × 4,9 medido). El LED queda centrado y a **3,3 mm** de la superficie del ojo.
+- **En la cabeza**: agujero ajustado (holgura 0,1 mm), escalón Ø 9,5 mm para el reborde y el PCB
+  del LED (Ø 8,9 medido) y canal de cables Ø 4 mm hacia el centro de la cabeza.
+- Ojo derecho: la pared es delgada debajo del ojo, así que el reborde va corrido 1,2 mm hacia
+  adentro (automático). Pared mínima ahí ≈ 0,4 mm: revisar en la primera impresión.
+
+![Corte por los ojos](img/ojos_corte.png)
+
 ### Pendiente de decidir
 
-- Impresora de resina y su volumen (la pieza mide 300 mm de alto).
+- ~~Impresora~~: **Elegoo Jupiter 2**, 302,4 × 162 × 300 mm. El cuervo (181 × 212 × 300) no cabe
+  de pie en Y: hay que dividirlo o acostarlo.
 - Cómo se ve el ojo encendido: ¿cabeza en resina transparente pintada menos los ojos?
 - Sujeción de la tapa y ubicación del botón.
 

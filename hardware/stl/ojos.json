@@ -1,0 +1,31 @@
+{
+  "medidas": {
+    "LED_D": 8.9,
+    "LED_T": 2.6,
+    "R_TAPON": 2.8,
+    "PROF": 3.5,
+    "R_REBORDE": 4.4,
+    "T_REBORDE": 1.0,
+    "LED_CUERPO": 5.1,
+    "LED_CUERPO_T": 1.2,
+    "PARED_CUNA": 1.0,
+    "HOLG_AJUSTE": 0.1,
+    "HOLG_LED": 0.2,
+    "FONDO_ESC": 1.5,
+    "R_CANAL": 2.0,
+    "RANURA": 4.0,
+    "SEG": 96
+  },
+  "izq": {
+    "volumen_inserto_mm3": 108.8,
+    "asoma_por_fuera_mm3": 0.0,
+    "led_a_superficie_mm": 3.3,
+    "led_desplazado_mm": 0.0
+  },
+  "der": {
+    "volumen_inserto_mm3": 80.1,
+    "asoma_por_fuera_mm3": 0.43,
+    "led_a_superficie_mm": 3.3,
+    "led_desplazado_mm": 1.2
+  }
+}
