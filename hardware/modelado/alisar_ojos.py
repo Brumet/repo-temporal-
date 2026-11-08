@@ -50,9 +50,11 @@ if len(sys.argv) > 9:
         sec = mf.CrossSection([[(float((rv + off) * np.cos(t)), float((rv + off) * np.sin(t))) for t, rv in zip(ts, R)]])
         return mf.Manifold.extrude(sec, 8.0).transform(MR)
     p_in, p_ext = prisma_(-0.1), prisma_(1.2)
+    RESTO = float(__import__('os').environ.get('RESTO', '0.4'))
     esfR = mf.Manifold.sphere(G["radio"] + 0.28, 384).translate(list(cR))   # 0,28 mm sobre el globo: lo cubre entero
     antes = res.volume()
     # dentro del globo: quita lo que sobresale de la esfera; hasta el párpado: rellena hasta la esfera
-    res = (res - (p_in - esfR)) + (p_ext ^ esfR)
+    capa = mf.Manifold.sphere(G["radio"] + 0.28 + RESTO, 384).translate(list(cR)) - esfR   # 0..RESTO mm sobre la esfera
+    res = (res - (p_in - esfR) - (p_ext ^ capa)) + (p_ext ^ esfR)
     print("derecho: cambio de volumen mm³", round(res.volume() - antes, 2))
     tm(max(res.decompose(), key=lambda q: q.volume())).export(out)
