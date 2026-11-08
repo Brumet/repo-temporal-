@@ -19,6 +19,7 @@ from scipy.spatial import cKDTree
 from skimage import measure
 
 VOX, REF, PARED_UNION, SKIN, HOLG, LABIO = 0.3, 12.0, 5.0, 2.5, 0.15, 5.0
+DESPLAZ = 0.35
 f_orig, f_sol, f_hue, f_borde, f_cost, out = sys.argv[1:7]; out = Path(out); out.mkdir(parents=True, exist_ok=True)
 t0 = time.time(); T = lambda: f"{time.time()-t0:.0f} s"
 B = json.load(open(f_borde)); n, ex, ey, C0 = (np.array(B[k]) for k in ("n", "ex", "ey", "centro"))
@@ -110,11 +111,12 @@ def malla_campo(campo, suave=1.0):
 
 aire_o_pared = prof <= PARED_UNION
 # Superficie de corte: campo con signo (distancia al cuerpo - distancia a la cabeza) -> sin escalones
-R_cab = malla_campo(distB - distH)
+R_cab = malla_campo(distB - distH + DESPLAZ)   # DESPLAZ > 0 corre el corte hacia el cuerpo (fondo del surco)
 R_thick_cab = malla(H & aire_o_pared & (distB <= REF)) ^ R_cab
 R_thick_cue = malla(~H & aire_o_pared & (distH <= REF)) - R_cab
 R_bolsillo = malla(H & (prof > SKIN) & (distB <= LABIO + 0.2))
-R_labio = malla(H & (prof >= SKIN + HOLG) & (prof <= PARED_UNION) & (distB <= LABIO))
+sgn = distB - distH                    # >0 en la cabeza, <0 en el cuerpo
+R_labio = malla((sgn >= -1.0) & (sgn <= LABIO) & (prof >= SKIN + HOLG) & (prof <= PARED_UNION))   # arranca 1 mm dentro del cuerpo
 print("regiones", T(), flush=True)
 cabeza = (HUE ^ R_cab) + (SOL ^ R_thick_cab) - R_bolsillo
 cuerpo = (HUE - R_cab) + (SOL ^ R_thick_cue) + R_labio

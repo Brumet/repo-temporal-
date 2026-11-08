@@ -21,6 +21,7 @@ from scipy.sparse.csgraph import connected_components
 src, borde, correa_f, out = sys.argv[1], sys.argv[2], sys.argv[3], Path(sys.argv[4]); out.mkdir(parents=True, exist_ok=True)
 SIG = 18.0    # grados: escala del pliegue
 ITER_SUAVE = 6   # pasadas de alisado de la costura
+LAMBDA = 0.08    # preferencia por cabeza (por mm² de cara) en la franja del canto
 B = json.load(open(borde)); n, ex, ey, C0 = (np.array(B[k]) for k in ("n", "ex", "ey", "centro"))
 TH, HB = np.array(B["theta"]), np.array(B["h_borde"])
 m = trimesh.load_mesh(src, process=True)
@@ -46,6 +47,12 @@ for i in np.nonzero(fuente)[0]:
     g.add_tedge(int(i), INF, 0)
 for i in np.nonzero(sumidero)[0]:
     g.add_tedge(int(i), 0, INF)
+# Preferencia leve: las caras que no son correa y están cerca o encima del canto prefieren cabeza
+# (así una pluma bajo un amarre no se queda en el cuerpo). Los pliegues siguen mandando.
+area = cu.area_faces
+pref = (~correa) & (hr > -2.5) & ~fuente & ~sumidero
+for i in np.nonzero(pref)[0]:
+    g.add_tedge(int(i), 0, float(LAMBDA * area[i]))
 flujo = g.maxflow()
 cabeza = np.array([g.get_segment(int(i)) for i in range(F)], bool)   # 1 = lado sumidero = cabeza
 print(f"corte: costo {flujo:.1f} · caras cabeza {cabeza.sum()} / {F}", flush=True)
