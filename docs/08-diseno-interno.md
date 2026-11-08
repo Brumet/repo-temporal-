@@ -179,3 +179,20 @@ Cadena: ESP32 (GPIO 4) → ojo A (DIN) → DOUT → ojo B (DIN). 5V y GND en par
 En la base, el mazo termina en un conector JST de 3 pines: la ESP32 se puede cambiar sin tocar la cabeza (que va pegada).
 
 ![Ruta de cables](img/ruta_cables.png)
+
+### Paso 4 · Collar del pecho separado (8/11/2026)
+
+El collar (las dos cuerdas trenzadas + amarres + dije) sale como **una sola pieza** (1,65 cm³) para imprimirla aparte.
+
+- **Dónde se corta:** al pie de los nudos que marcó Bru: amarre doble de la izquierda (z 228,7) y anillo doble de la
+  derecha (z 238,1). El nudo queda en el cuerpo con un **casquillo de 0,6 mm**: la punta de la cuerda entra en el nudo
+  y la unión queda escondida bajo su canto.
+- **Encastre en el pecho:** el cuerpo lleva el **canal** con la forma exacta de la cuerda + 0,1 mm para el pegamento.
+  La cuerda se apoya en el canal (se pone de frente) y entra 0,6 mm en cada nudo. Pegamento: gotas de CA gel o resina UV
+  en el canal.
+- **Cómo se separó** (`collar_ejes.py` → `collar_hebra.py` → `collar_corte2.py`): eje de cada cuerda por ajuste de
+  círculos, eje de la hebra delgada por seguimiento, y en cada sección perpendicular una apertura morfológica (disco
+  r 1,9 mm) que separa lo que es cuerda (más delgada que el pecho) de lo que es pecho. Las secciones se apilan y se
+  doblan al espacio real; la superficie visible del collar es la original (difiere < 0,1 mm en 1,7 mm²).
+
+![Collar separado](img/collar_separado.png)
