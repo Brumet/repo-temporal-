@@ -20,7 +20,8 @@ RMAX = float(sys.argv[4]) if len(sys.argv) > 4 else 5.0
 semillas = {}
 for k, (c, e, (xr, yu)) in VISTA.items():
     c, e = np.array(c), np.array(e) / np.linalg.norm(e); f = -e
-    r = np.cross(f, [0, 0, 1]); r /= np.linalg.norm(r); u = np.cross(r, f)
+    VJ = json.load(open(str(out.parent.parent / "ojos2" / "ejes_vista.json")))[k]
+    r, u = np.array(VJ["derecha"]), np.array(VJ["arriba"])
     semillas[k] = (list(c + r * xr + u * yu + e * 30), list(f))
 res = {}
 for nom, (o, d) in semillas.items():
