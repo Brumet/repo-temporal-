@@ -20,6 +20,7 @@ from skimage import measure
 
 VOX, REF, PARED_UNION, SKIN, HOLG, LABIO = 0.25, 12.0, 5.0, 2.5, 0.15, 5.0
 DESPLAZ = 0.0
+TAUBIN = 25        # suavizado de superficies internas (conserva volumen)
 f_orig, f_sol, f_hue, f_borde, f_cost, out = sys.argv[1:7]; out = Path(out); out.mkdir(parents=True, exist_ok=True)
 t0 = time.time(); T = lambda: f"{time.time()-t0:.0f} s"
 B = json.load(open(f_borde)); n, ex, ey, C0 = (np.array(B[k]) for k in ("n", "ex", "ey", "centro"))
@@ -91,6 +92,7 @@ def malla(mask, suave=0.5):
     v, f, _, _ = measure.marching_cubes(campo, 0.5, spacing=(VOX, VOX, VOX))
     v = v[:, ::-1] + (lo - 2 * VOX + [0, 0, VOX / 2])
     t = trimesh.Trimesh(v, f[:, ::-1], process=True)
+    trimesh.smoothing.filter_taubin(t, lamb=0.5, nu=-0.53, iterations=TAUBIN)
     trimesh.repair.fix_normals(t)
     if t.volume < 0:
         t.invert()
@@ -103,6 +105,7 @@ def malla_campo(campo, suave=1.0):
     v, f, _, _ = measure.marching_cubes(c, 0.0, spacing=(VOX, VOX, VOX))
     v = v[:, ::-1] + (lo - 2 * VOX + [0, 0, VOX / 2])
     t = trimesh.Trimesh(v, f[:, ::-1], process=True)
+    trimesh.smoothing.filter_taubin(t, lamb=0.5, nu=-0.53, iterations=TAUBIN)
     trimesh.repair.fix_normals(t)
     if t.volume < 0:
         t.invert()

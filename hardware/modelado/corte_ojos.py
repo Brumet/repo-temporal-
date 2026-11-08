@@ -8,8 +8,8 @@ from matplotlib.patches import Polygon
 
 d = Path(sys.argv[1]); out = sys.argv[2]
 sys.path.insert(0, str(Path(__file__).parent))
-OJOS = {"izq": ([-17.07, -55.80, 263.99], [-0.561, -0.806, -0.188]),
-        "der": ([18.72, -68.26, 267.05], [0.906, 0.060, -0.420])}
+OJOS = {"izq": ([-11.83, -64.28, 267.79], [-0.8261, -0.3428, -0.4472]),
+        "der": ([17.48, -64.42, 268.01], [0.9142, -0.2308, -0.3332])}
 cab = trimesh.load_mesh(d / "cuervo_con_ojos.stl", process=True)
 fig, axs = plt.subplots(2, 2, figsize=(14, 14))
 for col, (n, (a, e)) in enumerate(OJOS.items()):
@@ -36,7 +36,7 @@ for col, (n, (a, e)) in enumerate(OJOS.items()):
                 verts += lp.tolist(); codes += [MPath.MOVETO] + [MPath.LINETO] * (len(lp) - 1)
             if verts:
                 ax.add_patch(PathPatch(MPath(verts, codes), fc=fc, ec="k", lw=.3, alpha=.9))
-        ax.set_xlim(-14, 8); ax.set_ylim(-11, 11)
+        ax.set_xlim(-14, 6); ax.set_ylim(-10, 10)
         ax.axvline(0, color="r", lw=.6, ls="--"); ax.set_aspect("equal")
         ax.set_title(f"Ojo {n} · corte {'vertical' if row == 0 else 'horizontal'} (mm · 0 = ápice del ojo, afuera a la derecha)")
         ax.grid(alpha=.3)
