@@ -155,3 +155,27 @@ el plumaje (`borde_collar.py` mide ese canto alrededor de todo el cuello).
 Si queda **un** botón, WLED solo repite el brillo al mantener en botones de índice
 mayor que 0. Con el firmware propio se resuelve en `Cuervo_Estado`: toque =
 encender/apagar, mantener = brillo, 5 s = red de configuración (sin reset de fábrica).
+
+### Paso 3 · Ojos, porta-LED y cables (8/11/2026)
+
+- **Inserto transparente** (`ojos6.py` + `iris.py`, estilo fibras v2): cúpula lisa por fuera, iris en relieve
+  por dentro (fibras de 0,2 mm, collarete, pupila en cuenco). Entra **por dentro** de la cabeza hasta su asiento.
+- **Porta-LED** (pieza aparte, resina opaca): tapón con la forma del reborde (solo entra en una posición) que aprieta
+  el inserto. Lleva la **ventana Ø7,2** para el LED 5050, el **tope** donde asienta el PCB redondo Ø8,9 (LED a 0,3 mm del
+  reborde) y la **cámara** de 1,5 mm detrás del PCB para las soldaduras.
+- Los dos ojos casi se tocan por dentro (ejes convergentes): entre los fondos de los porta-LED quedan **10,5 mm**.
+
+![Encastre del ojo](img/ojo_porta_led.png)
+
+#### Cables (`rutas_cable.py`)
+
+Cadena: ESP32 (GPIO 4) → ojo A (DIN) → DOUT → ojo B (DIN). 5V y GND en paralelo. Cable de silicona 30 AWG.
+
+| Tramo | Ruta más corta por dentro | **Cortar** |
+|---|---|---|
+| Base (ESP32) → ojo A | 31 cm: roca → pata (x ≈ +22) → cuerpo → cuello → cabeza | **42 cm** (+15 % de holgura, +5 cm de servicio en la base, +2 cm para soldar) |
+| Ojo A → ojo B | 1 cm entre porta-LED | **6 cm** (para soldar ambos LED afuera y meterlos por el cuello) |
+
+En la base, el mazo termina en un conector JST de 3 pines: la ESP32 se puede cambiar sin tocar la cabeza (que va pegada).
+
+![Ruta de cables](img/ruta_cables.png)

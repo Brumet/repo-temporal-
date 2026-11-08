@@ -21,6 +21,7 @@ from scipy.sparse.csgraph import connected_components
 T, HOLG, PARED, REB, T_REB = 1.0, 0.10, 0.6, 1.4, 1.0
 LED_D, HOLG_LED, BOSS_EXTRA, BOSS_FONDO = 8.9, 0.15, 2.0, 11.0
 LED_CUERPO, LED_AIRE, VENTANA_D = 1.6, 0.3, 7.2
+TRAS_PCB = 1.5                              # mm detrás del PCB dentro del porta-LED (los ojos casi se tocan por dentro)
 R_PORTA = LED_D / 2 + 0.15 + 1.2          # radio del porta-LED: cámara + pared de 1,2 mm   # 5050 de 1,6 mm de alto; 0,3 mm de aire hasta el reborde; ventana para cualquier giro
 NS, NT0, NT = 150, 120, 720
 cab_f, sol_f, orig_f, gl_f, esp_f, out = sys.argv[1:7]; out = Path(out); out.mkdir(parents=True, exist_ok=True)
@@ -116,12 +117,12 @@ for nom in ("izq", "der"):
     partes = inserto.decompose(); inserto = max(partes, key=lambda q: q.volume()); zl = zr - T_REB
     print(nom, 'trozos del inserto (mm³):', sorted([round(q.volume(), 1) for q in partes], reverse=True)[:4], flush=True)
     rb = float(R.max()) + REB + BOSS_EXTRA
-    boss = mf.Manifold.cylinder(BOSS_FONDO, rb, rb, 128).translate([0, 0, zr - BOSS_FONDO + 2]).transform(M) ^ SOL
+    z_pcb = zl - LED_AIRE - LED_CUERPO          # cara del PCB: tope donde asienta el módulo
+    z_fondo = z_pcb - 1.0 - TRAS_PCB            # fondo del boss: PCB (1 mm) + espacio para soldaduras
+    boss = mf.Manifold.cylinder(zr + 2 - z_fondo, rb, rb, 128).translate([0, 0, z_fondo]).transform(M) ^ SOL
     zl = zr - T_REB
     bola = mf.Manifold.sphere(r + 0.03, 384).translate(list(cen))
-    z_pcb = zl - LED_AIRE - LED_CUERPO          # cara del PCB: tope donde asienta el módulo
     cil = lambda rad, z0, z1: mf.Manifold.cylinder(z1 - z0, rad, rad, 128).translate([0, 0, z0]).transform(M)
-    z_fondo = zr - BOSS_FONDO + 2               # fondo del boss (lado del hueco de la cabeza)
     # Perforación del boss con forma de reborde + círculo del porta-LED: el inserto entra por DENTRO
     sec_b = (sec(REB + HOLG) + mf.CrossSection.circle(R_PORTA + HOLG, 128))
     ext_b = lambda s, z0, z1: mf.Manifold.extrude(s, z1 - z0).translate([0, 0, z0]).transform(M)
