@@ -32,3 +32,24 @@ res = CAB + parche
 partes = res.decompose()
 print("centro", cl.round(2), "ápice", apice.round(2), "volumen agregado mm³", round(res.volume() - CAB.volume(), 1), "piezas", len(partes))
 tm(res).export(out)
+
+
+# ——— Ojo derecho: dentro del contorno de su globo, superficie = esfera perfecta ———
+if len(sys.argv) > 9:
+    g = trimesh.load_mesh(sys.argv[9], process=True)
+    cR = np.array(G["centro_esfera"]); eR = np.array(G["eje"]); eR /= np.linalg.norm(eR)
+    xR = np.cross([0, 0, 1], eR); xR /= np.linalg.norm(xR); yR = np.cross(eR, xR)
+    ar = g.area_faces; c0 = ar @ g.triangles_center / ar.sum()
+    bordes = trimesh.grouping.group_rows(g.edges_sorted, require_count=1)
+    P = g.vertices[np.unique(g.edges_sorted[bordes])] - c0
+    th = np.arctan2(P @ yR, P @ xR); rr = np.hypot(P @ xR, P @ yR)
+    ts = np.linspace(-np.pi, np.pi, 120, endpoint=False)
+    R = np.array([np.median(rr[np.abs((th - t + np.pi) % (2 * np.pi) - np.pi) < 0.1]) for t in ts]) + 0.1
+    sec = mf.CrossSection([[(float(rv * np.cos(t)), float(rv * np.sin(t))) for t, rv in zip(ts, R)]])
+    MR = np.column_stack([xR, yR, eR, c0 - eR * 3.0])
+    prisma = mf.Manifold.extrude(sec, 8.0).transform(MR)
+    esfR = mf.Manifold.sphere(G["radio"] + 0.28, 384).translate(list(cR))   # 0,28 mm sobre el globo: lo cubre entero
+    antes = res.volume()
+    res = res + (prisma ^ esfR)   # solo agrega: rellena hasta la esfera sin dejar escalón con el párpado
+    print("derecho: cambio de volumen mm³", round(res.volume() - antes, 2))
+    tm(max(res.decompose(), key=lambda q: q.volume())).export(out)
