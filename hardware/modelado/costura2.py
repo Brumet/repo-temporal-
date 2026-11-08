@@ -19,6 +19,7 @@ from scipy.sparse.csgraph import connected_components
 
 MAX_D = 2.5        # mm desde la cara plana
 K_APERTURA = 4    # filas de caras
+ALIN_MAX = 0.6     # |cos| entre normal de la cara y la de la correa: < 0,6 = de canto
 HUNDIDO = 8.0      # grados: una arista cóncava más cerrada que esto es pliegue (frontera)
 src, borde, correa_f, out = sys.argv[1], sys.argv[2], sys.argv[3], Path(sys.argv[4]); out.mkdir(parents=True, exist_ok=True)
 B = json.load(open(borde)); n, ex, ey, C0 = (np.array(B[k]) for k in ("n", "ex", "ey", "centro"))
@@ -37,12 +38,15 @@ vec = [[] for _ in range(F)]
 for (a, b), ok in zip(adj, pasa):
     if ok:
         vec[a].append(b); vec[b].append(a)
+# Orientación: la pared de la correa está de canto respecto a su cara plana; las plumas no
+nrm = cu.face_normals
+alin = np.abs(np.einsum("ij,ij->i", nrm, nrm[plana][jp]))
 correa = plana.copy()
 cola = deque(np.nonzero(plana)[0])
 while cola:
     i = cola.popleft()
     for j in vec[i]:
-        if not correa[j] and dplana[j] < MAX_D:
+        if not correa[j] and dplana[j] < MAX_D and (dplana[j] < 0.5 or alin[j] < ALIN_MAX):
             correa[j] = True; cola.append(j)
 print(f"correa: cara plana {plana.sum()} + paredes {correa.sum() - plana.sum()} caras", flush=True)
 
