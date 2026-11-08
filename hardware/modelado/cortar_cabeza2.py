@@ -111,7 +111,27 @@ def malla_campo(campo, suave=1.0):
 
 aire_o_pared = prof <= PARED_UNION
 # Superficie de corte: campo con signo (distancia al cuerpo - distancia a la cabeza) -> sin escalones
-R_cab = malla_campo(distB - distH + DESPLAZ)   # DESPLAZ > 0 corre el corte hacia el cuerpo (fondo del surco)
+# Campo continuo cerca de la costura: etiqueta de los vértices reales (+1 cabeza, -1 cuerpo),
+# interpolada desde los vértices más cercanos -> el corte cae entre vértices, no en escalones de vóxel.
+phi = (distB - distH).astype(np.float32)
+vf = np.zeros(len(orig.vertices)); cnt = np.zeros(len(orig.vertices))
+etq = np.where(lab_cara, 1.0, -1.0)
+for c in range(3):
+    np.add.at(vf, orig.faces[:, c], etq); np.add.at(cnt, orig.faces[:, c], 1)
+vf /= np.maximum(cnt, 1)
+cerca_v = np.nonzero(np.all((orig.vertices > lo - 4) & (orig.vertices < hi + 4), axis=1) & (np.abs(vf) < 0.999))[0]
+banda_v = np.all((orig.vertices > lo - 4) & (orig.vertices < hi + 4), axis=1)
+vids = np.nonzero(banda_v)[0]
+arbol_v = cKDTree(orig.vertices[vids])
+# vóxeles de la banda: a < 3 mm de la costura (|phi| < 3) y no muy adentro del aire
+zona_b = (np.abs(phi) < 3.0) & ((prof > 0) | (ndimage.distance_transform_edt(~vol, sampling=VOX) < 1.0))
+ib = np.nonzero(zona_b)
+dd, jj = arbol_v.query(pts(ib), k=6, workers=-1)
+wgt = 1.0 / np.maximum(dd, 1e-3) ** 2
+fint = (vf[vids][jj] * wgt).sum(1) / wgt.sum(1)
+phi[ib] = (fint * 0.6).astype(np.float32)
+print(f"campo continuo en {len(ib[0])} vóxeles junto a la costura", T(), flush=True)
+R_cab = malla_campo(phi + DESPLAZ, suave=0.5)
 R_thick_cab = malla(H & aire_o_pared & (distB <= REF)) ^ R_cab
 R_thick_cue = malla(~H & aire_o_pared & (distH <= REF)) - R_cab
 R_bolsillo = malla(H & (prof > SKIN) & (distB <= LABIO + 0.2))
