@@ -196,3 +196,23 @@ El collar (las dos cuerdas trenzadas + amarres + dije) sale como **una sola piez
   doblan al espacio real; la superficie visible del collar es la original (difiere < 0,1 mm en 1,7 mm²).
 
 ![Collar separado](img/collar_separado.png)
+
+### Paso 5 · Tapa inferior y electrónica en la roca (8/11/2026)
+
+`roca_tapa.py` → `modelado/tapa/` (`cuerpo.stl`, `tapa.stl`, `tecla.stl`).
+
+- **Tapa** (3 mm) en lugar del piso de la roca, holgura 0,3 mm. Asienta contra una **repisa interior** de 5 mm
+  (z 3–6) y contra el estante de la ESP32: el peso de la escultura no carga los tornillos.
+- **2 tornillos ocultos** avellanados (3 × 12 mm para plástico, o M3 con inserto pegado) en bosses Ø10 con agujero
+  piloto Ø2,5 (adelante y atrás-izquierda). **4 patas de goma Ø10 mm** en rebajes de 0,6 mm; dos tapan los tornillos.
+- **Bandeja de lastre** sobre la tapa: 259 cm³ → ~285 g de yeso o ~520 g de cemento. Deja libres la ESP32, los
+  tornillos y el switch.
+- **Ventilación**: 6 ranuras de 2 × 18 mm bajo la ESP32 (las patas dejan 2 mm de aire debajo).
+- **ESP32-C3** en un estante pegado a la pared de atrás (bolsillo de 1 mm + gota de silicona), con el USB-C a ras de la
+  cara interior; **agujero 13 × 7,5 mm** en la roca para el enchufe. Queda en el cuerpo: la tapa sale sin tocar cables.
+- **Botón MX** en el costado: la **tecla es un fragmento de la roca** con contorno irregular (no cuadrado) y 0,2 mm de
+  holgura; por dentro lleva el encastre de cruz MX. Torre-guía con placa de 1,5 mm y agujero 14 × 14: el switch se mete
+  por el agujero de la tecla, encaja en la placa, se sueldan los cables por dentro y se pone la tecla.
+
+![Tapa y roca](img/tapa_roca.png)
+![Cortes del switch y del USB](img/tapa_cortes.png)
