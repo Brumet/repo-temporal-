@@ -1,19 +1,26 @@
 {
   "izq": {
-    "ancho_mm": 4.6,
-    "largo_mm": 9.16,
-    "grosor_min_mm": 1.0,
-    "grosor_max_mm": 1.73,
-    "volumen_mm3": 98.5,
+    "contorno_mm": [
+      4.99,
+      9.45
+    ],
+    "grosor_mm": [
+      1.0,
+      1.97
+    ],
+    "volumen_mm3": 120.1,
     "trozos_descartados": 7
   },
   "der": {
-    "ancho_mm": 4.6,
-    "largo_mm": 9.16,
-    "grosor_min_mm": 1.0,
-    "grosor_max_mm": 1.73,
-    "volumen_mm3": 98.5,
-    "trozos_descartados": 3
-  },
-  "cabeza_trozos": 1
+    "contorno_mm": [
+      7.21,
+      11.71
+    ],
+    "grosor_mm": [
+      1.0,
+      2.2
+    ],
+    "volumen_mm3": 223.7,
+    "trozos_descartados": 7
+  }
 }
