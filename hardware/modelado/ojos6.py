@@ -14,12 +14,14 @@ import sys, json
 from pathlib import Path
 import numpy as np, trimesh, manifold3d as mf
 import iris, os
-ESTILO = os.environ.get("IRIS", "griego")
+ESTILO = os.environ.get("IRIS", "fibras")
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 
 T, HOLG, PARED, REB, T_REB = 1.0, 0.10, 0.6, 1.4, 1.0
-LED_D, HOLG_LED, BOSS_EXTRA, BOSS_FONDO = 8.9, 0.2, 2.0, 11.0
+LED_D, HOLG_LED, BOSS_EXTRA, BOSS_FONDO = 8.9, 0.15, 2.0, 11.0
+LED_CUERPO, LED_AIRE, VENTANA_D = 1.6, 0.3, 7.2
+R_PORTA = LED_D / 2 + 0.15 + 1.2          # radio del porta-LED: cámara + pared de 1,2 mm   # 5050 de 1,6 mm de alto; 0,3 mm de aire hasta el reborde; ventana para cualquier giro
 NS, NT0, NT = 150, 120, 720
 cab_f, sol_f, orig_f, gl_f, esp_f, out = sys.argv[1:7]; out = Path(out); out.mkdir(parents=True, exist_ok=True)
 man = lambda t: mf.Manifold(mf.Mesh(vert_properties=np.asarray(t.vertices, np.float32), tri_verts=np.asarray(t.faces, np.uint32)))
@@ -117,13 +119,24 @@ for nom in ("izq", "der"):
     boss = mf.Manifold.cylinder(BOSS_FONDO, rb, rb, 128).translate([0, 0, zr - BOSS_FONDO + 2]).transform(M) ^ SOL
     zl = zr - T_REB
     bola = mf.Manifold.sphere(r + 0.03, 384).translate(list(cen))
+    z_pcb = zl - LED_AIRE - LED_CUERPO          # cara del PCB: tope donde asienta el módulo
+    cil = lambda rad, z0, z1: mf.Manifold.cylinder(z1 - z0, rad, rad, 128).translate([0, 0, z0]).transform(M)
+    z_fondo = zr - BOSS_FONDO + 2               # fondo del boss (lado del hueco de la cabeza)
+    # Perforación del boss con forma de reborde + círculo del porta-LED: el inserto entra por DENTRO
+    sec_b = (sec(REB + HOLG) + mf.CrossSection.circle(R_PORTA + HOLG, 128))
+    ext_b = lambda s, z0, z1: mf.Manifold.extrude(s, z1 - z0).translate([0, 0, z0]).transform(M)
     hueco = ((ext(HOLG, zr - 0.01, 8) ^ bola) + ext(REB + HOLG, zl - 0.01, zr + 0.01)
-             + mf.Manifold.cylinder(BOSS_FONDO + 2, LED_D / 2 + HOLG_LED, LED_D / 2 + HOLG_LED, 128).translate([0, 0, zl - BOSS_FONDO - 1]).transform(M))
+             + ext_b(sec_b, z_fondo - 3, zl + 0.01))
+    # Porta-LED: tapón que llena la perforación, aprieta el reborde y sostiene el módulo
+    porta = (ext_b(sec_b.offset(-HOLG - 0.1, mf.JoinType.Round), z_fondo, zl)
+             - cil(VENTANA_D / 2, z_pcb - 0.01, zl + 1)                     # ventana de luz
+             - cil(LED_D / 2 + HOLG_LED, z_fondo - 1, z_pcb))               # cámara del PCB (tope en z_pcb)
+    tm(porta).export(out / f"porta_led_{nom}.stl")
     cabeza = (cabeza + boss) - hueco
     tm(inserto).export(out / f"ojo_{nom}.stl")
     info[nom] = {"contorno_mm": [round(float(2 * R.min()), 2), round(float(2 * R.max()), 2)],
                  "grosor_mm": [round(float(np.min(Hout - Hin)), 2), round(float(np.max(Hout - Hin)), 2)],
-                 "volumen_mm3": round(inserto.volume(), 1), "marco": {"c": c.tolist(), "e": e.tolist(), "x": x.tolist(), "y": y.tolist(), "zr": zr, "zl": zl}, "trozos_descartados": len(partes) - 1}
+                 "volumen_mm3": round(inserto.volume(), 1), "marco": {"c": c.tolist(), "e": e.tolist(), "x": x.tolist(), "y": y.tolist(), "zr": zr, "zl": zl, "z_pcb": z_pcb, "z_fondo": z_fondo}, "trozos_descartados": len(partes) - 1}
     print(nom, info[nom], flush=True)
 cab = max(cabeza.decompose(), key=lambda q: q.volume())
 tm(cab).export(out / "cabeza_ojos.stl")

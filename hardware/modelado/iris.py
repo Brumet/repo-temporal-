@@ -12,8 +12,8 @@ import numpy as np
 
 CEN = np.array([0.45, 0.45])  # centro de la pupila del iris tallado original (ojo izquierdo)
 R_PUP, R_COL, R_IRIS = 1.30, 2.05, 3.30
-H_PUP, H_COL, H_FIB_EXT, H_FIB_INT, H_LIMBO = 0.60, 0.38, 0.20, 0.13, 0.22
-W_FIB, N_EXT, N_INT, N_PICOS = 0.085, 120, 80, 14
+H_PUP, H_COL, H_FIB_EXT, H_FIB_INT, H_LIMBO = 0.45, 0.34, 0.18, 0.12, 0.22
+W_FIB, N_EXT, N_INT, N_PICOS = 0.10, 72, 44, 10   # fibra de 0,2 mm de base: imprimible
 
 
 def _prof(u):  # perfil redondeado de una cresta: 1 en el centro, 0 en |u|>=1
@@ -24,7 +24,7 @@ def _ss(a, b, x):
     t = np.clip((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t)
 
 
-def grosor(px, py, espejo=False, semilla=7, estilo="griego"):
+def grosor(px, py, espejo=False, semilla=7, estilo="fibras"):
     if estilo == "griego": return griego(px, py, espejo)
     return fibras_(px, py, espejo, semilla)
 
@@ -37,7 +37,7 @@ def fibras_(px, py, espejo=False, semilla=7):
     h = np.zeros_like(r)
     # collarete ondulado
     a = rng.uniform(0, 2 * np.pi, 4)
-    rc = lambda t: R_COL + 0.13 * np.sin(5 * t + a[0]) + 0.08 * np.sin(9 * t + a[1]) + 0.04 * np.sin(17 * t + a[2])
+    rc = lambda t: R_COL + 0.09 * np.sin(5 * t + a[0]) + 0.05 * np.sin(8 * t + a[1])
     def fibras(n, r0, r1, alto, k_amp):
         out = np.zeros_like(r); zona = (r > r0 - 0.1) & (r < r1 + 0.1); rz, tz = r[zona], th[zona]
         acc = np.zeros_like(rz)
@@ -55,18 +55,23 @@ def fibras_(px, py, espejo=False, semilla=7):
     h = np.maximum(h, fibras(N_EXT, R_COL, R_IRIS - 0.05, H_FIB_EXT, 0.045) * _ss(rcol - 0.05, rcol + 0.1, r))
     h = np.maximum(h, fibras(N_INT, R_PUP, R_COL + 0.1, H_FIB_INT, 0.03) * (1 - _ss(rcol - 0.1, rcol + 0.05, r)))
     # collarete con grumos y picos hacia afuera
-    grumo = 1 + 0.25 * np.sin(23 * th + a[3]) * np.sin(11 * th)
+    grumo = 1 + 0.12 * np.sin(13 * th + a[3])
     h = np.maximum(h, H_COL * grumo * _prof((r - rcol) / 0.2))
     for t0 in rng.uniform(0, 2 * np.pi, N_PICOS):
         largo = rng.uniform(0.45, 0.9); dth = (th - t0 + np.pi) % (2 * np.pi) - np.pi
         s = np.clip((r - rc(t0)) / largo, 0, 1)
-        anch = 0.16 * (1 - s) + 0.05
+        anch = 0.16 * (1 - s) + 0.09
         v = H_COL * 0.9 * (1 - 0.7 * s) * _prof(dth * r / anch) * (r > rc(t0) - 0.1) * (s < 1)
         h = np.maximum(h, v)
     # limbo (borde del iris) y pupila
     h = np.maximum(h, H_LIMBO * _prof((r - R_IRIS) / 0.18))
-    h = np.maximum(h, H_PUP * (1 - _ss(R_PUP - 0.08, R_PUP, r)))
-    return h
+    # base en cono suave (profundidad) + pupila en cuenco con borde nítido y punto de brillo
+    u = np.clip((r - R_PUP) / (R_IRIS - R_PUP), 0, 1)
+    h = h + 0.18 * (1 - u) * (1 - _ss(R_IRIS - 0.1, R_IRIS + 0.05, r))
+    pup = _ss(R_PUP - 0.06, R_PUP + 0.02, r)
+    h = pup * h + (1 - pup) * H_PUP * (r / R_PUP) ** 2
+    b = np.hypot(dx + 0.38, dy - 0.42)
+    return np.maximum(h, 0.40 * _prof(b / 0.32) * (r < R_PUP))
 
 
 def griego(px, py, espejo=False, n_estrias=28):
