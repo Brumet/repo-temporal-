@@ -18,8 +18,8 @@ from scipy import ndimage
 from scipy.spatial import cKDTree
 from skimage import measure
 
-VOX, REF, PARED_UNION, SKIN, HOLG, LABIO = 0.3, 12.0, 5.0, 2.5, 0.15, 5.0
-DESPLAZ = 0.12
+VOX, REF, PARED_UNION, SKIN, HOLG, LABIO = 0.25, 12.0, 5.0, 2.5, 0.15, 5.0
+DESPLAZ = 0.0
 f_orig, f_sol, f_hue, f_borde, f_cost, out = sys.argv[1:7]; out = Path(out); out.mkdir(parents=True, exist_ok=True)
 t0 = time.time(); T = lambda: f"{time.time()-t0:.0f} s"
 B = json.load(open(f_borde)); n, ex, ey, C0 = (np.array(B[k]) for k in ("n", "ex", "ey", "centro"))
