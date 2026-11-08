@@ -44,12 +44,15 @@ if len(sys.argv) > 9:
     P = g.vertices[np.unique(g.edges_sorted[bordes])] - c0
     th = np.arctan2(P @ yR, P @ xR); rr = np.hypot(P @ xR, P @ yR)
     ts = np.linspace(-np.pi, np.pi, 120, endpoint=False)
-    R = np.array([np.median(rr[np.abs((th - t + np.pi) % (2 * np.pi) - np.pi) < 0.1]) for t in ts]) + 0.1
-    sec = mf.CrossSection([[(float(rv * np.cos(t)), float(rv * np.sin(t))) for t, rv in zip(ts, R)]])
+    R = np.array([np.median(rr[np.abs((th - t + np.pi) % (2 * np.pi) - np.pi) < 0.1]) for t in ts])
     MR = np.column_stack([xR, yR, eR, c0 - eR * 3.0])
-    prisma = mf.Manifold.extrude(sec, 8.0).transform(MR)
+    def prisma_(off):
+        sec = mf.CrossSection([[(float((rv + off) * np.cos(t)), float((rv + off) * np.sin(t))) for t, rv in zip(ts, R)]])
+        return mf.Manifold.extrude(sec, 8.0).transform(MR)
+    p_in, p_ext = prisma_(-0.1), prisma_(1.2)
     esfR = mf.Manifold.sphere(G["radio"] + 0.28, 384).translate(list(cR))   # 0,28 mm sobre el globo: lo cubre entero
     antes = res.volume()
-    res = res + (prisma ^ esfR)   # solo agrega: rellena hasta la esfera sin dejar escalón con el párpado
+    # dentro del globo: quita lo que sobresale de la esfera; hasta el párpado: rellena hasta la esfera
+    res = (res - (p_in - esfR)) + (p_ext ^ esfR)
     print("derecho: cambio de volumen mm³", round(res.volume() - antes, 2))
     tm(max(res.decompose(), key=lambda q: q.volume())).export(out)
