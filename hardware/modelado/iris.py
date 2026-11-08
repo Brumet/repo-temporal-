@@ -24,7 +24,12 @@ def _ss(a, b, x):
     t = np.clip((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t)
 
 
-def grosor(px, py, espejo=False, semilla=7):
+def grosor(px, py, espejo=False, semilla=7, estilo="griego"):
+    if estilo == "griego": return griego(px, py, espejo)
+    return fibras_(px, py, espejo, semilla)
+
+
+def fibras_(px, py, espejo=False, semilla=7):
     rng = np.random.default_rng(semilla)
     if espejo: px = -px
     dx, dy = px - CEN[0], py - CEN[1]
@@ -61,4 +66,21 @@ def grosor(px, py, espejo=False, semilla=7):
     # limbo (borde del iris) y pupila
     h = np.maximum(h, H_LIMBO * _prof((r - R_IRIS) / 0.18))
     h = np.maximum(h, H_PUP * (1 - _ss(R_PUP - 0.08, R_PUP, r)))
+    return h
+
+
+def griego(px, py, espejo=False, n_estrias=28):
+    """Estilo escultura clásica: iris en cono suave con borde inciso nítido, pupila 'taladrada'
+    en cuenco y un punto de brillo; estrías radiales muy suaves. Rasgos >= 0,3 mm."""
+    if espejo: px = -px
+    dx, dy = px - CEN[0], py - CEN[1]
+    r = np.hypot(dx, dy); th = np.arctan2(dy, dx)
+    u = np.clip((r - R_PUP) / (R_IRIS - R_PUP), 0, 1)
+    iris_ = (0.15 + 0.30 * (1 - u)) * (1 - _ss(R_IRIS - 0.06, R_IRIS + 0.04, r))
+    estr = 0.022 * (0.5 + 0.5 * np.cos(n_estrias * th + 0.9 * np.sin(3 * th) + 0.5 * np.sin(7 * th + 1))) * _ss(R_PUP + 0.15, R_PUP + 0.5, r) * (1 - _ss(R_IRIS - 0.5, R_IRIS - 0.15, r))
+    cuenco = 0.45 * (r / R_PUP) ** 2
+    pupila = _ss(R_PUP - 0.06, R_PUP + 0.02, r)
+    h = pupila * (iris_ + estr) + (1 - pupila) * cuenco
+    b = np.hypot(dx + 0.38, dy - 0.42)
+    h = np.maximum(h, 0.40 * _prof(b / 0.32) * (r < R_PUP))
     return h

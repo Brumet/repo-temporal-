@@ -13,7 +13,8 @@ Uso: python ojos5.py cabeza_ojos_lisos.stl cuervo_reparado.stl "forma preliminar
 import sys, json
 from pathlib import Path
 import numpy as np, trimesh, manifold3d as mf
-import iris
+import iris, os
+ESTILO = os.environ.get("IRIS", "griego")
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 
@@ -86,7 +87,7 @@ for nom in ("izq", "der"):
     pts = np.array([(0.0, 0.0)] + [(rv * s * np.cos(t), rv * s * np.sin(t)) for s in np.linspace(0, 1, NS + 1)[1:] for t, rv in zip(ts, R)])
     Hout = h_esfera(pts, c, e, x, y, cen, r)
     sfr = np.r_[0.0, np.repeat(np.linspace(0, 1, NS + 1)[1:], NT)]
-    rel = -iris.grosor(pts[:, 0], pts[:, 1], espejo=(nom == "der")) * (1 - iris._ss(0.90, 0.985, sfr))
+    rel = -iris.grosor(pts[:, 0], pts[:, 1], espejo=(nom == "der"), estilo=ESTILO) * (1 - iris._ss(0.90, 0.985, sfr))
     Hin = Hout - T + rel
     P3 = lambda h: c + np.outer(pts[:, 0], x) + np.outer(pts[:, 1], y) + np.outer(h, e)
     N = len(pts); idx = lambda si, ti: 1 + si * NT + (ti % NT)
@@ -110,7 +111,7 @@ for nom in ("izq", "der"):
     pared = (ext(0, zr, 8) - ext(-PARED, zr - 1, 9)) ^ esf_o - mf.Manifold(sh.__class__ and man(sh)) if False else (ext(0, zr, 8) - ext(-PARED, zr - 1, 9)) ^ esf_o   # sube hasta la cúpula
     reborde = (ext(REB, zr - T_REB, zr) - ext(-PARED, zr - 2, zr + 1)) ^ SOL.translate(list(-e * 0.8))
     inserto = capa + pared + reborde
-    partes = inserto.decompose(); inserto = max(partes, key=lambda q: q.volume())
+    partes = inserto.decompose(); inserto = max(partes, key=lambda q: q.volume()); zl = zr - T_REB
     print(nom, 'trozos del inserto (mm³):', sorted([round(q.volume(), 1) for q in partes], reverse=True)[:4], flush=True)
     rb = float(R.max()) + REB + BOSS_EXTRA
     boss = mf.Manifold.cylinder(BOSS_FONDO, rb, rb, 128).translate([0, 0, zr - BOSS_FONDO + 2]).transform(M) ^ SOL
@@ -122,7 +123,7 @@ for nom in ("izq", "der"):
     tm(inserto).export(out / f"ojo_{nom}.stl")
     info[nom] = {"contorno_mm": [round(float(2 * R.min()), 2), round(float(2 * R.max()), 2)],
                  "grosor_mm": [round(float(np.min(Hout - Hin)), 2), round(float(np.max(Hout - Hin)), 2)],
-                 "volumen_mm3": round(inserto.volume(), 1), "trozos_descartados": len(partes) - 1}
+                 "volumen_mm3": round(inserto.volume(), 1), "marco": {"c": c.tolist(), "e": e.tolist(), "x": x.tolist(), "y": y.tolist(), "zr": zr, "zl": zl}, "trozos_descartados": len(partes) - 1}
     print(nom, info[nom], flush=True)
 cab = max(cabeza.decompose(), key=lambda q: q.volume())
 tm(cab).export(out / "cabeza_ojos.stl")
