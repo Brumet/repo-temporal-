@@ -1,0 +1,25 @@
+<!doctype html><html><body style="margin:0;background:#fff">
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {STLLoader} from 'three/addons/loaders/STLLoader.js';
+const q=new URLSearchParams(location.search);
+const W=1400,H=1400;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(W,H);document.body.appendChild(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0xffffff);
+const cam=new THREE.PerspectiveCamera(22,1,1,2000);
+s.add(new THREE.HemisphereLight(0xffffff,0x888888,1.6));
+const d=new THREE.DirectionalLight(0xffffff,2.2);d.position.set(-60,80,200);s.add(d);
+const d2=new THREE.DirectionalLight(0xffffff,0.6);d2.position.set(100,-50,60);s.add(d2);
+const cols={rojo:0xd7191c,naranja:0xf46d0f,amarillo:0xffc814,negro:0x151515};
+const dir=q.get('dir');const L=new STLLoader();
+const g=new THREE.Group();s.add(g);
+await Promise.all(Object.entries({'1_rojo':'rojo','2_naranja':'naranja','3_amarillo':'amarillo','4_negro':'negro'}).map(([f,c])=>new Promise(res=>L.load(`${dir}/fenix_${f}.stl`,geo=>{geo.computeVertexNormals();g.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:cols[c],roughness:0.75,metalness:0})));res();},undefined,()=>res()))));
+const box=new THREE.Box3().setFromObject(g);const c=box.getCenter(new THREE.Vector3());g.position.sub(c);
+const el=+q.get('el')||0, az=+q.get('az')||0, dist=+q.get('dist')||230;
+const e=THREE.MathUtils.degToRad(el), a=THREE.MathUtils.degToRad(az);
+cam.position.set(dist*Math.cos(e)*Math.sin(a), -dist*Math.cos(e)*Math.cos(a), dist*Math.sin(e));
+cam.up.set(0,0,1);cam.lookAt(0,0,0);
+r.render(s,cam);document.title='ok';
+</script></body></html>
