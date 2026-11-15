@@ -216,3 +216,16 @@ El collar (las dos cuerdas trenzadas + amarres + dije) sale como **una sola piez
 
 ![Tapa y roca](img/tapa_roca.png)
 ![Cortes del switch y del USB](img/tapa_cortes.png)
+
+#### Tapa v2 (15/11/2026) — `roca_tapa.py` → `modelado/tapa2/`
+
+- Tapa de **4,5 mm**. **Tornillos M3 con tuerca cautiva**: alojamiento hexagonal en cada boss con ranura lateral para
+  meter la tuerca desde dentro; M3 × 10–12. (Si el tornillo es otro, se cambian `M_D`, `TUERCA_AF`, `TUERCA_E`.)
+- **Patas de TPU** (`pata_tpu.stl`, imprimir 4): tapón que entra a presión en el asiento Ø12,4 de la tapa y tapa la
+  cabeza del tornillo; ranura para sacarla con la uña.
+- **ESP32**: cuna con bolsillo de 1 mm, **gancho flexible** en el canto de la antena (no toca los pines) y **guía de
+  cables** (arco) para los 3 cables de los ojos y los 2 del botón. Sin conector: se sueldan directo a la placa.
+- **USB-C** dentro de una **grieta** irregular en la roca. **Rejilla hexagonal** de ventilación bajo la placa.
+  **Muesca** para abrir. **Grabado** espejado bajo la tapa: BRUMET / CUERVO · SERIE CERO / Nº 01–04 (4 tapas).
+
+![Tapa v2](img/tapa2.png)
