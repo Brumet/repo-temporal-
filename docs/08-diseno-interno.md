@@ -229,3 +229,22 @@ El collar (las dos cuerdas trenzadas + amarres + dije) sale como **una sola piez
   **Muesca** para abrir. **Grabado** espejado bajo la tapa: BRUMET / CUERVO · SERIE CERO / Nº 01–04 (4 tapas).
 
 ![Tapa v2](img/tapa2.png)
+
+### Calidad de superficie (análisis, 15/11/2026)
+
+| | Resultado |
+|---|---|
+| Resolución del modelo comprado | 1,88 M caras (la "forma preliminar" es un remallado de 2,7 M). Arista: 0,3 mm cuerpo/cabeza, 0,5 calavera, 0,7 roca. La Jupiter imprime a ~0,03–0,05 mm → se verían facetas. |
+| **Teselación Phong ×2** (`textura_demo.py`) | Quita las facetas sin cambiar la escultura. Rápido (segundos por parche). **Sirve para todo el modelo.** |
+| **Roca**: grano + grietas finas | Muy bien: parece piedra real. |
+| **Calavera**: poros de hueso | Bien, sutil. |
+| Plumas: rayas uniformes | Mal (rayas paralelas; además lo que hay en el pecho son **placas y correas de cuero**, no plumas). |
+| Plumas: segmentar pluma por pluma por pliegues | No separa bien (o une varias plumas o las parte en cientos de trozos). |
+| Plumas: **realzar** las barbas que ya trae la escultura (`superficie_demo.py`) | **No sirve**: las barbas del modelo tienen el tamaño de los triángulos; realzar amplifica el ruido de la malla. |
+
+**Conclusión:** lo automático que funciona es suavizar todo + textura de roca y calavera. Las plumas y el cuero
+necesitan trabajo por zonas con máscara (pluma por pluma): lo indicado es ZBrush (instalado: 2024 y 2025) con
+polygroups por pluma + alfas de barbas/cuero, o seguir con un método semiautomático marcando las plumas a mano.
+
+![Prueba 1](img/textura_prueba.png)
+![Prueba 2: realce (no sirve)](img/superficie_v2.png)

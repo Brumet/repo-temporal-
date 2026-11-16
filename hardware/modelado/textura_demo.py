@@ -71,6 +71,7 @@ def textura(t, tipo):
     return trimesh.Trimesh(v + n * d[:, None], t.faces, process=False)
 
 
+if __name__ != "__main__": PARCHES = {}
 for nom, (xr, yr, zr, tipo) in PARCHES.items():
     c = m.triangles_center
     sel = (c[:, 0] > xr[0]) & (c[:, 0] < xr[1]) & (c[:, 1] > yr[0]) & (c[:, 1] < yr[1]) & (c[:, 2] > zr[0]) & (c[:, 2] < zr[1])
