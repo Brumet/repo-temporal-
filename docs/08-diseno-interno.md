@@ -248,3 +248,12 @@ polygroups por pluma + alfas de barbas/cuero, o seguir con un método semiautom�
 
 ![Prueba 1](img/textura_prueba.png)
 ![Prueba 2: realce (no sirve)](img/superficie_v2.png)
+
+### Superficie mejorada — opción 1 aplicada (16/11/2026)
+
+`mejorar_superficie.py` → `modelado/final/` (`cuerpo.stl` 13,1 M caras, `cabeza_ojos.stl` 1,1 M, `collar.stl`, `tecla.stl`).
+Solo se refina la superficie **original** de la escultura (refinamiento rojo-verde, sin grietas): hueco interior,
+encastres, tapa, USB y casquillos quedan idénticos. Nivel 1 en todo (Phong), nivel 2 en la roca; textura de roca
+(z < 39) y poros de hueso en la calavera (z 40–125, sin la cola ni las garras). Plumas y cuero: sin textura (ZBrush).
+
+![Antes / después](img/superficie_final.png)
