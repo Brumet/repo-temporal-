@@ -17,10 +17,13 @@ from scipy.spatial import cKDTree
 sys.path.insert(0, str(Path(__file__).parent))
 from textura_demo import ruido, fbm  # noqa: E402
 
-ref_f, out = sys.argv[1], Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
-piezas = sys.argv[3:]
 ALFA, ANG_VIVO = 0.75, np.cos(np.radians(35))
-ref = trimesh.load_mesh(ref_f, process=True); TREF = cKDTree(ref.vertices)
+if __name__ == "__main__":
+    ref_f, out = sys.argv[1], Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
+    piezas = sys.argv[3:]
+    ref = trimesh.load_mesh(ref_f, process=True); TREF = cKDTree(ref.vertices)
+else:
+    piezas = []
 
 
 def normales(V, F):

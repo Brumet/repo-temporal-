@@ -257,3 +257,12 @@ encastres, tapa, USB y casquillos quedan idénticos. Nivel 1 en todo (Phong), ni
 (z < 39) y poros de hueso en la calavera (z 40–125, sin la cola ni las garras). Plumas y cuero: sin textura (ZBrush).
 
 ![Antes / después](img/superficie_final.png)
+
+### Superficie final aprobada (16/11/2026) — `superficie_final.py` → `modelado/final2/`
+
+Roca basalto (grano + poros, sin líneas) + poros de hueso + **barbas orientadas** en plumas, patas y cabeza:
+campo de dirección calculado UNA vez sobre el modelo entero (tensor de estructura de las barbas que ya trae la
+escultura) e impulsos de Gabor en una rejilla 3D fija → las barbas siguen continuas a través de las costuras.
+Solo cambia la superficie original. Cuerpo 32,2 M caras (cerrado), cabeza 2,5 M, tecla. Pendiente: cuero.
+
+![Superficie final](img/superficie_todo.png)
