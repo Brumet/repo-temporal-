@@ -8,8 +8,9 @@ import sys
 from pathlib import Path
 import numpy as np, trimesh, pymeshlab
 
-src, out = sys.argv[1], Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
-m = trimesh.load_mesh(src, process=True)
+if __name__ == "__main__":
+    src, out = sys.argv[1], Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
+    m = trimesh.load_mesh(src, process=True)
 PARCHES = {"calavera": ((-28, 28), (-95, -40), (62, 118), "hueso"),
            "roca": ((35, 92), (-75, 5), (2, 40), "roca"),
            "plumas": ((-18, 18), (-52, -28), (212, 246), "pluma")}
