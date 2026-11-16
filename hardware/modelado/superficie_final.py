@@ -77,8 +77,10 @@ TP = cKDTree(C["P"])
 
 
 def peso_barbas(j, z):
-    w = (np.clip((C["coh"][j] - 0.35) / 0.3, 0, 1) * np.clip((C["en"][j] - 0.04) / 0.06, 0, 1)
-         * np.clip(1 - (C["curv"][j] - 0.03) / 0.05, 0, 1))
+    coh, en = C["coh"][j], C["en"][j]
+    cuero = np.clip((en - 0.12) / 0.05, 0, 1) * np.clip((0.55 - coh) / 0.15, 0, 1)   # mucho relieve sin dirección
+    w = (np.clip((coh - 0.42) / 0.25, 0, 1) * np.clip((en - 0.008) / 0.015, 0, 1)      # plumas suaves (espalda) incluidas
+         * np.clip(1 - (C["curv"][j] - 0.03) / 0.05, 0, 1) * (1 - cuero))
     return w * np.clip((z - Z_BARBAS) / 4.0, 0, 1)
 
 
