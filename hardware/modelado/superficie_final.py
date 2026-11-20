@@ -98,17 +98,26 @@ def gabor(V):
 def suave(z, a, b): return np.clip((z - a) / (b - a), 0, 1)
 
 
+PA, PB = np.array([6.6, -89.1, 240.6]), np.array([3.0, -62.0, 272.0])   # punta → base del pico
+
+
+def peso_pico(V):
+    """1 dentro del pico (con su banda y nariz, tal como está esculpido), 0 fuera; transición suave."""
+    u = (PB - PA) / np.linalg.norm(PB - PA); t = (V - PA) @ u; r = np.linalg.norm(V - PA - np.outer(t, u), axis=1)
+    return np.clip((24.0 - t) / 2.0, 0, 1) * np.clip((t + 3) / 1.0, 0, 1) * np.clip((12.5 - r) / 1.5, 0, 1)
+
+
 for f in piezas:
     nombre = Path(f).stem; t = trimesh.load_mesh(f, process=True); V, F = t.vertices.copy(), t.faces.copy()
     dist, j = TR.query(V, workers=-1); orig = dist < 1e-3
     log(nombre, "caras", len(F), "| original %", round(100 * orig.mean()))
     # realce suave de las barbas existentes (solo superficie original, zona de plumas)
-    wz = suave(V[:, 2], Z_BARBAS, Z_BARBAS + 4) * orig
+    wz = suave(V[:, 2], Z_BARBAS, Z_BARBAS + 4) * orig * (1 - peso_pico(V))
     V = V + (REALCE * np.clip(C["h"][j], -0.2, 0.2) * wz)[:, None] * NR[j]
     marca = orig[F].all(1)
     V, F, orig = refinar(V, F, orig, marca); log("  N1", len(F))
     _, j = TR.query(V, workers=-1); z = V[:, 2]
-    wb = peso_barbas(j, z) * orig
+    wb = peso_barbas(j, z) * orig * (1 - peso_pico(V))
     cz = V[F].mean(1)[:, 2]
     marca2 = orig[F].all(1) & ((cz < 40.0) | (wb[F].max(1) > 0.02))
     V, F, orig = refinar(V, F, orig, marca2); log("  N2", len(F))
@@ -127,7 +136,10 @@ for f in piezas:
         por = np.clip(ruido(V[hsel] / 0.5 + 3) - 0.25, 0, None)
         d[hsel] += wh[hsel] * (0.025 * fbm(V[hsel] / 1.6) - 0.08 * por)
     # barbas
-    wb = peso_barbas(j, z) * orig; bsel = wb > 0
+    wp = peso_pico(V) * orig
+    wb = peso_barbas(j, z) * orig * (1 - wp); bsel = wb > 0
+    psel = wp > 0
+    if psel.any(): d[psel] += wp[psel] * (0.010 * fbm(V[psel] / 0.6, 3))     # queratina: grano fino, sin líneas
     if bsel.any():
         G = gabor(V[bsel]); d[bsel] += -AMP * np.clip(G - 0.3, 0, 2.5) ** 1.3 * wb[bsel]
     V = V + N * d[:, None]
