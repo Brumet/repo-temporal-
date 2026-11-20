@@ -266,3 +266,14 @@ escultura) e impulsos de Gabor en una rejilla 3D fija → las barbas siguen cont
 Solo cambia la superficie original. Cuerpo 32,2 M caras (cerrado), cabeza 2,5 M, tecla. Pendiente: cuero.
 
 ![Superficie final](img/superficie_todo.png)
+
+### Pico y cuero (20/11/2026)
+
+- **Pico**: conserva TODO su detalle esculpido (placas, banda, aro de la nariz, agujeritos); sin barbas ni realce,
+  solo grano fino de queratina. (`pico_natural.py` = prueba descartada: borraba los detalles.)
+- **Cuero** (marcado por Bru: A aro del cuello, B banda bajo el pico, C franja del pecho, D cinturón doble, F cuerdas):
+  máscara por vértice `mascara_cuero.py` (A+B del collar clasificado, C y D por contorno proyectado, F por los ejes
+  reales de las cuerdas). Grano de cuero: celdas con surcos finos + poros + arrugas suaves; sin barbas.
+- **Dije**: metal liso (solo sin facetas). Plumas en V del pecho (G): plumas.
+
+![Cuero](img/cuero_prueba.png)

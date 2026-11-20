@@ -74,6 +74,15 @@ else:
              PF=rng.uniform(0, 2 * np.pi, len(P)))
     np.savez(campo_f, **C); log("campo calculado:", len(VR), "vértices,", len(P), "impulsos")
 TP = cKDTree(C["P"])
+CUERO = np.load(Path(ref_f).parent / "cuero" / "cuero_vertices.npy").astype(float)   # A, B, C, D, F (marcado por Bru)
+
+
+def cuero_d(V):
+    """Grano de cuero: celdas como granos (surcos finos entre ellas) + poros + arrugas muy suaves."""
+    f1, _, _ = worley(V, 0.45, 7)
+    surco = -0.035 * np.clip((f1 / 0.45 - 0.42) / 0.35, 0, 1) ** 2
+    f1b, idb, _ = worley(V, 0.30, 8); poro = -0.022 * np.clip(1 - f1b / 0.06, 0, 1) * ((idb % 100) < 35)
+    return surco + poro + 0.018 * fbm(V / 2.5, 2)
 
 
 def peso_barbas(j, z):
@@ -112,14 +121,15 @@ for f in piezas:
     dist, j = TR.query(V, workers=-1); orig = dist < 1e-3
     log(nombre, "caras", len(F), "| original %", round(100 * orig.mean()))
     # realce suave de las barbas existentes (solo superficie original, zona de plumas)
-    wz = suave(V[:, 2], Z_BARBAS, Z_BARBAS + 4) * orig * (1 - peso_pico(V))
+    sin_barbas = nombre.startswith("collar")          # pieza del collar: cuerdas (cuero) + dije (metal), sin barbas
+    wz = suave(V[:, 2], Z_BARBAS, Z_BARBAS + 4) * orig * (1 - peso_pico(V)) * (1 - CUERO[j]) * (not sin_barbas)
     V = V + (REALCE * np.clip(C["h"][j], -0.2, 0.2) * wz)[:, None] * NR[j]
     marca = orig[F].all(1)
     V, F, orig = refinar(V, F, orig, marca); log("  N1", len(F))
     _, j = TR.query(V, workers=-1); z = V[:, 2]
-    wb = peso_barbas(j, z) * orig * (1 - peso_pico(V))
+    wb = peso_barbas(j, z) * orig * (1 - peso_pico(V)) * (1 - CUERO[j]) * (not sin_barbas)
     cz = V[F].mean(1)[:, 2]
-    marca2 = orig[F].all(1) & ((cz < 40.0) | (wb[F].max(1) > 0.02))
+    marca2 = orig[F].all(1) & ((cz < 40.0) | (wb[F].max(1) > 0.02) | (CUERO[j][F].max(1) > 0.5))
     V, F, orig = refinar(V, F, orig, marca2); log("  N2", len(F))
     cz = V[F].mean(1)[:, 2]; marca3 = orig[F].all(1) & (cz < 39.5)
     if marca3.any(): V, F, orig = refinar(V, F, orig, marca3); log("  N3 roca", len(F))
@@ -137,7 +147,12 @@ for f in piezas:
         d[hsel] += wh[hsel] * (0.025 * fbm(V[hsel] / 1.6) - 0.08 * por)
     # barbas
     wp = peso_pico(V) * orig
-    wb = peso_barbas(j, z) * orig * (1 - wp); bsel = wb > 0
+    wc = CUERO[j] * orig
+    if wc.any():
+        Wc = W_vecinos(len(V), F); wc = np.clip(suav(wc, Wc, 3) * 1.4, 0, 1) * orig      # borde suave del cuero
+        csel = wc > 0
+        d[csel] += wc[csel] * cuero_d(V[csel])
+    wb = peso_barbas(j, z) * orig * (1 - wp) * (1 - wc) * (not sin_barbas); bsel = wb > 0
     psel = wp > 0
     if psel.any(): d[psel] += wp[psel] * (0.010 * fbm(V[psel] / 0.6, 3))     # queratina: grano fino, sin líneas
     if bsel.any():
