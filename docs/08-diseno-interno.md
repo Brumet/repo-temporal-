@@ -277,3 +277,26 @@ Solo cambia la superficie original. Cuerpo 32,2 M caras (cerrado), cabeza 2,5 M,
 - **Dije**: metal liso (solo sin facetas). Plumas en V del pecho (G): plumas.
 
 ![Cuero](img/cuero_prueba.png)
+
+### Collar con corte diagonal y piezas para imprimir (20/11/2026)
+
+- **Collar v5** (`collar_diagonal.py`): cada cuerda se corta donde ya cuelga libre (z 209), en bisel de 40° con la cara
+  larga hacia el cuerpo, + pasador Ø1 mm (3 mm por lado). Pegar con el pasador, resanar con resina y lijar 600–1000.
+- **Partición para la Jupiter 2** (`partir_roca.py`): entero no cabe (168 > 162 mm). Roca / calavera+cuervo, costura
+  en el pliegue donde la calavera se apoya; tapón de 6 mm a cada lado, canal Ø10 para cables, 3 pasadores Ø3 asimétricos.
+
+| Archivo (`modelado/imprimir/`) | Material | Cant. |
+|---|---|---|
+| `superior.stl` (calavera + cuervo, 365 cm³, inclinado 254×136×252) | resina | 1 |
+| `roca.stl` (155 cm³) | resina | 1 |
+| `cabeza_ojos.stl` | resina | 1 |
+| `collar.stl` | resina | 1 |
+| `ojo_izq.stl`, `ojo_der.stl` | resina **transparente** | 1 c/u |
+| `porta_led_izq.stl`, `porta_led_der.stl` | resina | 1 c/u |
+| `tecla.stl` | resina | 1 |
+| `tapa_01…04.stl` (una por cuervo, numerada) | resina | 1 |
+| `pata_tpu.stl` | **TPU** | 4 |
+
+Además: 2 tornillos M3×10–12 + 2 tuercas M3, 3 pasadores Ø3 × 10 mm, 2 pasadores Ø1 × 6 mm, switch MX, cable 30 AWG.
+
+![Partición](img/partes_jupiter.png)
