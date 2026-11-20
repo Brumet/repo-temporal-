@@ -39,26 +39,43 @@ def seccion(p, T, U, W):
         rr, cc = dibujar(a, b, M.shape); M[rr, cc] ^= True
     return M
 
-def cuerda2d(M):
+RH_HEBRA = 0.55
+
+
+def envolvente(hc):
+    """Cuerda + hebra delgada + el filete ENTRE ellas (envolvente de los dos círculos). No incluye la piel que une la
+    hebra con la pluma: la costura va por el borde exterior de la hebra (línea marcada por Bru)."""
+    L2 = max(float(hc @ hc), 1e-9)
+    s_ = np.clip((UU * hc[0] + WW * hc[1]) / L2, 0, 1)
+    cx, cy = s_ * hc[0], s_ * hc[1]
+    return np.hypot(UU - cx, WW - cy) < (RC + (RH_HEBRA - RC) * s_ + 0.22)
+
+
+def cuerda2d(M, hc=None, amarre=False):
     pad = k_ap + 2; Mp = np.pad(M, pad, mode="edge")
     ab = ndimage.binary_opening(Mp, structure=DISCO)[pad:-pad, pad:-pad]
-    c = M & ~ab & (RR < R_MAX)
+    lim = (RR < 2.3) if (amarre or hc is None) else envolvente(hc)
+    c = M & ~ab & (RR < R_MAX) & lim
     lab, nl = ndimage.label(c | NUCLEO); keep = np.unique(lab[RR < 0.8]); keep = keep[keep > 0]
     return np.isin(lab, keep)
 
 CUT, CUT_H, info = [], [], {}
 for k in ("izq", "der"):
     p = H[k + "_eje"]; T, U, W = marcos(p)
+    # posición de la hebra relativa al eje, suavizada a lo largo de la cuerda (sin saltos → costura continua)
+    rel = H[k] - p; hu = ndimage.gaussian_filter1d((rel * U).sum(1), 6, mode="nearest"); hw = ndimage.gaussian_filter1d((rel * W).sum(1), 6, mode="nearest")
     pilas, aire = [], []
     cob, rsec, secs = [], [], None
     for i in range(len(p)):
-        M = seccion(p[i], T[i], U[i], W[i]); C = cuerda2d(M)
-        pilas.append(C); aire.append(~M & (RR < R_MAX + 0.3))
-        # radio exterior por sector (24) del contorno a < 3 mm: el nudo es donde la mediana pasa de 1,6 mm
+        M = seccion(p[i], T[i], U[i], W[i])
+        # radio exterior por sector (24) del contorno a < 3 mm: el nudo/amarre es donde la mediana pasa de 1,6 mm
         ang = np.arctan2(WW, UU); sec = np.floor((ang + np.pi) / (np.pi / 12)).astype(int) % 24
         Bd = M & ~ndimage.binary_erosion(M)     # solo el contorno
         rmax = np.array([RR[Bd & (sec == j) & (RR < 3.0)].max() if (Bd & (sec == j) & (RR < 3.0)).any() else 0 for j in range(24)])
         cob.append(np.median(rmax)); rsec.append(rmax); secs = sec
+        hc = np.array([hu[i], hw[i]])
+        C = cuerda2d(M, hc, amarre=np.median(rmax) > 1.6)
+        pilas.append(C); aire.append(~M & (RR < R_MAX + 0.3))
     cob = np.array(cob)
     i_n = np.nonzero((np.abs(p[:, 2] - NUDO_Z[k]) < 1.2) & (cob > 1.6))[0][0]; i_cut = i_n - 1
     info[k] = {"corte_z": round(float(p[i_cut, 2]), 2)}
